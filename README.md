@@ -1,18 +1,13 @@
 [![build](https://github.com/felangel/bloc/workflows/build/badge.svg)](https://github.com/felangel/bloc/actions)
 
-# flutter_infinite_list
+# HooT: the best hospitality for your pet!
+Hoot is a mobile application where people who will be separated from their pets for a short time for various reasons can find a home for their pets for a fee, and those who have the opportunity to take care of pets earn income by posting advertisements.
 
-A new Flutter project.
+## Contributors
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- <a href="https://github.com/DogukanTastan">Doğukan Taştan</a> as Project Manager
+- <a href="https://github.com/emircand">Emircan Demirel</a> as Project Owner
+- <a href="https://github.com/emre9180">Emre Yılmaz</a> as Developer
+- <a href="https://github.com/MSCahyir">Muhammed Sefa Cahyir</a> as Developer
+- <a href="https://github.com/mstfmrt">Mustafa Mert</a> as Developer
+- <a href="https://github.com/tarikemir">Tarık Emir Kaldırım</a> as Developer
