@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415306886882",
+    "project_id": "hoot-44046",
+    "storage_bucket": "hoot-44046.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415306886882:android:2b3d4e72fc7866245db8bb",
+        "android_client_info": {
+          "package_name": "com.example.flutter_infinite_list"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415306886882-kuvt6se81ndeseaulbcq0qt75dvvqav2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwR8Ul9BNBflrMjiuDvhCmqMwvZfzWDrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415306886882-kuvt6se81ndeseaulbcq0qt75dvvqav2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
