@@ -21,5 +21,25 @@ function postData() {
             console.log("Fresh Meat!!");
         });
 };
+// GET 
+function getDataFirestore() {
 
-postData();
+    try {
+
+        //firestore üzerinde dota/heroes pathini referans alıyor
+        const docRef = db.doc("dota/heroes");
+
+        docRef.get().then((data) => {
+            if (data && data.exists) {
+                const responseData = data.data();
+                console.log(JSON.stringify(responseData, null, "  "));
+            }
+        })
+    } catch (error) {}
+
+}
+
+
+
+//postData();
+getDataFirestore();
