@@ -20,7 +20,7 @@ function postData() {
     //userDB/users içerisine json file'ı bind ediyor.
     return db.collection('userDB').doc('users')
         .set(users).then(() => {
-            console.log("Fresh Meat!!");
+            console.log("Users added to firebase");
         });
 };
 // GET 
