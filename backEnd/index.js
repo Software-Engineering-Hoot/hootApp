@@ -1,3 +1,5 @@
+import { getFirestore, doc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./service-account-key.json');
@@ -11,13 +13,13 @@ const db = admin.firestore();
 //firestore post
 function postData() {
 
-    //heroes.json dosyası okunuyor
-    const jsonFile = fs.readFileSync('./heroes.json')
-    const heroes = JSON.parse(jsonFile);
+    //users.json dosyası okunuyor
+    const jsonFile = fs.readFileSync('./users.json')
+    const users = JSON.parse(jsonFile);
 
-    //dota/heroes içerisine json file'ı bind ediyor.
-    return db.collection('dota').doc('heroes')
-        .set(heroes).then(() => {
+    //userDB/users içerisine json file'ı bind ediyor.
+    return db.collection('userDB').doc('users')
+        .set(users).then(() => {
             console.log("Fresh Meat!!");
         });
 };
@@ -26,8 +28,8 @@ function getDataFirestore() {
 
     try {
 
-        //firestore üzerinde dota/heroes pathini referans alıyor
-        const docRef = db.doc("dota/heroes");
+        //firestore üzerinde userDB/users pathini referans alıyor
+        const docRef = db.doc("userDB/users");
 
         docRef.get().then((data) => {
             if (data && data.exists) {
@@ -36,9 +38,17 @@ function getDataFirestore() {
             }
         })
     } catch (error) {}
-
 }
 
+// DELETE
+const docRef = doc(db, "cities", "yftq9RGp4jWNSyBZ1D6L");
+deleteDoc(docRef)
+.then(() => {
+    console.log("Entire Document has been deleted successfully.")
+})
+.catch(error => {
+    console.log(error);
+})
 
 
 //postData();
