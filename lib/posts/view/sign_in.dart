@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/view/RFHomeScreen.dart';
-import 'package:flutter_infinite_list/posts/view/posts_page.dart';
+import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
 import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 // ignore: must_be_immutable
-class RFEmailSignInScreen extends StatefulWidget {
+class SignIn extends StatefulWidget {
+  SignIn({super.key, this.showDialog = false});
+
   bool showDialog;
 
-  RFEmailSignInScreen({this.showDialog = false});
-
   @override
-  _RFEmailSignInScreenState createState() => _RFEmailSignInScreenState();
+  SignInState createState() => SignInState();
 }
 
-class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
+class SignInState extends State<SignIn> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -29,8 +28,8 @@ class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
     init();
   }
 
-  void init() async {
-    setStatusBarColor(t1_colorPrimary,
+  Future<void> init() async {
+    await setStatusBarColor(t1_colorPrimary,
         statusBarIconBrightness: Brightness.light);
   }
 
@@ -43,7 +42,7 @@ class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: "Sa App",
+        title: 'Sa App',
         mainWidgetHeight: 230,
         subWidgetHeight: 170,
         cardWidget: Column(
@@ -57,14 +56,14 @@ class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
               nextFocus: passWordFocusNode,
               textFieldType: TextFieldType.EMAIL,
               decoration: rfInputDecoration(
-                lableText: "Email Address",
+                lableText: 'Email Address',
                 showLableText: true,
                 suffixIcon: Container(
-                  padding: EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(2),
                   decoration: boxDecorationWithRoundedCorners(
                       boxShape: BoxShape.circle,
                       backgroundColor: t1_app_background),
-                  child: Icon(Icons.done, color: Colors.white, size: 14),
+                  child: const Icon(Icons.done, color: Colors.white, size: 14),
                 ),
               ),
             ),
@@ -81,17 +80,17 @@ class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
             32.height,
             AppButton(
               color: t1_colorPrimary,
-              child: Text('Log In', style: boldTextStyle(color: white)),
               width: context.width(),
               elevation: 0,
               onTap: () {
-                RFHomeScreen().launch(context);
+                const Home().launch(context);
               },
+              child: Text('Log In', style: boldTextStyle(color: white)),
             ),
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                  child: Text("Reset Password?", style: primaryTextStyle()),
+                  child: Text('Reset Password?', style: primaryTextStyle()),
                   onPressed: () {
                     //RFResetPasswordScreen().launch(context);
                   }),
@@ -99,7 +98,7 @@ class _RFEmailSignInScreenState extends State<RFEmailSignInScreen> {
           ],
         ),
         subWidget: socialLoginWidget(context,
-            title1: "New Member? ", title2: "Sign up Here", callBack: () {
+            title1: 'New Member? ', title2: 'Sign up Here', callBack: () {
           ;
         }),
       ),

@@ -8,15 +8,17 @@ import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
 import 'package:flutter_infinite_list/posts/utils/RFImages.dart';
 import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
 
-class RFHomeScreen extends StatefulWidget {
+class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _RFHomeScreenState createState() => _RFHomeScreenState();
+  HomeState createState() => HomeState();
 }
 
-class _RFHomeScreenState extends State<RFHomeScreen> {
+class HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  var _pages = [
+  final _pages = [
     RFHomeFragment(),
     RFSearchFragment(),
     RFSettingsFragment(),
@@ -33,7 +35,7 @@ class _RFHomeScreenState extends State<RFHomeScreen> {
       unselectedFontSize: 14,
       type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined, size: 22),
           label: 'Home',
           activeIcon:
@@ -44,7 +46,7 @@ class _RFHomeScreenState extends State<RFHomeScreen> {
           label: 'Search',
           activeIcon: rf_search.iconImage(iconColor: t1_colorPrimary),
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.add),
           label: 'Add',
           activeIcon: Icon(
@@ -53,7 +55,7 @@ class _RFHomeScreenState extends State<RFHomeScreen> {
             size: 22,
           ),
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
           label: 'Notifications',
           activeIcon: Icon(
@@ -83,8 +85,8 @@ class _RFHomeScreenState extends State<RFHomeScreen> {
     init();
   }
 
-  void init() async {
-    setStatusBarColor(t1_colorPrimary,
+  Future<void> init() async {
+    await setStatusBarColor(t1_colorPrimary,
         statusBarIconBrightness: Brightness.light);
   }
 
