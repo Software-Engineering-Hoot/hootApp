@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
+import 'package:flutter_infinite_list/posts/service/auth.dart';
 import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
 import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
 import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // ignore: must_be_immutable
 class SignIn extends StatefulWidget {
@@ -18,9 +21,12 @@ class SignIn extends StatefulWidget {
 class SignInState extends State<SignIn> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passWordFocusNode = FocusNode();
+  TextEditingController emailCreateController = TextEditingController();
+  TextEditingController passwordCreateController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  UserModel user = UserModel();
+  AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -42,7 +48,7 @@ class SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: 'Sa App',
+        title: 'Hoot App',
         mainWidgetHeight: 230,
         subWidgetHeight: 170,
         cardWidget: Column(
@@ -52,8 +58,6 @@ class SignInState extends State<SignIn> {
             16.height,
             AppTextField(
               controller: emailController,
-              focus: emailFocusNode,
-              nextFocus: passWordFocusNode,
               textFieldType: TextFieldType.EMAIL,
               decoration: rfInputDecoration(
                 lableText: 'Email Address',
@@ -70,7 +74,6 @@ class SignInState extends State<SignIn> {
             16.height,
             AppTextField(
               controller: passwordController,
-              focus: passWordFocusNode,
               textFieldType: TextFieldType.PASSWORD,
               decoration: rfInputDecoration(
                 lableText: 'Password',
@@ -82,25 +85,86 @@ class SignInState extends State<SignIn> {
               color: colorPrimary,
               width: context.width(),
               elevation: 0,
-              onTap: () {
-                const Home().launch(context);
+              onTap: () async {
+                await _authService
+                    .signIn(emailController.text, passwordController.text)
+                    .then((value) {
+                  if (value != null) {
+                    const Home().launch(context);
+                  }
+                });
               },
               child: Text('Log In', style: boldTextStyle(color: white)),
             ),
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                  child: Text('Reset Password?', style: primaryTextStyle()),
-                  onPressed: () {
-                    //RFResetPasswordScreen().launch(context);
-                  }),
+                child: Text('Reset Password?', style: primaryTextStyle()),
+                onPressed: () {
+                  //RFResetPasswordScreen().launch(context);
+                },
+              ),
+            ),
+            AppTextField(
+              controller: nameController,
+              textFieldType: TextFieldType.NAME,
+              decoration: rfInputDecoration(
+                lableText: 'name',
+                showLableText: true,
+              ),
+            ),
+            AppTextField(
+              controller: surnameController,
+              textFieldType: TextFieldType.NAME,
+              decoration: rfInputDecoration(
+                lableText: 'surname',
+                showLableText: true,
+              ),
+            ),
+            AppTextField(
+              controller: emailCreateController,
+              textFieldType: TextFieldType.EMAIL,
+              decoration: rfInputDecoration(
+                lableText: 'email',
+                showLableText: true,
+              ),
+            ),
+            AppTextField(
+              controller: passwordCreateController,
+              textFieldType: TextFieldType.PASSWORD,
+              decoration: rfInputDecoration(
+                lableText: 'password',
+                showLableText: true,
+              ),
+            ),
+            AppButton(
+              color: colorPrimary,
+              width: context.width(),
+              elevation: 0,
+              onTap: () {
+                _authService
+                    .signUp(
+                  nameController.text,
+                  surnameController.text,
+                  emailCreateController.text,
+                  passwordCreateController.text,
+                )
+                    .then((value) {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  print(user);
+                  user?.sendEmailVerification();
+                });
+              },
+              child: Text('Sign up', style: boldTextStyle(color: white)),
             ),
           ],
         ),
-        subWidget: socialLoginWidget(context,
-            title1: 'New Member? ', title2: 'Sign up Here', callBack: () {
-          ;
-        }),
+        subWidget: socialLoginWidget(
+          context,
+          title1: 'New Member? ',
+          title2: 'Sign up Here',
+          callBack: () {},
+        ),
       ),
     );
   }
