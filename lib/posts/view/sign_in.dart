@@ -29,7 +29,7 @@ class SignInState extends State<SignIn> {
   }
 
   Future<void> init() async {
-    await setStatusBarColor(t1_colorPrimary,
+    await setStatusBarColor(colorPrimary,
         statusBarIconBrightness: Brightness.light);
   }
 
@@ -62,7 +62,7 @@ class SignInState extends State<SignIn> {
                   padding: const EdgeInsets.all(2),
                   decoration: boxDecorationWithRoundedCorners(
                       boxShape: BoxShape.circle,
-                      backgroundColor: t1_app_background),
+                      backgroundColor: app_background),
                   child: const Icon(Icons.done, color: Colors.white, size: 14),
                 ),
               ),
@@ -79,7 +79,7 @@ class SignInState extends State<SignIn> {
             ),
             32.height,
             AppButton(
-              color: t1_colorPrimary,
+              color: colorPrimary,
               width: context.width(),
               elevation: 0,
               onTap: () {

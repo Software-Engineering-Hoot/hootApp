@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
+import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
+import 'package:flutter_infinite_list/posts/utils/RFDataGenerator.dart';
+import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
+import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
+import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
 import 'package:flutter_infinite_list/posts/widgets/bottom_loader.dart';
-import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({super.key});
-
+class HomeFragment extends StatefulWidget {
   @override
-  State<PostsList> createState() => _PostsListState();
+  _HomeFragmentState createState() => _HomeFragmentState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _HomeFragmentState extends State<HomeFragment> {
+  List<RoomFinderModel> categoryData = categoryList();
+  List<RoomFinderModel> hotelListData = hotelList();
+  List<RoomFinderModel> locationListData = locationList();
+  //List<RoomFinderModel> recentUpdateData = recentUpdateList();
+
+  int selectCategoryIndex = 0;
+
+  bool locationWidth = true;
+
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
   }
 
   @override
@@ -37,10 +55,9 @@ class _PostsListState extends State<PostsList> {
                     ? const BottomLoader()
                     : PostListItem(post: state.posts[index]);
               },
-              // itemCount: state.hasReachedMax
-              //     ? state.posts.length
-              //     : state.posts.length + 1,
-              itemCount: 1,
+              itemCount: state.hasReachedMax
+                  ? state.posts.length
+                  : state.posts.length + 1,
               controller: _scrollController,
             );
           case PostStatus.initial:

@@ -40,16 +40,16 @@ class _RFCommonAppComponentState extends State<RFCommonAppComponent> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16)),
-              backgroundColor: t1_colorPrimary,
+              backgroundColor: colorPrimary,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(widget.title.validate(),
-                    style: boldTextStyle(color: white, size: 22)),
+                    style: boldTextStyle(color: colorWhite, size: 22)),
                 4.height,
                 Text(widget.subTitle.validate(),
-                    style: primaryTextStyle(color: white)),
+                    style: primaryTextStyle(color: colorWhite)),
               ],
             ),
           ),

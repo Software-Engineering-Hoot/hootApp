@@ -68,7 +68,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                           offset: Offset(1, 6)),
                     ],
                   ),
-                  child: Icon(Icons.add, color: t1_colorPrimary, size: 16),
+                  child: Icon(Icons.add, color: colorPrimary, size: 16),
                 ),
               ),
             ],
@@ -110,13 +110,13 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                       // rf_call.iconImage(iconColor: appStore.isDarkModeOn ? white : rf_primaryColor),
                       8.width,
                       Text('Call Me',
-                          style: boldTextStyle(color: t1_colorPrimary)),
+                          style: boldTextStyle(color: colorPrimary)),
                     ],
                   ),
                 ).expand(),
                 16.width,
                 AppButton(
-                  color: t1_colorPrimary,
+                  color: colorPrimary,
                   elevation: 0.0,
                   shapeBorder: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
@@ -138,7 +138,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
             ).paddingSymmetric(horizontal: 16),
             Container(
               decoration: boxDecorationWithRoundedCorners(
-                border: Border.all(color: t1_app_background),
+                border: Border.all(color: app_background),
                 backgroundColor: context.cardColor,
               ),
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),

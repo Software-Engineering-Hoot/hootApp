@@ -22,3 +22,5 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   runApp(App());
 }
+
+// demo push

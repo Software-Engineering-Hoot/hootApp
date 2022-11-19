@@ -23,7 +23,7 @@ InputDecoration rfInputDecoration(
       labelText: showLableText.validate() ? lableText! : null,
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: t1_colorPrimary),
+        borderSide: BorderSide(color: colorPrimary),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
@@ -34,7 +34,7 @@ InputDecoration rfInputDecoration(
         borderSide: BorderSide(color: redColor.withOpacity(0.4)),
       ),
       filled: true,
-      fillColor: white,
+      fillColor: colorWhite,
       suffix: suffixIcon.validate(),
       prefixIcon: showPreFixIcon.validate() ? prefixIcon.validate() : null);
 }
@@ -62,7 +62,7 @@ Widget rfCommonRichText(
           text: subTitle.validate(),
           style: subTitleTextStyle ??
               primaryTextStyle(
-                  color: subTitleTextColor ?? t1_colorPrimary,
+                  color: subTitleTextColor ?? colorPrimary,
                   size: textSize ?? 14,
                   letterSpacing: 1.5),
         ),
@@ -128,7 +128,7 @@ PreferredSizeWidget commonAppBarWidget(BuildContext context,
       title: Text(title!, style: boldTextStyle(color: whiteColor, size: 20)),
       systemOverlayStyle:
           SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
-      backgroundColor: t1_colorPrimary,
+      backgroundColor: colorPrimary,
       centerTitle: true,
       leading: showLeadingIcon.validate()
           ? SizedBox()
@@ -137,7 +137,7 @@ PreferredSizeWidget commonAppBarWidget(BuildContext context,
                 finish(context);
               },
               icon: Icon(Icons.arrow_back_ios_new, color: whiteColor, size: 18),
-              color: t1_colorPrimary,
+              color: colorPrimary,
             ),
       elevation: 0,
       shape: roundCornerShape.validate()

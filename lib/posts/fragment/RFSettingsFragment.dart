@@ -46,7 +46,7 @@ class RFSettingsFragment extends StatelessWidget {
                           offset: Offset(1, 6)),
                     ],
                   ),
-                  child: Icon(Icons.add, color: t1_colorPrimary, size: 16),
+                  child: Icon(Icons.add, color: colorPrimary, size: 16),
                 ),
               ),
             ],
@@ -71,21 +71,21 @@ class RFSettingsFragment extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               decoration: boxDecorationWithRoundedCorners(
-                backgroundColor: t1_colorPrimary,
+                backgroundColor: colorPrimary,
               ),
               padding: EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   rf_person
-                      .iconImage(iconColor: t1_colorPrimary)
+                      .iconImage(iconColor: colorPrimary)
                       .paddingOnly(top: 4),
                   16.width,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Edit Profile",
-                          style: boldTextStyle(color: t1_colorPrimary)),
+                          style: boldTextStyle(color: colorPrimary)),
                       8.height,
                       Text(
                         "Edit all the basic profile information associated with your profile",
