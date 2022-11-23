@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,18 +19,24 @@ class AuthService {
     }
   }
 
-  Future<User?> signUp(
+  Future<Response> signUp(
       String name, String surname, String email, String password) async {
-    final user = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    try {
+      final user = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
-    await _firestore.collection('HootDB').doc('Users').set({
-      'Name': name,
-      'Surname': surname,
-      'Email': email,
-      'Password': password,
-    });
+      await _firestore.collection('HootDB').doc('Users').set({
+        'Name': name,
+        'Surname': surname,
+        'Email': email,
+        'Password': password,
+      });
+    } catch (e) {
+      return Response(
+        e.toString(),
+      );
+    }
 
-    return user.user;
+    return Response("body", 400);
   }
 }
