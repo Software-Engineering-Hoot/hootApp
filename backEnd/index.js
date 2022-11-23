@@ -14,7 +14,7 @@ const db = admin.firestore();
 
 
 app.get('/', (req, res) => {
-    res.send("Hello from index.js ");
+    res.send("ZORT");
 })
 
 app.get('/usersfromfirebase', (req, res) => {
