@@ -6,15 +6,30 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
+
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://hoot-44046.firebaseio.com/"
 });
 
 const db = admin.firestore();
 
+app.use('/', (req, res, next) => {
+  if (req.headers.authtoken) {
+      admin.auth().verifyIdToken(req.headers.authtoken)
+      .then(() => {
+          next()
+      }).catch(() => {
+          res.status(403).send('Unauthorized')
+      });
+  } else {
+      res.status(403).send('Unauthorized')
+  }
+}
+)
 
 app.get('/', (req, res) => {
-    res.send("ZORT");
+    res.send("Hello from index.js ");
 })
 
 app.get('/usersfromfirebase', (req, res) => {
@@ -42,3 +57,4 @@ app.post('/userstofirebase', (req, res) => {
 app.listen(8080, () => {
     console.log("listening on port http://localhost:8080")
 })
+
