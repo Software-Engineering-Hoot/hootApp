@@ -31,11 +31,7 @@ class AuthService {
         'Email': email,
         'Password': password,
       });
-    } catch (e) {
-      return Response(
-        e.toString(),
-      );
-    }
+    } catch (e) {}
 
     return Response("body", 400);
   }
