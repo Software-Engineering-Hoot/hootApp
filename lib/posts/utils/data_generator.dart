@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
-import 'package:flutter_infinite_list/posts/utils/RFImages.dart';
+import 'package:flutter_infinite_list/posts/utils/images.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 List<RoomFinderModel> categoryList() {
@@ -17,7 +17,7 @@ List<RoomFinderModel> categoryList() {
 List<RoomFinderModel> hotelList() {
   List<RoomFinderModel> hotelListData = [];
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel1,
+      img: hotel1,
       color: greenColor.withOpacity(0.6),
       roomCategoryName: "1 BHK at Lalitpur",
       price: "RS. 8000 / ",
@@ -27,7 +27,7 @@ List<RoomFinderModel> hotelList() {
       description: "9 Applied | ",
       views: "20 Views"));
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel2,
+      img: hotel2,
       color: redColor,
       roomCategoryName: "Big Room",
       price: "RS. 5000 / ",
@@ -37,7 +37,7 @@ List<RoomFinderModel> hotelList() {
       description: "5 Applied | ",
       views: "10 Views"));
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel3,
+      img: hotel3,
       color: greenColor.withOpacity(0.6),
       roomCategoryName: "4 Room for Student",
       price: "RS. 6000 / ",
@@ -47,7 +47,7 @@ List<RoomFinderModel> hotelList() {
       description: "10 Applied | ",
       views: "06 Views"));
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel4,
+      img: hotel4,
       color: redColor,
       roomCategoryName: "Hall and Room",
       price: "RS. 5000 / ",
@@ -57,7 +57,7 @@ List<RoomFinderModel> hotelList() {
       description: "16 Applied | ",
       views: "12 Views"));
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel5,
+      img: hotel5,
       color: greenColor.withOpacity(0.6),
       roomCategoryName: "Big Room",
       price: "RS. 2000 / ",
@@ -67,7 +67,7 @@ List<RoomFinderModel> hotelList() {
       description: "9 Applied | ",
       views: "25 Views"));
   hotelListData.add(RoomFinderModel(
-      img: rf_hotel2,
+      img: hotel2,
       color: redColor,
       roomCategoryName: "Big Room",
       price: "RS. 5000 / ",
@@ -82,18 +82,18 @@ List<RoomFinderModel> hotelList() {
 
 List<RoomFinderModel> locationList() {
   List<RoomFinderModel> locationListData = [];
-  locationListData.add(RoomFinderModel(
-      img: rf_location1, price: "10 Found", location: "Lalitpur"));
   locationListData.add(
-      RoomFinderModel(img: rf_location2, price: "4 Found", location: "Imadol"));
+      RoomFinderModel(img: location1, price: "10 Found", location: "Lalitpur"));
+  locationListData.add(
+      RoomFinderModel(img: location2, price: "4 Found", location: "Imadol"));
   locationListData.add(RoomFinderModel(
-      img: rf_location3, price: "12 Found", location: "Kupondole"));
+      img: location3, price: "12 Found", location: "Kupondole"));
   locationListData.add(RoomFinderModel(
-      img: rf_location4, price: "16 Found", location: " Lalitpur"));
+      img: location4, price: "16 Found", location: " Lalitpur"));
   locationListData.add(RoomFinderModel(
-      img: rf_location5, price: "20 Found", location: "Mahalaxmi"));
+      img: location5, price: "20 Found", location: "Mahalaxmi"));
   locationListData.add(RoomFinderModel(
-      img: rf_location6, price: "25 Found", location: "Koteshwor"));
+      img: location6, price: "25 Found", location: "Koteshwor"));
 
   return locationListData;
 }
@@ -101,17 +101,17 @@ List<RoomFinderModel> locationList() {
 List<RoomFinderModel> faqList() {
   List<RoomFinderModel> faqListData = [];
   faqListData.add(RoomFinderModel(
-      img: rf_faq,
+      img: faq,
       price: "What do we get here in this app?",
       description:
           "That which doesn't kill you makes you stronger, right? Unless it almost kills you, and renders you weaker. Being strong is pretty rad though, so go ahead."));
   faqListData.add(RoomFinderModel(
-      img: rf_faq,
+      img: faq,
       price: "What is the use of this App?",
       description:
           "Sometimes, you've just got to say 'the party starts here'. Unless you're not in the place where the aforementioned party is starting. Then, just shut up."));
   faqListData.add(RoomFinderModel(
-      img: rf_faq,
+      img: faq,
       price: "How to get from location A to B?",
       description:
           "If you believe in yourself, go double or nothing. Well, depending on how long it takes you to calculate what double is. If you're terrible at maths, don't."));
@@ -171,7 +171,7 @@ List<RoomFinderModel> availableHotelList() {
 List<RoomFinderModel> appliedHotelList() {
   List<RoomFinderModel> appliedHotelData = [];
   appliedHotelData.add(RoomFinderModel(
-      img: rf_hotel1,
+      img: hotel1,
       roomCategoryName: "1 BHK at Lalitpur",
       price: "RS 8000 ",
       rentDuration: "1.2 km from Gwarko",
@@ -179,7 +179,7 @@ List<RoomFinderModel> appliedHotelList() {
       address: "Booked",
       views: "3.0"));
   appliedHotelData.add(RoomFinderModel(
-      img: rf_hotel2,
+      img: hotel2,
       roomCategoryName: "Big Room",
       price: "RS 5000 ",
       rentDuration: "1.2 km from Mahalaxmi",
@@ -187,7 +187,7 @@ List<RoomFinderModel> appliedHotelList() {
       address: "Booked",
       views: "4.0"));
   appliedHotelData.add(RoomFinderModel(
-      img: rf_hotel3,
+      img: hotel3,
       roomCategoryName: "4 Room for Student",
       price: "RS 6000 ",
       rentDuration: "1.2 km from Imadol",
@@ -195,7 +195,7 @@ List<RoomFinderModel> appliedHotelList() {
       address: "Booked",
       views: "2.5"));
   appliedHotelData.add(RoomFinderModel(
-      img: rf_hotel4,
+      img: hotel4,
       roomCategoryName: "Hall and Room",
       price: "RS 5000 ",
       rentDuration: "1.2 km from Kupondole",
@@ -203,7 +203,7 @@ List<RoomFinderModel> appliedHotelList() {
       address: "Booked",
       views: "4.5"));
   appliedHotelData.add(RoomFinderModel(
-      img: rf_hotel5,
+      img: hotel5,
       roomCategoryName: "Big Room",
       price: "RS 2000 ",
       rentDuration: "1.2 km from Koteshwor",
@@ -216,10 +216,10 @@ List<RoomFinderModel> appliedHotelList() {
 
 List<RoomFinderModel> hotelImageList() {
   List<RoomFinderModel> hotelImageListData = [];
-  hotelImageListData.add(RoomFinderModel(img: rf_hotel1));
-  hotelImageListData.add(RoomFinderModel(img: rf_hotel2));
-  hotelImageListData.add(RoomFinderModel(img: rf_hotel3));
-  hotelImageListData.add(RoomFinderModel(img: rf_hotel4));
+  hotelImageListData.add(RoomFinderModel(img: hotel1));
+  hotelImageListData.add(RoomFinderModel(img: hotel2));
+  hotelImageListData.add(RoomFinderModel(img: hotel3));
+  hotelImageListData.add(RoomFinderModel(img: hotel4));
 
   return hotelImageListData;
 }

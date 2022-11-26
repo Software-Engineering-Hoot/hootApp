@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
 import 'package:flutter_infinite_list/posts/view/posts_list.dart';
 import 'package:http/http.dart' as http;
 

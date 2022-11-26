@@ -1,14 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/service/auth.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/view/Auth/sign_in.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/view/auth/sign_in.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-// ignore: must_be_immutable
 class SignUp extends StatefulWidget {
   SignUp({super.key, this.showDialog = false});
 
@@ -19,12 +17,7 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordCreateController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController surnameController = TextEditingController();
-  UserModel user = UserModel();
+  UserModel userModel = UserModel();
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -61,14 +54,13 @@ class SignUpState extends State<SignUp> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
-                    controller: nameController,
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
                       lableText: 'Name',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      user.name = value;
+                      userModel.name = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -79,14 +71,13 @@ class SignUpState extends State<SignUp> {
                   ),
                   16.height,
                   AppTextField(
-                    controller: surnameController,
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
                       lableText: 'Surname',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      user.surname = value;
+                      userModel.surname = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -111,7 +102,7 @@ class SignUpState extends State<SignUp> {
                       ),
                     ),
                     onChanged: (value) {
-                      user.email = value;
+                      userModel.email = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -122,20 +113,19 @@ class SignUpState extends State<SignUp> {
                   ),
                   16.height,
                   AppTextField(
-                    controller: passwordController,
                     textFieldType: TextFieldType.PASSWORD,
                     decoration: rfInputDecoration(
                       lableText: 'Password',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      user.password = value;
+                      userModel.password = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter password';
                       }
-                      if (user.password == user.passwordAgain) {
+                      if (userModel.password != userModel.passwordAgain) {
                         return 'Please enter same password';
                       }
                       return null;
@@ -143,20 +133,19 @@ class SignUpState extends State<SignUp> {
                   ),
                   16.height,
                   AppTextField(
-                    controller: passwordController,
                     textFieldType: TextFieldType.PASSWORD,
                     decoration: rfInputDecoration(
                       lableText: 'Password Again',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      user.passwordAgain = value;
+                      userModel.passwordAgain = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter password again';
                       }
-                      if (user.password == user.passwordAgain) {
+                      if (userModel.password != userModel.passwordAgain) {
                         return 'Please enter same password';
                       }
                       return null;
@@ -169,21 +158,11 @@ class SignUpState extends State<SignUp> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        await _authService
-                            .signUp(nameController.text, surnameController.text,
-                                emailController.text, passwordController.text)
-                            .then((value) {
-                          final user = FirebaseAuth.instance.currentUser;
-                          user?.sendEmailVerification().then((value) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Sending Message"),
-                            ));
+                        await _authService.signUp(userModel).then((value) {
+                          if (value) {
                             SignIn().launch(context);
-                          });
+                          }
                         });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
                       }
                     },
                     child: Text('Sign up', style: boldTextStyle(color: white)),
@@ -191,35 +170,6 @@ class SignUpState extends State<SignUp> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                child: Text('Reset Password?', style: primaryTextStyle()),
-                onPressed: () {
-                  //RFResetPasswordScreen().launch(context);
-                },
-              ),
-            ),
-            // AppButton(
-            //   color: colorPrimary,
-            //   width: context.width(),
-            //   elevation: 0,
-            //   onTap: () {
-            //     _authService
-            //         .signUp(
-            //       nameController.text,
-            //       surnameController.text,
-            //       emailCreateController.text,
-            //       passwordCreateController.text,
-            //     )
-            //         .then((value) {
-            //       User? user = FirebaseAuth.instance.currentUser;
-            //       print(user);
-            //       user?.sendEmailVerification();
-            //     });
-            //   },
-            //   child: Text('Sign up', style: boldTextStyle(color: white)),
-            // ),
           ],
         ),
       ),

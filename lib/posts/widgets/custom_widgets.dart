@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/utils/RFConstant.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 InputDecoration rfInputDecoration(
@@ -16,14 +16,14 @@ InputDecoration rfInputDecoration(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(color: gray.withOpacity(0.4)),
       ),
-      contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+      contentPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
       hintText: hintText,
       hintStyle: secondaryTextStyle(),
       labelStyle: secondaryTextStyle(),
       labelText: showLableText.validate() ? lableText! : null,
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: colorPrimary),
+        borderSide: const BorderSide(color: colorPrimary),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
@@ -79,7 +79,7 @@ Decoration shadowWidget(BuildContext context) {
           spreadRadius: 0.4,
           blurRadius: 3,
           color: gray.withOpacity(0.1),
-          offset: Offset(1, 6)),
+          offset: const Offset(1, 6)),
     ],
   );
 }
@@ -127,23 +127,24 @@ PreferredSizeWidget commonAppBarWidget(BuildContext context,
     child: AppBar(
       title: Text(title!, style: boldTextStyle(color: whiteColor, size: 20)),
       systemOverlayStyle:
-          SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+          const SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
       backgroundColor: colorPrimary,
       centerTitle: true,
       leading: showLeadingIcon.validate()
-          ? SizedBox()
+          ? const SizedBox()
           : IconButton(
               onPressed: () {
                 finish(context);
               },
-              icon: Icon(Icons.arrow_back_ios_new, color: whiteColor, size: 18),
+              icon: const Icon(Icons.arrow_back_ios_new,
+                  color: whiteColor, size: 18),
               color: colorPrimary,
             ),
       elevation: 0,
       shape: roundCornerShape.validate()
-          ? RoundedRectangleBorder(
+          ? const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)))
-          : RoundedRectangleBorder(
+          : const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.zero),
             ),
     ),

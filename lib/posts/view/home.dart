@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/fragment/RFAccountFragment.dart';
 import 'package:flutter_infinite_list/posts/fragment/RFSearchFragment.dart';
 import 'package:flutter_infinite_list/posts/fragment/RFSettingsFragment.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/utils/RFImages.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/utils/images.dart';
 import 'package:flutter_infinite_list/posts/view/posts_page.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Home extends StatefulWidget {
@@ -41,9 +41,9 @@ class HomeState extends State<Home> {
           activeIcon: Icon(Icons.home_outlined, color: colorPrimary, size: 22),
         ),
         BottomNavigationBarItem(
-          icon: rf_search.iconImage(),
+          icon: search.iconImage(),
           label: 'Search',
-          activeIcon: rf_search.iconImage(iconColor: colorPrimary),
+          activeIcon: search.iconImage(iconColor: colorPrimary),
         ),
         const BottomNavigationBarItem(
           icon: Icon(Icons.add),
@@ -64,9 +64,9 @@ class HomeState extends State<Home> {
           ),
         ),
         BottomNavigationBarItem(
-          icon: rf_person.iconImage(),
+          icon: person.iconImage(),
           label: 'Account',
-          activeIcon: rf_person.iconImage(iconColor: colorPrimary),
+          activeIcon: person.iconImage(iconColor: colorPrimary),
         ),
       ],
     );

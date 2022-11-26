@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class RFAccountFragment extends StatefulWidget {
@@ -44,7 +44,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
             children: [
               Container(
                   alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.only(top: 150),
+                  margin: const EdgeInsets.only(top: 150),
                   width: 100,
                   height: 100,
                   decoration: boxDecorationWithRoundedCorners(
@@ -56,7 +56,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                 right: -4,
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   decoration: boxDecorationWithRoundedCorners(
                     backgroundColor: context.cardColor,
                     boxShape: BoxShape.circle,
@@ -65,10 +65,10 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                           spreadRadius: 0.4,
                           blurRadius: 3,
                           color: gray.withOpacity(0.1),
-                          offset: Offset(1, 6)),
+                          offset: const Offset(1, 6)),
                     ],
                   ),
-                  child: Icon(Icons.add, color: colorPrimary, size: 16),
+                  child: const Icon(Icons.add, color: colorPrimary, size: 16),
                 ),
               ),
             ],
@@ -100,7 +100,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                   style: OutlinedButton.styleFrom(
                     backgroundColor: context.scaffoldBackgroundColor,
                     side: BorderSide(color: context.dividerColor, width: 1),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16)),
                   ),
@@ -141,7 +141,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                 border: Border.all(color: app_background),
                 backgroundColor: context.cardColor,
               ),
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/utils/RFDataGenerator.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
-import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
+import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
+import 'package:flutter_infinite_list/posts/utils/data_generator.dart';
 import 'package:flutter_infinite_list/posts/widgets/bottom_loader.dart';
+import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 
 class HomeFragment extends StatefulWidget {
   @override

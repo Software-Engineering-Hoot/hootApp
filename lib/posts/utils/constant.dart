@@ -1,4 +1,4 @@
-const RFWidgetHeight = 300;
+const widgetHeight = 300;
 const bottomNavigationIconSize = 16.0;
 /*fonts*/
 const fontRegular = 'Regular';

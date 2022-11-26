@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class RFCommonAppComponent extends StatefulWidget {
@@ -11,8 +11,9 @@ class RFCommonAppComponent extends StatefulWidget {
   final double? mainWidgetHeight;
   final double? subWidgetHeight;
 
-  RFCommonAppComponent(
-      {this.title,
+  const RFCommonAppComponent(
+      {super.key,
+      this.title,
       this.subTitle,
       this.cardWidget,
       this.subWidget,
@@ -28,8 +29,8 @@ class _RFCommonAppComponentState extends State<RFCommonAppComponent> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: 24),
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(bottom: 24),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -37,7 +38,7 @@ class _RFCommonAppComponentState extends State<RFCommonAppComponent> {
             width: context.width(),
             height: widget.mainWidgetHeight ?? 300,
             decoration: boxDecorationWithRoundedCorners(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16)),
               backgroundColor: colorPrimary,
@@ -62,7 +63,7 @@ class _RFCommonAppComponentState extends State<RFCommonAppComponent> {
                         left: 24,
                         bottom: 24,
                         right: 24),
-                    padding: EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(24),
                     decoration: boxDecorationWithRoundedCorners(
                         backgroundColor: context.cardColor),
                     child: widget.cardWidget.validate(),

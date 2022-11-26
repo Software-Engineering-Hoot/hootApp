@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/service/auth.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/view/Auth/sign_up.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/view/auth/sign_up.dart';
 import 'package:flutter_infinite_list/posts/view/home.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 // ignore: must_be_immutable
 class SignIn extends StatefulWidget {
@@ -21,7 +20,7 @@ class SignIn extends StatefulWidget {
 
 class SignInState extends State<SignIn> {
   UserModel user = UserModel();
-  AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -105,13 +104,10 @@ class SignInState extends State<SignIn> {
                     await _authService
                         .signIn(user.email!, user.password!)
                         .then((value) {
-                      if (value != null) {
+                      if (value) {
                         const Home().launch(context);
                       }
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
                   }
                 },
                 child: Text('Log In', style: boldTextStyle(color: white)),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
-import 'package:flutter_infinite_list/posts/utils/RFDataGenerator.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/utils/data_generator.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class RFSearchFragment extends StatefulWidget {
+  const RFSearchFragment({super.key});
+
   @override
   _RFSearchFragmentState createState() => _RFSearchFragmentState();
 }

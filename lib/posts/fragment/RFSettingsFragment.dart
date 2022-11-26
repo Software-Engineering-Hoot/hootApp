@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/utils/images.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
-import 'package:flutter_infinite_list/posts/utils/RFColors.dart';
-import 'package:flutter_infinite_list/posts/utils/RFDataGenerator.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFCommonAppComponent.dart';
-import 'package:flutter_infinite_list/posts/utils/RFImages.dart';
-import 'package:flutter_infinite_list/posts/widgets/RFWidget.dart';
 
 class RFSettingsFragment extends StatelessWidget {
+  const RFSettingsFragment({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: "Account",
+        title: 'Account',
         mainWidgetHeight: 200,
         subWidgetHeight: 100,
         accountCircleWidget: Align(
@@ -22,7 +22,7 @@ class RFSettingsFragment extends StatelessWidget {
             children: [
               Container(
                   alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.only(top: 150),
+                  margin: const EdgeInsets.only(top: 150),
                   width: 100,
                   height: 100,
                   decoration: boxDecorationWithRoundedCorners(
@@ -34,7 +34,7 @@ class RFSettingsFragment extends StatelessWidget {
                 right: -4,
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   decoration: boxDecorationWithRoundedCorners(
                     backgroundColor: context.cardColor,
                     boxShape: BoxShape.circle,
@@ -43,10 +43,10 @@ class RFSettingsFragment extends StatelessWidget {
                           spreadRadius: 0.4,
                           blurRadius: 3,
                           color: gray.withOpacity(0.1),
-                          offset: Offset(1, 6)),
+                          offset: const Offset(1, 6)),
                     ],
                   ),
-                  child: Icon(Icons.add, color: colorPrimary, size: 16),
+                  child: const Icon(Icons.add, color: colorPrimary, size: 16),
                 ),
               ),
             ],
@@ -69,26 +69,24 @@ class RFSettingsFragment extends StatelessWidget {
             ),
             16.height,
             Container(
-              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               decoration: boxDecorationWithRoundedCorners(
                 backgroundColor: colorPrimary,
               ),
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  rf_person
-                      .iconImage(iconColor: colorPrimary)
-                      .paddingOnly(top: 4),
+                  person.iconImage(iconColor: colorPrimary).paddingOnly(top: 4),
                   16.width,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Edit Profile",
+                      Text('Edit Profile',
                           style: boldTextStyle(color: colorPrimary)),
                       8.height,
                       Text(
-                        "Edit all the basic profile information associated with your profile",
+                        'Edit all the basic profile information associated with your profile',
                         style: secondaryTextStyle(color: gray),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
