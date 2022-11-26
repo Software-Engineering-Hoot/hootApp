@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
+import 'package:flutter_infinite_list/posts/service/auth.dart';
+import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/view/auth/sign_in.dart';
+import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:nb_utils/nb_utils.dart';
+
+class ResetPassword extends StatefulWidget {
+  ResetPassword({super.key, this.showDialog = false});
+
+  bool showDialog;
+
+  @override
+  ResetPasswordState createState() => ResetPasswordState();
+}
+
+class ResetPasswordState extends State<ResetPassword> {
+  final AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  final email = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future<void> init() async {
+    await setStatusBarColor(colorPrimary,
+        statusBarIconBrightness: Brightness.light);
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RFCommonAppComponent(
+        title: 'Reset Password',
+        mainWidgetHeight: 230,
+        subWidgetHeight: 170,
+        cardWidget: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            16.height,
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  AppTextField(
+                    controller: email,
+                    textFieldType: TextFieldType.NAME,
+                    decoration: rfInputDecoration(
+                      lableText: 'Email Address',
+                      showLableText: true,
+                    ),
+                    onChanged: (value) {
+                      email.text = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      }
+                      return null;
+                    },
+                  ),
+                  32.height,
+                  AppButton(
+                    color: colorPrimary,
+                    width: context.width(),
+                    elevation: 0,
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await _authService
+                            .resetPassword(email.text)
+                            .then((value) {
+                          if (value) {
+                            SignIn().launch(context);
+                          }
+                        });
+                      }
+                    },
+                    child: Text('Reset', style: boldTextStyle(color: white)),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

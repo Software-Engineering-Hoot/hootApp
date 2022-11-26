@@ -26,6 +26,8 @@ class Errors {
         return 'Email is not verified, please verify your email.';
       case 'Please_Verify':
         return 'Account is created, please verify your email.';
+      case 'Reset_Verify':
+        return 'Email reset link sended your email, please check.';
       default:
         return 'Login failed. Please try again.';
     }

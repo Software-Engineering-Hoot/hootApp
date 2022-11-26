@@ -13,3 +13,5 @@ const textSizeLargeMedium = 18.0;
 const textSizeNormal = 20.0;
 const textSizeLarge = 24.0;
 const textSizeXLarge = 30.0;
+
+const profileImage = 'assets/images/profile.png';

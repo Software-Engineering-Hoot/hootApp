@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/service/auth.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/view/auth/reset_password.dart';
 import 'package:flutter_infinite_list/posts/view/auth/sign_up.dart';
 import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
@@ -117,7 +118,7 @@ class SignInState extends State<SignIn> {
                 child: TextButton(
                   child: Text('Reset Password?', style: primaryTextStyle()),
                   onPressed: () {
-                    //RFResetPasswordScreen().launch(context);
+                    ResetPassword().launch(context);
                   },
                 ),
               ),

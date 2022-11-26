@@ -6,13 +6,7 @@ import 'package:flutter_infinite_list/simple_bloc_observer.dart';
 
 /*added libs @emircand*/
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-
-/* changed by emircand
-void main() {
-  Bloc.observer = SimpleBlocObserver();
-  runApp(App());
-}*/
+import 'package:flutter_infinite_list/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,5 +16,3 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   runApp(App());
 }
-
-// demo push
