@@ -33,7 +33,7 @@ class AuthService {
         user?.sendEmailVerification();
       });
 
-      await _firestore.collection('HootDB').doc('Users').set({
+      await _firestore.collection('userDB').doc('Users').set({
         'Name': userModel.name,
         'Surname': userModel.surname,
         'Email': userModel.email,

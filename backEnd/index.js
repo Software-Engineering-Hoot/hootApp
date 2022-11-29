@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const serviceAccount = require('./service-account-key.json');
 const fs = require('fs')
@@ -14,6 +15,9 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
 app.use('/', (req, res, next) => {
   if (req.headers.authtoken) {
       admin.auth().verifyIdToken(req.headers.authtoken)
@@ -27,6 +31,22 @@ app.use('/', (req, res, next) => {
   }
 }
 )
+
+app.post('/signup', async(req, res) => {
+    console.log(req.body);
+    const user = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: req.body.password
+
+    }
+    const userResponse = await admin.auth().createUser({
+        email: req.body.email,
+        password: req.body.password
+    });
+    res.json(userResponse);
+})
 
 app.get('/', (req, res) => {
     res.send("Hello from index.js ");
