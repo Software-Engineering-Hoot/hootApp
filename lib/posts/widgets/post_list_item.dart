@@ -17,28 +17,50 @@ class PostListItem extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: orange,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("1"),
-                Text("2"),
-                Text("3"),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 200,
+          height: 400,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,// main axis row için, 
             children: [
-              Text("4"),
-              Text("5"),
-              Text("6"),
+              new ClipRRect(borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network('https://upload.wikimedia.org/wikipedia/commons/4/43/Stalin_Full_Image.jpg')),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Hayvanlarınız için süpdder bal bir yer"),
+                  Text("500 TL / Günlük"),
+                  Spacer(),
+                  //20.height,
+                  Container(
+                    width: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,// main axis row için, 
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset('images/roomFinding/locationIcon.png', width: 10),
+                        Text("İzmir"),
+                        Spacer(),
+                        Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: Color(0xFFB74093)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: SizedBox(child: Text("Köpek", style: TextStyle(fontFamily: 'Halvetica', fontSize: 12),)),
+                                  )
+                                  )
+                                  
+                      ]
+                      
+                    ),
+                  ),
+
+
+                ],
+              ),
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
