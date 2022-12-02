@@ -1,44 +1,58 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/service/auth.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
-class MockFirebaseAuth extends Mock implements FirebaseAuth {
-  @override
-  Stream<User> authStateChanges() {
-    return Stream.fromIterable([
-      _mockUser,
-    ]);
-  }
+class MockUserRepository extends Mock implements AuthService {
+  final MockFirebaseAuth auth;
+  MockUserRepository({required this.auth});
 }
 
-class MockUser extends Mock implements User {}
-
-final MockUser _mockUser = MockUser();
-
-class MockUserCredential extends Mock implements Future<UserCredential> {}
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  final MockFirebaseAuth mockFirebaseAuth = MockFirebaseAuth();
-  final authManager = AuthService();
-  final MockUserCredential mockUserCredential = MockUserCredential();
-  setUp(() {});
-  test('emit occurs', () async {
-    expectLater(authManager, emitsInOrder([_mockUser]));
-  });
+  MockFirebaseAuth _auth = MockFirebaseAuth();
+  MockUserRepository _repo;
+  _repo = MockUserRepository(auth: _auth);
 
-  test('create account', () async {
-    // when(mockFirebaseAuth.createUserWithEmailAndPassword(
-    //         email: 'tadas@gmail.com', password: '123456'))
-    //     .thenAnswer((realInvocation) => false);
+  var emailField = find.byKey(Key("email-field"));
+  var passwordField = find.byKey(Key("password-field"));
+  var signInButton = find.text("Sign In");
 
-    expect(
-        await authManager.signIn(
-          'tadas@gmail.com',
-          '123456',
-        ),
-        'Success');
+  group("login page test", () {
+    when(_repo.signIn("test@testmail.com", "password")).thenAnswer((_) async {
+      return true;
+    });
+    //       var status = authService.signIn("cafyufatra@gufum.com ", "123456");
+    //   //Listenin içerisinde eklediğimiz sayıyı kontrol ediyoruz
+    //   //expect metodu ile beklediğimiz sonucu kontrol ediyoruz
+    //   expect(status, true);
+    // });
+    // testWidgets('email, password and button are found',
+    //     (WidgetTester tester) async {
+    //   // await tester.pumpWidget(_makeTestable(LoginPage()));
+    //   expect(emailField, findsOneWidget);
+    //   expect(passwordField, findsOneWidget);
+    //   expect(signInButton, findsOneWidget);
+    // });
+    // testWidgets("validates empty email and password",
+    //     (WidgetTester tester) async {
+    //   await tester.tap(signInButton);
+    //   await tester.pump();
+    //   expect(find.text("Please Enter Email"), findsOneWidget);
+    //   expect(find.text("Please Enter Password"), findsOneWidget);
+    // });
+
+    // testWidgets("calls sign in method when email and password is entered",
+    //     (WidgetTester tester) async {
+    //   await tester.enterText(emailField, "test@testmail.com");
+    //   await tester.enterText(passwordField, "password");
+    //   await tester.tap(signInButton);
+    //   await tester.pump();
+    //   verify(_repo.signIn("test@testmail.com", "password")).called(1);
+    // });
   });
 }
