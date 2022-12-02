@@ -20,10 +20,15 @@ const advertSchema = new Schema({
     picture: {
         picUrl: String,
         required: true
+    },
+    petType: {
+        type: String,
+
     }
 });
 
 const {Model} = require('firefose');
+const router = require('../routes/advertRoute');
 const Advert = new Model("Advert", advertSchema);
 
-export default Advert;
+module.exports = {Advert};

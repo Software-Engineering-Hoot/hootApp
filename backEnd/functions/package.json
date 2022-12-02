@@ -17,7 +17,8 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase-admin": "^11.3.0",
-    "firebase-functions": "^3.18.0"
+    "firebase-functions": "^3.18.0",
+    "firefose": "^1.1.5"
   },
   "devDependencies": {
     "eslint": "^8.9.0",
@@ -26,4 +27,5 @@
     "nodemon": "^2.0.20"
   },
   "private": true
+  
 }

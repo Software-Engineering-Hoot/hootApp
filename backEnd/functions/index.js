@@ -1,10 +1,18 @@
+
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { getAuth } = require('firebase-admin/auth');
+const {connect} = require('firefose');
 const serviceAccount = require('./service-account-key.json');
 const fs = require('fs')
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { credential } = require('firebase-admin');
+const {advertRoute} = require('./routes/advertRoute.js')
+
+
 app.use(cors());
 
 
@@ -17,6 +25,7 @@ const db = admin.firestore();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use('/advert', advertRoute);
 
 /*app.use('/', (req, res, next) => {
   if (req.headers.authtoken) {
@@ -31,7 +40,6 @@ app.use(express.urlencoded({extended:true}));
   }
 }
 )*/
-
 app.post('/signup', async(req, res) => {
     console.log(req.body);
     const user = {
@@ -47,6 +55,10 @@ app.post('/signup', async(req, res) => {
         password: user.password
     });
     res.json(userResponse);
+    return db.collection('HootDB').doc('Users').create
+        .set(users).then(() => {
+            res.send("users added to database")
+    })
 })
 
 app.get('/', (req, res) => {
@@ -58,7 +70,7 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/usersfromfirebase', (req, res) => {
-    const docRef = db.collection('userDB').doc('users');
+    const docRef = db.collection('HootDB').doc('Users');
     docRef.get().then((data) => {
         if (data && data.exists) {
             const responseData = data.data();
@@ -72,11 +84,13 @@ app.post('/userstofirebase', (req, res) => {
     const jsonFile = fs.readFileSync('./users.json') //reads from local
     const users = JSON.parse(jsonFile); //json parse 
 
-    return db.collection('userDB').doc('users')
+    return db.collection('HootDB').doc('Users')
         .set(users).then(() => {
-            res.send("!!")
+            res.send("users added to database")
     });
 })
+
+
 
 app.listen(8080, () => {
     console.log("listening on port http://localhost:8080")

@@ -1,5 +1,4 @@
-import Advert from "../models/advertModel.js";
-
+const Advert = require("../models/advertModel.js");
 const createAdvert = (req, res) => {
     const advert = Advert.create(req.body);
     res.status(201).json({
@@ -7,5 +6,4 @@ const createAdvert = (req, res) => {
         advert
     })
 };
-
-export {createAdvert};
+module.exports = createAdvert;
