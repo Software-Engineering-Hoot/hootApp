@@ -36,6 +36,7 @@ class _PostsListState extends State<PostsList> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: colorPrimary,
+                title: Text("Home"),
               ),
               body: Container(
                 width: context.width(),
@@ -100,6 +101,7 @@ class _PostsListState extends State<PostsList> {
                             )),
                       ],
                     ),
+                    10.height,
                     Expanded(
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
