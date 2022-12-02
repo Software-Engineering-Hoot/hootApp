@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
 import 'package:flutter_infinite_list/posts/widgets/bottom_loader.dart';
 import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class PostsList extends StatefulWidget {
   const PostsList({super.key});
@@ -31,17 +32,25 @@ class _PostsListState extends State<PostsList> {
             if (state.posts.isEmpty) {
               return const Center(child: Text('no posts'));
             }
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.posts.length
-                    ? const BottomLoader()
-                    : PostListItem(post: state.posts[index]);
-              },
-              // itemCount: state.hasReachedMax
-              //     ? state.posts.length
-              //     : state.posts.length + 1,
-              itemCount: 1,
-              controller: _scrollController,
+            return Container(
+              width: context.width(),
+              height: 100,
+              child: Column(
+                children: [
+                  ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return index >= state.posts.length
+                          ? const BottomLoader()
+                          : PostListItem(post: state.posts[index]);
+                    },
+                    // itemCount: state.hasReachedMax
+                    //     ? state.posts.length
+                    //     : state.posts.length + 1,
+                    itemCount: 20,
+                    controller: _scrollController,
+                  ),
+                ],
+              ),
             );
           case PostStatus.initial:
             return const Center(child: CircularProgressIndicator());
