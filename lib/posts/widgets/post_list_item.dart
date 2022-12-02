@@ -12,9 +12,9 @@ class PostListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      height: (MediaQuery.of(context).size.width * 0.37),
+      height: MediaQuery.of(context).size.width * 0.37,
       margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: colorBox,
       ),
@@ -27,16 +27,16 @@ class PostListItem extends StatelessWidget {
             mainAxisAlignment:
                 MainAxisAlignment.spaceBetween, // main axis row için,
             children: [
-              new ClipRRect(
+              ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network(
                       'https://upload.wikimedia.org/wikipedia/commons/4/43/Stalin_Full_Image.jpg')),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hayvanlarınız için süpdder bal bir yer"),
-                  Text("500 TL / Günlük"),
-                  Spacer(),
+                  const Text('Hayvanlarınız için süpdder bal bir yer'),
+                  const Text('500 TL / Günlük'),
+                  const Spacer(),
                   //20.height,
                   Container(
                     width: 200,
@@ -49,12 +49,12 @@ class PostListItem extends StatelessWidget {
                             Icons.location_pin,
                             color: colorPrimary,
                           ),
-                          const Text("İzmir"),
+                          const Text('İzmir'),
                           const Spacer(),
                           Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  color: shadow_color),
+                                  color: filter_color),
                               child: const Padding(
                                 padding: EdgeInsets.all(5),
                                 child: SizedBox(
