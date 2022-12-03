@@ -8,8 +8,10 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { credential } = require('firebase-admin');
-const {advertRoute} = require('./routes/advertRoute.js')
-
+//const {advertRoute} = require('./routes/advertRoute.js')
+const {Schema} = require('firefose');
+const {SchemaTypes} = require('firefose');
+const {Model} = require('firefose');
 
 app.use(cors());
 
@@ -23,8 +25,40 @@ const db = admin.firestore();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use('/advert', async(req, res) => {
-    res.send(advertRoute);
+app.post('/advert', (req, res) => {
+    console.log('REQ BODY', req.body);
+    
+    const {String, Number, Array} = SchemaTypes;
+
+    const advertSchema = new Schema({
+        headline: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        description: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        publishDate: {
+            type: Date,
+            default: Date.now
+        },
+        picture: {
+            picUrl: String
+        },
+        petType: {
+            type: String,
+        }
+    });
+
+    const {Advert} = new Model("Advert", advertSchema);
+    const advert = Advert.create(req.body);
+    res.status(201).json({
+        succeded: true,
+        advert,
+    })
 });
 
 /*app.use('/', (req, res, next) => {
