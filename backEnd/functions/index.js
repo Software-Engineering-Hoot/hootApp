@@ -53,13 +53,34 @@ app.post('/advert', (req, res) => {
         }
     });
 
-    const {Advert} = new Model("Advert", advertSchema);
+    const Advert = new Model("Advert", advertSchema);
     const advert = Advert.create(req.body);
     res.status(201).json({
         succeded: true,
         advert,
     })
 });
+
+app.get('/advertsfromfirebase', (req, res) => {
+    const docRef = db.collection('HootDB').doc('Adverts');
+    docRef.get().then((data) => {
+        if (data && data.exists) {
+            const responseData = data.data();
+            res.send(JSON.stringify(responseData, null, "  "));
+        }
+    })
+});
+
+app.post('/advertstofirebase', (req, res) => {
+    //firestore post
+    const jsonFile = fs.readFileSync('./adverts.json') //reads from local
+    const users = JSON.parse(jsonFile); //json parse 
+
+    return db.collection('HootDB').doc('Adverts')
+        .set(users).then(() => {
+            res.send("Adverts added to database")
+    });
+})
 
 /*app.use('/', (req, res, next) => {
   if (req.headers.authtoken) {
