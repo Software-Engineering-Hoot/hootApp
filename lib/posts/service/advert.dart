@@ -11,17 +11,19 @@ class AdvertService {
   Future<List<AdvertModel>> getAdvert() async {
     List<AdvertModel> advertList = [];
     try {
-      final docRef = _firestore.collection("HootDB").doc("Adverts");
-      await docRef.get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
-          data.values.first.forEach((element) {
+      var docRef = await _firestore.collection("HootDB").get().then(
+        (res) {
+          res.forEach((element) {
             advertList
                 .add(AdvertModel.fromJson(element as Map<String, dynamic>));
           });
         },
-        onError: (e) => print("Error getting document: $e"),
+        onError: (e) => print("Error completing: $e"),
       );
+      // docRef.forEach((element) {
+      //   advertList.add(AdvertModel.fromJson(element as Map<String, dynamic>));
+
+      // });
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return [];
@@ -30,11 +32,9 @@ class AdvertService {
     return advertList;
   }
 
-  Future<bool> resetPassword(String email) async {
+  Future<bool> addAdvert(AdvertModel advert) async {
     try {
-      await _auth.sendPasswordResetEmail(
-        email: email,
-      );
+      await _firestore.collection('HootDB').add(advert.toJson());
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return false;

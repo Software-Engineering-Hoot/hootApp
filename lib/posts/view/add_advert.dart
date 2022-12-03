@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom/date_picker_widget.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
@@ -17,8 +19,8 @@ class AddAdvert extends StatefulWidget {
 
 class AddAdvertState extends State<AddAdvert> {
   final _formKey = GlobalKey<FormState>();
-  final email = TextEditingController();
   late AdvertModel advert = AdvertModel();
+  final AdvertService _advertService = AdvertService();
 
   @override
   void initState() {
@@ -61,7 +63,7 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.title = value;
                     },
                     validator: (value) {
-                      return value.isEmptyOrNull ? null : 'Please enter title';
+                      return value.isEmptyOrNull ? 'Please enter title' : null;
                     },
                   ),
                   16.height,
@@ -76,8 +78,8 @@ class AddAdvertState extends State<AddAdvert> {
                     },
                     validator: (value) {
                       return value.isEmptyOrNull
-                          ? null
-                          : 'Please enter pet type';
+                          ? 'Please enter pet type'
+                          : null;
                     },
                   ),
                   16.height,
@@ -92,8 +94,8 @@ class AddAdvertState extends State<AddAdvert> {
                     },
                     validator: (value) {
                       return value.isEmptyOrNull
-                          ? null
-                          : 'Please enter address';
+                          ? 'Please enter address'
+                          : null;
                     },
                   ),
                   16.height,
@@ -108,10 +110,10 @@ class AddAdvertState extends State<AddAdvert> {
                     validationText: 'Please enter start date',
                     isRequired: true,
                     onSaved: (value) {
-                      advert.endDate = value as String;
+                      advert.startDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      advert.endDate = value as String;
+                      advert.startDate = value.toString() as String;
                     },
                     readOnly: false,
                   ),
@@ -130,7 +132,7 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.endDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      advert.endDate = value as String;
+                      advert.endDate = value.toString() as String;
                     },
                     readOnly: false,
                   ),
@@ -142,31 +144,29 @@ class AddAdvertState extends State<AddAdvert> {
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      email.text = value;
+                      advert.price = value.toDouble();
                     },
                     validator: (value) {
-                      return value.isEmptyOrNull ? null : 'Please enter price';
+                      return value.isEmptyOrNull ? 'Please enter price' : null;
                     },
                   ),
                   16.height,
                   AppTextField(
                     maxLength: 60,
-                    textStyle: const TextStyle(
-                      height: 5,
-                    ),
-                    controller: email,
-                    textFieldType: TextFieldType.NAME,
+                    minLines: 4,
+                    maxLines: 4,
+                    textFieldType: TextFieldType.OTHER,
                     decoration: rfInputDecoration(
                       lableText: 'Description',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      email.text = value;
+                      advert.description = value;
                     },
                     validator: (value) {
                       return value.isEmptyOrNull
-                          ? null
-                          : 'Please enter description';
+                          ? 'Please enter description'
+                          : null;
                     },
                   ),
                   16.height,
@@ -176,11 +176,15 @@ class AddAdvertState extends State<AddAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // await _authService.AddAdvert(email.text).then((value) {
-                        //   if (value) {
-                        //     SignIn().launch(context);
-                        //   }
-                        // });
+                        await _advertService.addAdvert(advert).then((value) {
+                          if (value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Home()),
+                            );
+                          }
+                        });
                       }
                     },
                     child: Text('Add', style: boldTextStyle(color: white)),
