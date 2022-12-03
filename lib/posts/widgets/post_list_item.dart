@@ -32,8 +32,8 @@ class PostListItem extends StatelessWidget {
               ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: SizedBox(
-                    height: context.height() * 2.7,
-                    width: context.width() * 0.35,
+                    height: context.height() * 0.7,
+                    width: context.width() * 0.26,
                     child: Image.network(post.photos ?? ''),
                   )),
               Column(
