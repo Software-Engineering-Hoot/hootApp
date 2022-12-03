@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/models/post.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
@@ -61,7 +62,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
-  Future<List<Post>> _fetchPosts([int startIndex = 0]) async {
+  Future<List<AdvertModel>> _fetchPosts([int startIndex = 0]) async {
     final response = await httpClient.get(
       Uri.https(
         'jsonplaceholder.typicode.com',
@@ -73,10 +74,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       final body = json.decode(response.body) as List;
       return body.map((dynamic json) {
         final map = json as Map<String, dynamic>;
-        return Post(
+        return AdvertModel(
           id: map['id'] as int,
           title: map['title'] as String,
-          body: map['body'] as String,
+          address: map['address'] as String,
+          description: map['description'] as String,
+          endDate: map['endDate'] as String,
+          startDate: map['startDate'] as String,
+          favoriteCount: map['favouriteCount'] as int,
+          petType: map['petType'] as String,
+          photos: map['photos'] as String,
+          price: map['photos'] as double
         );
       }).toList();
     }

@@ -10,11 +10,11 @@ class AdvertModel {
   String? title;
   String? petType;
   String? address;
-  DateTime? startDate;
-  DateTime? endDate;
+  String? startDate;
+  String? endDate;
   double? price;
   String? description;
-  List<String>? photos;
+  String? photos;
   int? favoriteCount;
 
   AdvertModel({

@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 class PostListItem extends StatelessWidget {
   PostListItem({super.key, required this.post});
 
-  final Post post;
+  final AdvertModel post;
   final AdvertModel? newAdd = AdvertModel();
 
   @override
@@ -16,8 +16,9 @@ class PostListItem extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.width * 0.37,
       margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+      // ignore: prefer_const_constructors
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: colorBox,
       ),
       child: Padding(
@@ -36,8 +37,8 @@ class PostListItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(newAdd?.description ?? ''),
-                  Text('500 TL / Günlük'),
+                  Text(post?.description ?? ''),
+                  Text(post.price.toString()),
                   Spacer(),
                   //20.height,
                   Container(
@@ -51,19 +52,19 @@ class PostListItem extends StatelessWidget {
                             Icons.location_pin,
                             color: colorPrimary,
                           ),
-                          const Text('İzmir'),
+                          Text(post?.address ?? ''),
                           const Spacer(),
                           Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: filter_color),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.all(5),
                                 child: SizedBox(
                                     child: Text(
-                                  'Köpek',
+                                  post?.petType ?? '',
                                   style: TextStyle(
-                                      fontFamily: 'Halvetica', fontSize: 12),
+                                      fontFamily: 'Halvetica', fontSize: 12,),
                                 )),
                               ))
                         ]),
