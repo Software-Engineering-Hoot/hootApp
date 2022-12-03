@@ -109,10 +109,9 @@ class _PostsListState extends State<PostsList> {
                               ? const BottomLoader()
                               : PostListItem(post: state.posts[index]);
                         },
-                        // itemCount: state.hasReachedMax
-                        //     ? state.posts.length
-                        //     : state.posts.length + 1,
-                        itemCount: 20,
+                        itemCount: state.hasReachedMax
+                            ? state.posts.length
+                            : state.posts.length + 1,
                         controller: _scrollController,
                       ),
                     ),

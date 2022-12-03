@@ -152,6 +152,22 @@ class AddAdvertState extends State<AddAdvert> {
                   ),
                   16.height,
                   AppTextField(
+                    textFieldType: TextFieldType.NAME,
+                    decoration: rfInputDecoration(
+                      lableText: 'Image Link',
+                      showLableText: true,
+                    ),
+                    onChanged: (value) {
+                      advert.photos = value;
+                    },
+                    validator: (value) {
+                      return value.isEmptyOrNull
+                          ? 'Please enter image link'
+                          : null;
+                    },
+                  ),
+                  16.height,
+                  AppTextField(
                     maxLength: 60,
                     minLines: 4,
                     maxLines: 4,
