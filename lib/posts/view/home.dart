@@ -4,6 +4,7 @@ import 'package:flutter_infinite_list/posts/fragment/RFSearchFragment.dart';
 import 'package:flutter_infinite_list/posts/fragment/RFSettingsFragment.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/images.dart';
+import 'package:flutter_infinite_list/posts/view/add_advert.dart';
 import 'package:flutter_infinite_list/posts/view/posts_page.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -21,7 +22,7 @@ class HomeState extends State<Home> {
   final _pages = [
     PostsPage(),
     RFSearchFragment(),
-    RFSettingsFragment(),
+    AddAdvert(),
     RFAccountFragment(),
     RFAccountFragment(),
   ];
