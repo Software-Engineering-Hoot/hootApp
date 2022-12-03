@@ -1,7 +1,9 @@
-import express from "express";
-import * as advertController from "../controllers/advertController.js";
+const express = require("express");
+const advertController = require("../controllers/advertController.js")
 
 const router = express.Router();
-router.route('/').post(advertController.createAdvert);
+router.post('/', function (req, res){
+    advertController.createAdvert;
+});
 
-export default router;
+module.exports= router;

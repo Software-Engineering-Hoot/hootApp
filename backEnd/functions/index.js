@@ -1,5 +1,3 @@
-
-
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getAuth } = require('firebase-admin/auth');
@@ -25,7 +23,9 @@ const db = admin.firestore();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use('/advert', advertRoute);
+app.use('/advert', async(req, res) => {
+    res.send(advertRoute);
+});
 
 /*app.use('/', (req, res, next) => {
   if (req.headers.authtoken) {

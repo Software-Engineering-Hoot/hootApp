@@ -31,4 +31,4 @@ const {Model} = require('firefose');
 const router = require('../routes/advertRoute');
 const Advert = new Model("Advert", advertSchema);
 
-module.exports = {Advert};
+module.exports = Advert;
