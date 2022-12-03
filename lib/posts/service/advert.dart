@@ -33,20 +33,18 @@ class AdvertService {
   Future<List<AdvertModel>> getAdvert() async {
     List<AdvertModel> advertList = [];
     await _firestore.collection('HootDB').get().then(
-      (res) {
-        res.docs.forEach(
-          (element) {
-            _firestore.collection('HootDB').doc(element.id).get().then(
-              (DocumentSnapshot doc) {
-                final data = doc.data() as Map<String, dynamic>;
+      (res) async {
+        for (var element in res.docs) {
+          await _firestore.collection('HootDB').doc(element.id).get().then(
+            (DocumentSnapshot doc) {
+              final data = doc.data() as Map<String, dynamic>;
 
-                advertList
-                    .add(AdvertModel.fromJson(data as Map<String, dynamic>));
-              },
-              onError: (e) => print('Error getting document: $e'),
-            );
-          },
-        );
+              advertList
+                  .add(AdvertModel.fromJson(data as Map<String, dynamic>));
+            },
+            onError: (e) => print('Error getting document: $e'),
+          );
+        }
         return advertList;
       },
       onError: (e) => print('Error completing: $e'),
