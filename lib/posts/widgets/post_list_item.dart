@@ -37,7 +37,7 @@ class PostListItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(post?.description ?? ''),
+                  Text(post.description ?? ''),
                   Text(post.price.toString()),
                   Spacer(),
                   //20.height,
@@ -52,7 +52,7 @@ class PostListItem extends StatelessWidget {
                             Icons.location_pin,
                             color: colorPrimary,
                           ),
-                          Text(post?.address ?? ''),
+                          Text(post.address ?? ''),
                           const Spacer(),
                           Container(
                               decoration: BoxDecoration(
@@ -62,9 +62,11 @@ class PostListItem extends StatelessWidget {
                                 padding: EdgeInsets.all(5),
                                 child: SizedBox(
                                     child: Text(
-                                  post?.petType ?? '',
+                                  post.petType ?? '',
                                   style: TextStyle(
-                                      fontFamily: 'Halvetica', fontSize: 12,),
+                                    fontFamily: 'Halvetica',
+                                    fontSize: 12,
+                                  ),
                                 )),
                               ))
                         ]),
