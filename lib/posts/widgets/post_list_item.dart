@@ -32,13 +32,21 @@ class PostListItem extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/4/43/Stalin_Full_Image.jpg')),
+                  child: Container(
+                    // width: context.height() * 0.17,
+                    // height: context.width() * 0.17,
+                    child: Image.network(post.photos ?? ''),
+                    height: context.height() * 0.45,
+                    width: context.width() * 0.25,
+                  )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(post.description ?? ''),
-                  Text(post.price.toString()),
+                  Text(post.title ?? ''),
+                  Text(
+                    post.price.toString() + " TL",
+                    style: TextStyle(color: colorPrimary),
+                  ),
                   Spacer(),
                   //20.height,
                   Container(
