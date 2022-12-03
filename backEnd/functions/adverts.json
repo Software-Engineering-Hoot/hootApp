@@ -1,0 +1,52 @@
+{
+    "advert": [
+        {
+            "id": 1,
+            "title": "Ben Bakarim",
+            "petType": "dog",
+            "address": "Ankara",
+            "startDate": "03-08-2022",
+            "endDate": "10-08-2022",
+            "price": 500,
+            "description": "",
+            "photos": "http://www.petburada.com/Uploads/UrunResimleri/buyuk/trixie-ahsap-kopek-kulubesi-large-104x72-ecc4.jpg",
+            "favoriteCount": 0 
+        },
+        {
+            "id": 2,
+            "title": "Ev Sıcaklığı - 9 köpekli",
+            "petType": "dog",
+            "address": "adana",
+            "startDate": "03-08-2022",
+            "endDate": "10-08-2022",
+            "price": 120,
+            "description": "huzurun adresi tesislerimize bekleriz",
+            "photos": "https://assets.architecturaldigest.in/photos/600845ba54beb9e516da8b9f/master/w_1600,c_limit/Bangalore-villa-tropical-modern-interiors.jpg",
+            "favoriteCount": 0
+        },
+        {
+            "id": 3,
+            "title": "Hayvan Fanatiğiyim",
+            "petType": "bird",
+            "address": "trabzon",
+            "startDate": "23-11-2022",
+            "endDate": "30-11-2022",
+            "price": 800,
+            "description": "itinayla bakılır",
+            "photos": "https://assets.architecturaldigest.in/photos/600845c1a8f839774170481d/master/w_1600,c_limit/Bangalore-interiors-homes.jpg",
+            "favoriteCount": 0
+        },
+        {
+            "id": 4,
+            "title": "çok büyük hayvanseverim",
+            "petType": "cat",
+            "address": "izmir",
+            "startDate": "06-06-2022",
+            "endDate": "12-06-2022",
+            "price": 400,
+            "description": "itinayla bakılır",
+            "photos": "https://assets.architecturaldigest.in/photos/6008402f3a9d9570bc8420f7/master/w_640,c_limit/Lahore-residence-Raza-Ali-Dada-Ayesha-Noon-dining-table-12-1366x768.jpg",
+            "favoriteCount": 0
+        }
+    ]
+}

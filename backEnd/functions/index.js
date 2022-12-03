@@ -31,25 +31,43 @@ app.post('/advert', (req, res) => {
     const {String, Number, Array} = SchemaTypes;
 
     const advertSchema = new Schema({
-        headline: {
+        id: {
+            type: int,
+            required: true
+        },
+        title: {
             type: String,
-            required: true,
-            trim: true
-        },
-        description: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        publishDate: {
-            type: Date,
-            default: Date.now
-        },
-        picture: {
-            picUrl: String
+            required: true
         },
         petType: {
             type: String,
+            required: true
+        },
+        address: {
+            type: String,
+            required: true
+        },
+        startDate: {
+            type: String,
+            required: true
+        },
+        endDate: {
+            type: String,
+            required: true
+        },
+        price: {
+            type: int
+        },
+        description: {
+            type: String,
+            trim: true
+        },
+        photos: {
+            type: String
+        },
+        favoriteCount: {
+            type: int,
+            default: 0
         }
     });
 
