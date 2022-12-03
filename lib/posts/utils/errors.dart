@@ -28,6 +28,8 @@ class Errors {
         return 'Account is created, please verify your email.';
       case 'Reset_Verify':
         return 'Email reset link sended your email, please check.';
+      case 'Insert_Advert':
+        return 'Advert is added.';
       default:
         return 'Login failed. Please try again.';
     }

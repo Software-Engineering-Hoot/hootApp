@@ -59,7 +59,7 @@ class AdvertService {
       flutterToast(e.code, Colors.red);
       return false;
     }
-    flutterToast('New Advert is added', Colors.green);
+    flutterToast('Insert_Advert', Colors.green);
     return true;
   }
 }

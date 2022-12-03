@@ -19,7 +19,7 @@ class _PostsListState extends State<PostsList> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
+    // _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -105,13 +105,12 @@ class _PostsListState extends State<PostsList> {
                     Expanded(
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
-                          return index >= state.posts.length
-                              ? const BottomLoader()
-                              : PostListItem(post: state.posts[index]);
+                          return PostListItem(post: state.posts[index]);
                         },
-                        itemCount: state.hasReachedMax
-                            ? state.posts.length
-                            : state.posts.length + 1,
+                        // itemCount: state.hasReachedMax
+                        //     ? state.posts.length
+                        //     : state.posts.length + 1,
+                        itemCount: state.posts.length,
                         controller: _scrollController,
                       ),
                     ),
@@ -126,22 +125,22 @@ class _PostsListState extends State<PostsList> {
     );
   }
 
-  @override
-  void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _scrollController
+  //     ..removeListener(_onScroll)
+  //     ..dispose();
+  //   super.dispose();
+  // }
 
-  void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(PostFetched());
-  }
+  // void _onScroll() {
+  //   if (_isBottom) context.read<PostBloc>().add(PostFetched());
+  // }
 
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
-  }
+  // bool get _isBottom {
+  //   if (!_scrollController.hasClients) return false;
+  //   final maxScroll = _scrollController.position.maxScrollExtent;
+  //   final currentScroll = _scrollController.offset;
+  //   return currentScroll >= (maxScroll * 0.9);
+  // }
 }

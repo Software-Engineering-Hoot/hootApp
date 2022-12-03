@@ -55,7 +55,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           : emit(
               state.copyWith(
                 status: PostStatus.success,
-                posts: List.of(state.posts)..addAll(posts),
+                posts: List.of(state.posts),
                 hasReachedMax: false,
               ),
             );

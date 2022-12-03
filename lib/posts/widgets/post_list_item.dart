@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/models/post.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -22,8 +21,8 @@ class PostListItem extends StatelessWidget {
         color: colorBox,
       ),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Container(
+        padding: const EdgeInsets.all(8),
+        child: SizedBox(
           width: 200,
           height: 400,
           child: Row(
@@ -31,25 +30,30 @@ class PostListItem extends StatelessWidget {
                 MainAxisAlignment.spaceBetween, // main axis row için,
             children: [
               ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    // width: context.height() * 0.17,
-                    // height: context.width() * 0.17,
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    height: context.height() * 2.7,
+                    width: context.width() * 0.35,
                     child: Image.network(post.photos ?? ''),
-                    height: context.height() * 0.45,
-                    width: context.width() * 0.25,
                   )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(post.title ?? ''),
                   Text(
-                    post.price.toString() + " TL",
-                    style: TextStyle(color: colorPrimary),
+                    post.title ?? '',
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  Spacer(),
-                  //20.height,
-                  Container(
+                  10.height,
+                  Text(
+                    '${post.price} TL',
+                    style: const TextStyle(
+                        color: colorPrimary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  2.height,
+                  const Spacer(),
+                  SizedBox(
                     width: 200,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment
@@ -64,14 +68,14 @@ class PostListItem extends StatelessWidget {
                           const Spacer(),
                           Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderRadius: BorderRadius.circular(15),
                                   color: filter_color),
                               child: Padding(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: SizedBox(
                                     child: Text(
                                   post.petType ?? '',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Halvetica',
                                     fontSize: 12,
                                   ),
