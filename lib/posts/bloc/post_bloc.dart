@@ -65,31 +65,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<List<AdvertModel>> _fetchPosts([int startIndex = 0]) async {
-    var resp = advertService.getAdvert();
-    final response = await httpClient.get(
-      Uri.https(
-        'jsonplaceholder.typicode.com',
-        '/posts',
-        <String, String>{'_start': '$startIndex', '_limit': '$_postLimit'},
-      ),
-    );
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body) as List;
-      return body.map((dynamic json) {
-        final map = json as Map<String, dynamic>;
-        return AdvertModel(
-            id: map['id'] as int,
-            title: map['title'] as String,
-            address: map['address'] as String,
-            description: map['description'] as String,
-            endDate: map['endDate'] as String,
-            startDate: map['startDate'] as String,
-            favoriteCount: map['favouriteCount'] as int,
-            petType: map['petType'] as String,
-            photos: map['photos'] as String,
-            price: map['photos'] as double);
-      }).toList();
-    }
-    throw Exception('error fetching posts');
+    return advertService.getAdvert();
   }
 }

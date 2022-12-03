@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/utils/custom_methods.dart';
 
 class AdvertService {
@@ -16,8 +15,10 @@ class AdvertService {
       await docRef.get().then(
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
-          // advertList.addAll(data.values as AdvertModel) ;
-          return (data.values as List).map((advert) => advertList).toList();
+          data.values.first.forEach((element) {
+            advertList
+                .add(AdvertModel.fromJson(element as Map<String, dynamic>));
+          });
         },
         onError: (e) => print("Error getting document: $e"),
       );
