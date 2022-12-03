@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/models/post.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class PostListItem extends StatelessWidget {
-  const PostListItem({super.key, required this.post});
+  PostListItem({super.key, required this.post});
 
   final Post post;
+  final AdvertModel? newAdd = AdvertModel();
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,12 @@ class PostListItem extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.width * 0.37,
       margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: colorBox,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Container(
           width: 200,
           height: 400,
@@ -34,9 +36,9 @@ class PostListItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Hayvanlarınız için süpdder bal bir yer'),
-                  const Text('500 TL / Günlük'),
-                  const Spacer(),
+                  Text(newAdd?.description ?? ''),
+                  Text('500 TL / Günlük'),
+                  Spacer(),
                   //20.height,
                   Container(
                     width: 200,

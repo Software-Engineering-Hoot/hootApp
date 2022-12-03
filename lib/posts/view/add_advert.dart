@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
+import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/service/auth.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/view/auth/sign_in.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -20,6 +19,7 @@ class AddAdvertState extends State<AddAdvert> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   final email = TextEditingController();
+  late AdvertModel advert = AdvertModel();
 
   @override
   void initState() {
@@ -53,20 +53,16 @@ class AddAdvertState extends State<AddAdvert> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
-                    controller: email,
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
                       lableText: 'Title',
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      email.text = value;
+                      advert.title = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter title';
-                      }
-                      return null;
+                      return value.isEmptyOrNull ? null : 'Please enter title';
                     },
                   ),
                   16.height,
@@ -81,10 +77,9 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter pet type';
-                      }
-                      return null;
+                      return value.isEmptyOrNull
+                          ? null
+                          : 'Please enter pet type';
                     },
                   ),
                   16.height,
@@ -99,10 +94,9 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter address';
-                      }
-                      return null;
+                      return value.isEmptyOrNull
+                          ? null
+                          : 'Please enter address';
                     },
                   ),
                   16.height,
@@ -117,10 +111,9 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter start date';
-                      }
-                      return null;
+                      return value.isEmptyOrNull
+                          ? null
+                          : 'Please enter start date';
                     },
                   ),
                   16.height,
@@ -135,10 +128,9 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter end date';
-                      }
-                      return null;
+                      return value.isEmptyOrNull
+                          ? null
+                          : 'Please enter end date';
                     },
                   ),
                   16.height,
@@ -153,10 +145,7 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter price';
-                      }
-                      return null;
+                      return value.isEmptyOrNull ? null : 'Please enter price';
                     },
                   ),
                   16.height,
@@ -171,10 +160,9 @@ class AddAdvertState extends State<AddAdvert> {
                       email.text = value;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter description';
-                      }
-                      return null;
+                      return value.isEmptyOrNull
+                          ? null
+                          : 'Please enter description';
                     },
                   ),
                   32.height,
