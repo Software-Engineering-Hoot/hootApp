@@ -65,7 +65,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<List<AdvertModel>> _fetchPosts([int startIndex = 0]) async {
-    var advertList = await advertService.getAdvert();
+    var advertList = await advertService.getAdvertWithBackEnd();
+    print(advertList);
     return advertList;
   }
 }

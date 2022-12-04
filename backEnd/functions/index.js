@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getAuth } = require('firebase-admin/auth');
-const {connect} = require('firefose');
+const { connect } = require('firefose');
 const serviceAccount = require('./service-account-key.json');
 const fs = require('fs')
 const express = require('express');
@@ -9,26 +9,26 @@ const app = express();
 const cors = require('cors');
 const { credential } = require('firebase-admin');
 //const {advertRoute} = require('./routes/advertRoute.js')
-const {Schema} = require('firefose');
-const {SchemaTypes} = require('firefose');
-const {Model} = require('firefose');
+const { Schema } = require('firefose');
+const { SchemaTypes } = require('firefose');
+const { Model } = require('firefose');
 
 app.use(cors());
 
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://hoot-44046.firebaseio.com/"
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://hoot-44046.firebaseio.com/"
 });
 
 const db = admin.firestore();
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.post('/advert', (req, res) => {
     console.log('REQ BODY', req.body);
-    
-    const {String, Number, Array} = SchemaTypes;
+
+    const { String, Number, Array } = SchemaTypes;
 
     const advertSchema = new Schema({
         id: {
@@ -97,7 +97,7 @@ app.post('/advertstofirebase', (req, res) => {
     return db.collection('HootDB').doc('Adverts')
         .set(users).then(() => {
             res.send("Adverts added to database")
-    });
+        });
 })
 
 /*app.use('/', (req, res, next) => {
@@ -113,7 +113,7 @@ app.post('/advertstofirebase', (req, res) => {
   }
 }
 )*/
-app.post('/signup', async(req, res) => {
+app.post('/signup', async (req, res) => {
     console.log(req.body);
     const user = {
         first_name: req.body.first_name,
@@ -131,7 +131,7 @@ app.post('/signup', async(req, res) => {
     return db.collection('HootDB').doc('Users').create
         .set(users).then(() => {
             res.send("users added to database")
-    })
+        })
 })
 
 app.get('/', (req, res) => {
@@ -152,6 +152,20 @@ app.get('/usersfromfirebase', (req, res) => {
     })
 });
 
+// Get all adverts
+app.get('/adverts', (req, res) => {
+    const docRef = db.collection('HootDB');
+    docRef.get().then((data) => {
+        if (data) {
+            const tempDoc = []
+            data.forEach((doc) => {
+                tempDoc.push({ id: doc.id, ...doc.data() })
+            })
+            res.send(JSON.stringify(tempDoc, null, "  "));
+        }
+    })
+});
+
 app.post('/userstofirebase', (req, res) => {
     //firestore post
     const jsonFile = fs.readFileSync('./users.json') //reads from local
@@ -160,7 +174,7 @@ app.post('/userstofirebase', (req, res) => {
     return db.collection('HootDB').doc('Users')
         .set(users).then(() => {
             res.send("users added to database")
-    });
+        });
 })
 
 

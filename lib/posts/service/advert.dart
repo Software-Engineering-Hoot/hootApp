@@ -1,34 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/utils/custom_methods.dart';
+import 'package:http/http.dart' as http;
 
 class AdvertService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  //   Future<List<AdvertModel>> getAdvert() async {
-  //   List<AdvertModel> advertList = [];
-  //   try {
-  //     final docRef = _firestore.collection("HootDB").doc("Adverts");
-  //     await docRef.get().then(
-  //       (DocumentSnapshot doc) {
-  //         final data = doc.data() as Map<String, dynamic>;
-  //         data.values.first.forEach((element) {
-  //           advertList
-  //               .add(AdvertModel.fromJson(element as Map<String, dynamic>));
-  //         });
-  //       },
-  //       onError: (e) => print("Error getting document: $e"),
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     flutterToast(e.code, Colors.red);
-  //     return [];
-  //   }
-  //   flutterToast('Please_Verify', Colors.green);
-  //   return advertList;
-  // }
 
   Future<List<AdvertModel>> getAdvert() async {
     List<AdvertModel> advertList = [];
@@ -50,6 +32,13 @@ class AdvertService {
       onError: (e) => print('Error completing: $e'),
     );
     return advertList;
+  }
+
+  Future<List<AdvertModel>> getAdvertWithBackEnd() async {
+    var st = await http.get(Uri.parse("http://localhost:8080/adverts"));
+    return (json.decode(st.body) as List)
+        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .toList();
   }
 
   Future<bool> addAdvert(AdvertModel advert) async {
