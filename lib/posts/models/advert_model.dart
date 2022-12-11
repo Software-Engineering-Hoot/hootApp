@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:ffi';
+
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'advert_model.g.dart';
@@ -16,6 +19,7 @@ class AdvertModel {
   String? description;
   String? photos;
   int? favoriteCount;
+  //String? userMail; //need to check
 
   AdvertModel({
     this.id,
@@ -28,6 +32,7 @@ class AdvertModel {
     this.description,
     this.photos,
     this.favoriteCount,
+    //this.userMail,
   });
 
   factory AdvertModel.fromJson(Map<String, dynamic> json) =>

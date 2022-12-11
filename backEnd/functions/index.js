@@ -26,47 +26,6 @@ const db = admin.firestore();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//send single advert to firestore cloud database
-app.post('/advert', (req, res) => {
-    const advert = req.body;
-    // and ensure that the object does not contain any circular references
-    const jsonData = JSON.stringify(advert);
-
-    // Convert the JSON string back to a JavaScript object
-    const objectData = JSON.parse(jsonData);
-    db.collection('EmircanTest').add(objectData)
-    .then(() => {
-        // The data was successfully added to the database
-        console.log('Data added to the database');
-        console.log('REQ BODY', req.body);
-    })
-    .catch((error) => {
-        // An error occurred while trying to add the data to the database
-        console.error('Error adding data to the database:', error);
-    });
-});
-
-app.get('/advertsfromfirebase', (req, res) => {
-    const docRef = db.collection('HootDB').doc('Adverts');
-    docRef.get().then((data) => {
-        if (data && data.exists) {
-            const responseData = data.data();
-            res.send(JSON.stringify(responseData, null, "  "));
-        }
-    })
-});
-
-app.post('/advertstofirebase', (req, res) => {
-    //firestore post
-    const jsonFile = fs.readFileSync('./adverts.json') //reads from local
-    const users = JSON.parse(jsonFile); //json parse 
-
-    return db.collection('HootDB').doc('Adverts')
-        .set(users).then(() => {
-            res.send("Adverts added to database")
-        });
-})
-
 
 app.post('/signup', async (req, res) => {
     console.log(req.body);
@@ -89,6 +48,28 @@ app.post('/signup', async (req, res) => {
         })
 })
 
+//post single advert to firestore cloud database
+app.post('/addadvert', (req, res) => {
+    const advert = req.body;
+    // and ensure that the object does not contain any circular references
+    const jsonData = JSON.stringify(advert);
+
+    // Convert the JSON string back to a JavaScript object
+    const objectData = JSON.parse(jsonData);
+    db.collection('EmircanTest').add(objectData)
+    .then(() => {
+        // The data was successfully added to the database
+        console.log('Data added to the database');
+        console.log('REQ BODY', req.body);
+    })
+    .catch((error) => {
+        // An error occurred while trying to add the data to the database
+        console.error('Error adding data to the database:', error);
+    });
+});
+
+
+
 // Get all adverts
 app.get('/adverts', (req, res) => {
     const docRef = db.collection('HootDB');
@@ -103,6 +84,7 @@ app.get('/adverts', (req, res) => {
     })
 });
 
+/*
 app.post('/newadvert', (req, res) => {
     const myadd = new advertModel(req.body);
     const data = {
@@ -140,8 +122,8 @@ app.post('/newadvert', (req, res) => {
     }).catch((error) => {
         // An error occurred while trying to write to the database.
         // You can return an error response to the client here.
-    });*/
-});
+    });
+}); */
 
 
 
