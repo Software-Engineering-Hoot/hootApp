@@ -1,20 +1,13 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const { getAuth } = require('firebase-admin/auth');
-const { connect } = require('firefose');
 const serviceAccount = require('./service-account-key.json');
-const fs = require('fs')
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { credential } = require('firebase-admin');
-//const {advertRoute} = require('./routes/advertRoute.js')
-const { Schema } = require('firefose');
-const { SchemaTypes } = require('firefose');
-const { Model } = require('firefose');
 
 app.use(cors());
 
+ 
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -61,7 +54,7 @@ app.post('/addadvert', (req, res) => {
         // The data was successfully added to the database
         console.log('Data added to the database');
         console.log('REQ BODY', req.body);
-        res.status(200);
+        res.status(200).send();
     })
     .catch((error) => {
         // An error occurred while trying to add the data to the database
@@ -71,6 +64,46 @@ app.post('/addadvert', (req, res) => {
     });
 });
 
+// Delete a single advert from the Firestore cloud database
+app.delete('/deleteadvert', (req, res) => {
+    // Get a reference to the collection
+  var docRef = db.collection("EmircanTest");
+  // Create a query to find the document you want to delete
+  var query = docRef.where("id", "==", req.body.id);
+  // Delete the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      doc.ref.delete();
+    });
+  }).then(function() {
+    console.log("Document successfully deleted!");
+    res.status(200).send(req.body + "Document successfully deleted!");
+  }).catch(function(error) {
+    res.status(500).send("Error removing document: ", error);
+  });
+
+});
+
+// Get a single advert with the specified ID
+app.get('/advertdetails', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('EmircanTest');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      res.status(200).send(doc.data());
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
 
 
 // Get all adverts
