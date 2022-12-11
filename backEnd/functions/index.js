@@ -25,58 +25,25 @@ const db = admin.firestore();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//send single advert to firestore cloud database
 app.post('/advert', (req, res) => {
-    console.log('REQ BODY', req.body);
+    const advert = req.body;
+    // and ensure that the object does not contain any circular references
+    const jsonData = JSON.stringify(advert);
 
-    const { String, Number, Array } = SchemaTypes;
-
-    const advertSchema = new Schema({
-        id: {
-            type: int,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        petType: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String,
-            required: true
-        },
-        startDate: {
-            type: String,
-            required: true
-        },
-        endDate: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: int
-        },
-        description: {
-            type: String,
-            trim: true
-        },
-        photos: {
-            type: String
-        },
-        favoriteCount: {
-            type: int,
-            default: 0
-        }
-    });
-
-    const Advert = new Model("Advert", advertSchema);
-    const advert = Advert.create(req.body);
-    res.status(201).json({
-        succeded: true,
-        advert,
+    // Convert the JSON string back to a JavaScript object
+    const objectData = JSON.parse(jsonData);
+    db.collection('EmircanTest').add(objectData)
+    .then(() => {
+        // The data was successfully added to the database
+        console.log('Data added to the database');
+        console.log('REQ BODY', req.body);
     })
+    .catch((error) => {
+        // An error occurred while trying to add the data to the database
+        console.error('Error adding data to the database:', error);
+    });
 });
 
 app.get('/advertsfromfirebase', (req, res) => {
@@ -100,19 +67,7 @@ app.post('/advertstofirebase', (req, res) => {
         });
 })
 
-/*app.use('/', (req, res, next) => {
-  if (req.headers.authtoken) {
-      admin.auth().verifyIdToken(req.headers.authtoken)
-      .then(() => {
-          next()
-      }).catch(() => {
-          res.status(403).send('Unauthorized')
-      });
-  } else {
-      res.status(403).send('Unauthorized')
-  }
-}
-)*/
+
 app.post('/signup', async (req, res) => {
     console.log(req.body);
     const user = {
@@ -134,24 +89,6 @@ app.post('/signup', async (req, res) => {
         })
 })
 
-app.get('/', (req, res) => {
-    res.send("Hello from index.js ");
-})
-
-app.get('/login', (req, res) => {
-    res.send("Hello from index.js ");
-})
-
-app.get('/usersfromfirebase', (req, res) => {
-    const docRef = db.collection('HootDB').doc('Users');
-    docRef.get().then((data) => {
-        if (data && data.exists) {
-            const responseData = data.data();
-            res.send(JSON.stringify(responseData, null, "  "));
-        }
-    })
-});
-
 // Get all adverts
 app.get('/adverts', (req, res) => {
     const docRef = db.collection('HootDB');
@@ -166,16 +103,45 @@ app.get('/adverts', (req, res) => {
     })
 });
 
-app.post('/userstofirebase', (req, res) => {
-    //firestore post
-    const jsonFile = fs.readFileSync('./users.json') //reads from local
-    const users = JSON.parse(jsonFile); //json parse 
+app.post('/newadvert', (req, res) => {
+    const myadd = new advertModel(req.body);
+    const data = {
+        id: 0,
+        title: 'My Advert',
+        petType: 'Dog',
+        address: '123 Main Street, Anytown, USA',
+        startDate: '2022-12-11',
+        endDate: '2022-12-31',
+        price: '$100',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        photos: ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg'],
+        favoriteCount: 0
+    };
 
-    return db.collection('HootDB').doc('Users')
-        .set(users).then(() => {
-            res.send("users added to database")
-        });
-})
+    const docRef = db.collection('EmircanTest');
+    docRef.add(myadd)
+    .then(() => {
+        // The data was successfully added to the database
+        console.log('Data added to the database');
+    })
+    .catch((error) => {
+        // An error occurred while trying to add the data to the database
+        console.error('Error adding data to the database:', error);
+    });
+    /*docRef.set({
+        // Set the properties of the document here, such as the title, description, etc.
+        // You can add as many properties as you need.
+        //firestore post
+
+       
+    }).then(() => {
+        // The data has been successfully added to the database.
+        // You can return a response to the client here, such as a success message or the data itself.
+    }).catch((error) => {
+        // An error occurred while trying to write to the database.
+        // You can return an error response to the client here.
+    });*/
+});
 
 
 
