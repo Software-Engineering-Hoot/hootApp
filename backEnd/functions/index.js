@@ -61,10 +61,13 @@ app.post('/addadvert', (req, res) => {
         // The data was successfully added to the database
         console.log('Data added to the database');
         console.log('REQ BODY', req.body);
+        res.status(200);
     })
     .catch((error) => {
         // An error occurred while trying to add the data to the database
         console.error('Error adding data to the database:', error);
+        // Set the response status code to 500
+        res.status(500);
     });
 });
 
