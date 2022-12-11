@@ -105,6 +105,33 @@ app.get('/advertdetails', (req, res) => {
   
 });
 
+app.get('/filterbyprice', (req, res) => {
+    // Get the min and max prices from the body parameters
+    const minPrice = req.body.min;
+    const maxPrice = req.body.max;
+
+    // Get a reference to the collection
+    var docRef= db.collection("EmircanTest");
+
+    // Create a query to find the documents with prices between the min and max
+    var query = docRef.where("price", ">=", minPrice).where("price", "<=", maxPrice);
+
+    // Get the matching documents
+    query.get()
+    .then((querySnapshot) => {
+        // Convert the query snapshot to an array of results
+        const results = querySnapshot.docs.map((doc) => {
+            res.status(200).send(doc.data());
+        });
+        // Return the search results to the client
+        res.send(results);
+    })
+    .catch((error) => {
+        // An error occurred while searching the database
+        console.error('Error searching the database:', error);
+        res.status(404);
+    });
+});
 
 // Get all adverts
 app.get('/adverts', (req, res) => {
