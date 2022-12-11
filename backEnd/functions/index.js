@@ -127,6 +127,60 @@ app.get('/filterbyprice', (req, res) => {
         res.status(404);
     });
   });
+app.get('/filterbyaddress', (req, res) => {
+    // Get the min and max prices from the body parameters
+    const minPrice = req.body.min;
+    const maxPrice = req.body.max;
+  
+    // Get a reference to the collection
+    var docRef= db.collection("EmircanTest");
+  
+    // Create a query to find the documents with prices between the min and max
+    var query = docRef.where("address", "==", req.body.address);
+  
+    // Get the matching documents
+    query.get()
+    .then((querySnapshot) => {
+        // Convert the query snapshot to an array of results
+        const tempDoc = []
+        querySnapshot.forEach((doc) => {
+            tempDoc.push({ id: doc.id, ...doc.data() })
+        })
+        res.send(JSON.stringify(tempDoc, null, "  "));
+    })
+    .catch((error) => {
+        // An error occurred while searching the database
+        console.error('Error searching the database:', error);
+        res.status(404);
+    });
+  });
+app.get('/filterbypettype', (req, res) => {
+    // Get the min and max prices from the body parameters
+    const minPrice = req.body.min;
+    const maxPrice = req.body.max;
+  
+    // Get a reference to the collection
+    var docRef= db.collection("EmircanTest");
+  
+    // Create a query to find the documents with prices between the min and max
+    var query = docRef.where("petType", ">=", req.body.petType);
+  
+    // Get the matching documents
+    query.get()
+    .then((querySnapshot) => {
+        // Convert the query snapshot to an array of results
+        const tempDoc = []
+        querySnapshot.forEach((doc) => {
+            tempDoc.push({ id: doc.id, ...doc.data() })
+        })
+        res.send(JSON.stringify(tempDoc, null, "  "));
+    })
+    .catch((error) => {
+        // An error occurred while searching the database
+        console.error('Error searching the database:', error);
+        res.status(404);
+    });
+  });
 
 app.post('/newadvert', (req, res) => {
     const myadd = new advertModel(req.body);
