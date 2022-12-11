@@ -43,17 +43,15 @@ class AdvertService {
   }
 
   //TODO: postAdvert backendi tamamlandı burdan api verilip test edilmeli
-  Future<List<AdvertModel>> addAdvertWithBackEnd(AdvertModel advert) async {
+  Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     var response = await http.post(
-      Uri.parse("http://localhost:8080/postAdvert"),
+      Uri.parse("http://localhost:8080/addadvert"),
       body: json.encode(advert),
     );
 
-    // Decode the response body and return a list of AdvertModel objects
-    return (json.decode(response.body) as List)
-        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
-        .toList();
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
   }
 
   Future<bool> addAdvert(AdvertModel advert) async {
