@@ -16,6 +16,67 @@ const db = admin.firestore();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+//in-progress
+app.post('/signin', async (req, res) => {
+  try {
+    // get the user data from Firestore using the provided username
+    const userRecord = await admin.auth().getUserByEmail(req.body.username);
+    // check if the provided password matches the user's hashed password
+    const success = await admin.auth().verifyPassword(req.body.password, userRecord.passwordHash);
+    if (success) {
+      console.log("oldu");
+    } else {
+      // authentication failed, do something...
+    }
+    // send a JSON response to the client
+    res.json({success: success});
+  } catch (error) {
+    // handle errors
+    res.json({success: false, error: error});
+  }
+});
+
+//in-progress
+app.post('/signup', async (req, res) => {
+  try {
+    // create a new user in Firestore using the provided username and password
+    const userRecord = await admin.auth().createUser({
+      email: req.body.username,
+      password: req.body.password,
+			name: req.body.name,
+			surname: req.body.surname
+    });
+    // send an email verification to the newly created user
+    await userRecord.sendEmailVerification();
+    // do something with the newly created user...
+		const newUser = req.body;
+    // and ensure that the object does not contain any circular references
+    const jsonData = JSON.stringify(newUser);
+    // Convert the JSON string back to a JavaScript object
+    const objectData = JSON.parse(jsonData);
+    db.collection('UserDB').add(objectData)
+    .then(() => {
+        // The data was successfully added to the database
+        console.log('Data added to the database');
+        console.log('REQ BODY', req.body);
+        res.status(200).send();
+    })
+    .catch((error) => {
+        // An error occurred while trying to add the data to the database
+        console.error('Error adding data to the database:', error);
+        // Set the response status code to 500
+        res.status(500);
+    });
+    // send a JSON response to the client
+    res.json({success: true});
+  } catch (error) {
+    // handle errors
+    res.json({success: false, error: error});
+  }
+});
+
+
 //post single advert to firestore cloud database
 app.post('/addadvert', (req, res) => {
     const advert = req.body;
@@ -132,7 +193,7 @@ app.get('/filterbyaddress', (req, res) => {
 	// Get a reference to the collection
 	var docRef= db.collection("HootDB");
 
-	// Create a query to find the documents with prices between the min and max
+	// Create a query to find the documents with requested location
 	var query = docRef.where("address", "==", req.body.address);
 
 	// Get the matching documents
@@ -159,7 +220,7 @@ app.get('/filterbypettype', (req, res) => {
 	// Get a reference to the collection
 	var docRef= db.collection("HootDB");
 
-	// Create a query to find the documents with prices between the min and max
+	// Create a query to find the documents with requested petType
 	var query = docRef.where("petType", ">=", req.body.petType);
 
 	// Get the matching documents

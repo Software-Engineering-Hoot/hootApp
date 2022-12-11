@@ -64,4 +64,31 @@ class AdvertService {
     flutterToast('Insert_Advert', Colors.green);
     return true;
   }
+
+  Future<List<AdvertModel>> filterByPrice(num min, num max) async {
+    var response = await http.get(
+      Uri.parse("http://localhost:8080/filterbyprice/$min/$max"),
+    );
+    return (json.decode(response.body) as List)
+        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<AdvertModel>> filterByPetType(String petType) async {
+    var response = await http.get(
+      Uri.parse("http://localhost:8080/filterbypettype/$petType"),
+    );
+    return (json.decode(response.body) as List)
+        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<AdvertModel>> filterByLocation(String location) async {
+    var response = await http.get(
+      Uri.parse("http://localhost:8080/filterbyaddress/$location"),
+    );
+    return (json.decode(response.body) as List)
+        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .toList();
+  }
 }
