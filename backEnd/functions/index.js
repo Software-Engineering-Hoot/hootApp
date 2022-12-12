@@ -119,7 +119,7 @@ app.post('/addadvert', (req, res) => {
 // Delete a single advert from the Firestore cloud database
 app.delete('/deleteadvert', (req, res) => {
     // Get a reference to the collection
-  var docRef = db.collection("AdvertDB");
+  var docRef = db.collection('AdvertDB');
   // Create a query to find the document you want to delete
   var query = docRef.where("id", "==", req.body.id);
   // Delete the matching document
@@ -135,6 +135,326 @@ app.delete('/deleteadvert', (req, res) => {
   });
 
 });
+
+app.post('/setprice', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.price = req.body.price;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setpettype', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.petType = req.body.petType;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setstartdate', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.startDate = req.body.startDate;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setenddate', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.endDate = req.body.endDate;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setdescription', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.description = req.body.description;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/settitle', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.title = req.body.title;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setphotos', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.photos = req.body.photos;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setaddress', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.address = req.body.address;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/setfavorites', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.userIDs = req.body.userIDs;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/favplus', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      data.favoriteCount = data.favoriteCount + 1;
+      
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
+app.post('/favminus', (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection('AdvertDB');
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      // Do something with the matching document
+      console.log(doc.id, " => ", doc.data());
+      var data = doc.data();
+      
+      // Set properties of the found data
+      if(data.favoriteCount > 0){
+        data.favoriteCount = data.favoriteCount - 1;
+        // Update the document with the new data
+        doc.ref.set(data);
+      }
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  }).catch(function(error) {
+    console.error("Error getting documents: ", error);
+  });
+  
+});
+
 
 // Get a single advert with the specified ID
 app.get('/advertdetails', (req, res) => {
@@ -157,6 +477,29 @@ app.get('/advertdetails', (req, res) => {
   
 });
 
+app.get('/useradverts', (req, res) => {
+  // Get a reference to the collection
+	var docRef= db.collection('AdvertDB');
+
+	// Create a query to find the documents with requested location
+	var query = docRef.where("publisherID", "==", req.body.publisherID);
+
+	// Get the matching documents
+	query.get()
+	.then((querySnapshot) => {
+    // Convert the query snapshot to an array of results
+    const tempDoc = []
+    querySnapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() })
+    })
+    res.status(200).send(JSON.stringify(tempDoc, null, "  "));
+	})
+	.catch((error) => {
+    // An error occurred while searching the database
+    console.error('Error searching the database:', error);
+    res.status(404);
+	});
+});
 
 // Get all adverts
 app.get('/adverts', (req, res) => {
@@ -179,7 +522,7 @@ app.get('/filterbyprice', (req, res) => {
 	const maxPrice = req.body.max;
 
 	// Get a reference to the collection
-	var docRef= db.collection("AdvertDB");
+	var docRef= db.collection('AdvertDB');
 
 	// Create a query to find the documents with prices between the min and max
 	var query = docRef.where("price", ">=", minPrice).where("price", "<=", maxPrice);
@@ -202,12 +545,8 @@ app.get('/filterbyprice', (req, res) => {
 });
 
 app.get('/filterbyaddress', (req, res) => {
-	// Get the min and max prices from the body parameters
-	const minPrice = req.body.min;
-	const maxPrice = req.body.max;
-
-	// Get a reference to the collection
-	var docRef= db.collection("AdvertDB");
+  // Get a reference to the collection
+	var docRef= db.collection('AdvertDB');
 
 	// Create a query to find the documents with requested location
 	var query = docRef.where("address", "==", req.body.address);
@@ -229,12 +568,8 @@ app.get('/filterbyaddress', (req, res) => {
 	});
 });
 app.get('/filterbypettype', (req, res) => {
-	// Get the min and max prices from the body parameters
-	const minPrice = req.body.min;
-	const maxPrice = req.body.max;
-
 	// Get a reference to the collection
-	var docRef= db.collection("AdvertDB");
+	var docRef= db.collection('AdvertDB');
 
 	// Create a query to find the documents with requested petType
 	var query = docRef.where("petType", ">=", req.body.petType);

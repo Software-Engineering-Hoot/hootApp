@@ -17,9 +17,10 @@ class AdvertModel {
   String? endDate;
   double? price;
   String? description;
-  String? photos;
+  List<String> photos;
   int? favoriteCount;
-  //String? userMail; //need to check
+  int? publisherID; //userID of the owner of advert
+  List<String> userIds; // list of ids who adds this advert to his/her favorites
 
   AdvertModel({
     this.id,
@@ -30,9 +31,10 @@ class AdvertModel {
     this.endDate,
     this.price,
     this.description,
-    this.photos,
+    this.photos = const [], // Initialize the new field to an empty list
     this.favoriteCount,
-    //this.userMail,
+    this.publisherID,
+    this.userIds = const [], // Initialize the new field to an empty list
   });
 
   factory AdvertModel.fromJson(Map<String, dynamic> json) =>

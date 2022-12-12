@@ -13,7 +13,8 @@ class UserModel {
   String? email;
   String? password;
   String? passwordAgain;
-  //List<String>? advertIDs; //need to check
+  List<int> advertIDs;
+  List<int> favAdvertIDs;
 
   UserModel({
     this.name,
@@ -21,7 +22,8 @@ class UserModel {
     this.email,
     this.password,
     this.passwordAgain,
-    //this.advertIDs,
+    this.advertIDs = const [],
+    this.favAdvertIDs = const [],
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
