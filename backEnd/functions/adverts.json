@@ -10,7 +10,9 @@
             "price": 500,
             "description": "",
             "photos": "http://www.petburada.com/Uploads/UrunResimleri/buyuk/trixie-ahsap-kopek-kulubesi-large-104x72-ecc4.jpg",
-            "favoriteCount": 0 
+            "favoriteCount": 0,
+            "publisherID": 0,
+            "userIDs": [1,2]
         },
         {
             "id": 2,
@@ -22,7 +24,9 @@
             "price": 120,
             "description": "huzurun adresi tesislerimize bekleriz",
             "photos": "https://assets.architecturaldigest.in/photos/600845ba54beb9e516da8b9f/master/w_1600,c_limit/Bangalore-villa-tropical-modern-interiors.jpg",
-            "favoriteCount": 0
+            "favoriteCount": 0,
+            "publisherID": 2,
+            "userIDs": [1,2]
         },
         {
             "id": 3,
@@ -34,7 +38,9 @@
             "price": 800,
             "description": "itinayla bakılır",
             "photos": "https://assets.architecturaldigest.in/photos/600845c1a8f839774170481d/master/w_1600,c_limit/Bangalore-interiors-homes.jpg",
-            "favoriteCount": 0
+            "favoriteCount": 0,
+            "publisherID": 2,
+            "userIDs": [1,2]
         },
         {
             "id": 4,
@@ -46,7 +52,23 @@
             "price": 400,
             "description": "itinayla bakılır",
             "photos": "https://assets.architecturaldigest.in/photos/6008402f3a9d9570bc8420f7/master/w_640,c_limit/Lahore-residence-Raza-Ali-Dada-Ayesha-Noon-dining-table-12-1366x768.jpg",
-            "favoriteCount": 0
+            "favoriteCount": 0,
+            "publisherID": 2,
+            "userIDs": [1,2]
+        },
+        {
+            "id": 0,
+            "title": "My Advert",
+            "petType": "Dog",
+            "address": "123 Main Street, Anytown, USA",
+            "startDate": "2022-12-11",
+            "endDate": "2022-12-31",
+            "price": "$100",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "photos": ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+            "favoriteCount": 0,
+            "publisherID": 2,
+            "userIDs": [1,2]
         }
     ]
 }

@@ -95,6 +95,7 @@ app.post('/signup', async (req, res) => {
 app.post('/addadvert', (req, res) => {
   const docRef = db.collection('AdvertDB');
   req.body.id = Math.floor(Math.random() * 1000000) + 1;
+  req.body.favoriteCount = 0;
   const advert = req.body;
 
   // and ensure that the object does not contain any circular references
@@ -106,7 +107,7 @@ app.post('/addadvert', (req, res) => {
       // The data was successfully added to the database
       console.log('Data added to the database');
       console.log('REQ BODY', req.body);
-      res.status(200).send();
+      res.status(200).send(objectData);
   })
   .catch((error) => {
       // An error occurred while trying to add the data to the database
