@@ -14,10 +14,10 @@ class AdvertService {
 
   Future<List<AdvertModel>> getAdvert() async {
     List<AdvertModel> advertList = [];
-    await _firestore.collection('HootDB').get().then(
+    await _firestore.collection('AdvertDB').get().then(
       (res) async {
         for (var element in res.docs) {
-          await _firestore.collection('HootDB').doc(element.id).get().then(
+          await _firestore.collection('AdvertDB').doc(element.id).get().then(
             (DocumentSnapshot doc) {
               final data = doc.data() as Map<String, dynamic>;
 
@@ -56,7 +56,7 @@ class AdvertService {
 
   Future<bool> addAdvert(AdvertModel advert) async {
     try {
-      await _firestore.collection('HootDB').add(advert.toJson());
+      await _firestore.collection('AdvertDB').add(advert.toJson());
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return false;

@@ -33,12 +33,7 @@ class AuthService {
         user?.sendEmailVerification();
       });
 
-      await _firestore.collection('HootDB').doc('Users').set({
-        'Name': userModel.name,
-        'Surname': userModel.surname,
-        'Email': userModel.email,
-        'Password': userModel.password,
-      });
+      await _firestore.collection('UserDB').add(userModel.toJson());
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return false;
