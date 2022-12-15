@@ -43,7 +43,7 @@ class _RFSearchFragmentState extends State<RFSearchFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: "SA App",
+        title: "Search",
         mainWidgetHeight: 230,
         subWidgetHeight: 160,
         cardWidget: Column(
@@ -72,11 +72,10 @@ class _RFSearchFragmentState extends State<RFSearchFragment> {
               nextFocus: residentFocusNode,
               textFieldType: TextFieldType.PHONE,
               decoration: rfInputDecoration(
-                lableText: 'Enter price range',
+                lableText: 'Enter Pet Type',
                 showLableText: true,
                 showPreFixIcon: true,
-                prefixIcon:
-                    Icon(Icons.currency_rupee, color: colorPrimary, size: 16),
+                prefixIcon: Icon(Icons.pets, color: colorPrimary, size: 16),
               ),
             ),
             8.height,
@@ -85,10 +84,11 @@ class _RFSearchFragmentState extends State<RFSearchFragment> {
               focus: residentFocusNode,
               textFieldType: TextFieldType.OTHER,
               decoration: rfInputDecoration(
-                lableText: 'Resident Type',
+                lableText: 'Enter Amount',
                 showLableText: true,
                 showPreFixIcon: true,
-                prefixIcon: Icon(Icons.menu, color: colorPrimary, size: 16),
+                prefixIcon:
+                    Icon(Icons.attach_money, color: colorPrimary, size: 16),
               ),
             ),
             16.height,
@@ -97,18 +97,8 @@ class _RFSearchFragmentState extends State<RFSearchFragment> {
               child: Text('Search Now', style: boldTextStyle(color: white)),
               width: context.width(),
               elevation: 0,
-              onTap: () {
-                //RFSearchDetailScreen().launch(context);
-              },
+              onTap: () {},
             ),
-          ],
-        ),
-        subWidget: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            16.height,
-            Text('Locations', style: boldTextStyle()),
-            16.height,
           ],
         ),
       ),

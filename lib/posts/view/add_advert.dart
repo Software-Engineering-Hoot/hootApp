@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/service/advert.dart';
@@ -21,11 +22,13 @@ class AddAdvertState extends State<AddAdvert> {
   final _formKey = GlobalKey<FormState>();
   late AdvertModel advert = AdvertModel();
   final AdvertService _advertService = AdvertService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
     init();
+    _auth.currentUser!.uid;
   }
 
   Future<void> init() async {
@@ -158,7 +161,9 @@ class AddAdvertState extends State<AddAdvert> {
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      advert.photos = value;
+                      advert.photos ??= [];
+
+                      advert.photos?.add(value);
                     },
                     validator: (value) {
                       return value.isEmptyOrNull
@@ -192,7 +197,10 @@ class AddAdvertState extends State<AddAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        await _advertService.addAdvert(advert).then((value) {
+                        advert.userIds = <String>[_auth.currentUser!.uid];
+                        await _advertService
+                            .addAdvertWithBackEnd(advert)
+                            .then((value) {
                           if (value) {
                             Navigator.push(
                               context,

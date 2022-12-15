@@ -13,8 +13,8 @@ class PostListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      height: MediaQuery.of(context).size.width * 0.37,
-      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+      height: MediaQuery.of(context).size.width * 0.3,
+      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00),
       // ignore: prefer_const_constructors
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -24,18 +24,18 @@ class PostListItem extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: SizedBox(
           width: 200,
-          height: 400,
+          height: 300,
           child: Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween, // main axis row için,
+            mainAxisAlignment: MainAxisAlignment.start, // main axis row için,
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: SizedBox(
-                    height: context.height() * 0.7,
-                    width: context.width() * 0.26,
-                    child: Image.network(post.photos ?? ''),
+                    height: context.height() * 0.6,
+                    width: context.width() * 0.30,
+                    child: Image.network(post.photos!.first, fit: BoxFit.fill),
                   )),
+              8.width,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,11 +53,11 @@ class PostListItem extends StatelessWidget {
                   ),
                   2.height,
                   const Spacer(),
-                  SizedBox(
-                    width: 200,
+                  Container(
+                    width: 250,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment
-                            .spaceAround, // main axis row için,
+                            .spaceBetween, // main axis row için,
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           const Icon(

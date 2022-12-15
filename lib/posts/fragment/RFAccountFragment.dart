@@ -78,16 +78,16 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             16.height,
-            Text('Courtney Henry', style: boldTextStyle(size: 18)).center(),
+            Text('Sefa Cahyir', style: boldTextStyle(size: 18)).center(),
             8.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('10 Applied', style: secondaryTextStyle()),
+                Text('2 Advert', style: secondaryTextStyle()),
                 8.width,
                 Container(height: 10, width: 1, color: gray.withOpacity(0.4)),
                 8.width,
-                Text('Kathmandu', style: secondaryTextStyle()),
+                Text('Erzincan', style: secondaryTextStyle()),
               ],
             ),
             32.height,
@@ -149,7 +149,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Email', style: boldTextStyle()),
-                      Text('henry11@gmail.com', style: secondaryTextStyle()),
+                      Text('sefacahyir@gmail.com', style: secondaryTextStyle()),
                     ],
                   ).paddingSymmetric(horizontal: 24, vertical: 16),
                   Divider(color: context.dividerColor, height: 0),
@@ -157,7 +157,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Location', style: boldTextStyle()),
-                      Text('Kathmandu, Nepal', style: secondaryTextStyle()),
+                      Text('Erzincan, Merkez', style: secondaryTextStyle()),
                     ],
                   ).paddingSymmetric(horizontal: 24, vertical: 16),
                   Divider(color: context.dividerColor, height: 0),
@@ -165,7 +165,7 @@ class _RFAccountFragmentState extends State<RFAccountFragment> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Phone No', style: boldTextStyle()),
-                      Text('(+977) 9125331510', style: secondaryTextStyle()),
+                      Text('(+90) 5527862400', style: secondaryTextStyle()),
                     ],
                   ).paddingSymmetric(horizontal: 24, vertical: 16),
                 ],

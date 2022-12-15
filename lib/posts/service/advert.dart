@@ -36,12 +36,15 @@ class AdvertService {
   Future<List<AdvertModel>> getAdvertWithBackEnd() async {
     //TODO: bu satırda ilan açan user'a ait advertslerin listesine eklenmeli
     var st = await http.get(Uri.parse("http://localhost:8080/adverts"));
-    return (json.decode(st.body) as List)
+    var temp = json.decode(st.body) as List;
+    print(temp);
+    return (temp)
         .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
         .toList();
   }
 
   Future<AdvertModel> getAdvertDetails(AdvertModel advert) async {
+    print(advert);
     var st = await http.post(
       Uri.parse('http://localhost:8080/advertdetails'),
       body: json.encode(advert),
@@ -53,6 +56,7 @@ class AdvertService {
   //TODO: postAdvert backendi tamamlandı burdan api verilip test edilmeli
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
+    print(advert);
     var response = await http.post(
       Uri.parse("http://localhost:8080/addadvert"),
       body: json.encode(advert),
