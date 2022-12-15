@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +41,42 @@ class AdvertService {
         .toList();
   }
 
+  Future<AdvertModel> getAdvertDetails(AdvertModel advert) async {
+    var st = await http.post(
+      Uri.parse('http://localhost:8080/advertdetails'),
+      body: json.encode(advert),
+    );
+
+    return jsonDecode(st.body) as AdvertModel;
+  }
+
   //TODO: postAdvert backendi tamamlandı burdan api verilip test edilmeli
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     var response = await http.post(
       Uri.parse("http://localhost:8080/addadvert"),
+      body: json.encode(advert),
+    );
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
+  Future<bool> editAdvert(AdvertModel advert) async {
+    // Send a POST request to the specified URL with the data as the request body
+    var response = await http.post(
+      Uri.parse("http://localhost:8080/editadvert"),
+      body: json.encode(advert),
+    );
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
+  Future<bool> deleteAdvert(AdvertModel advert) async {
+    // Send a DELETE request to the specified URL
+    var response = await http.delete(
+      Uri.parse("http://localhost:8080/deleteadvert"),
       body: json.encode(advert),
     );
 
@@ -67,7 +97,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPrice(num min, num max) async {
     var response = await http.get(
-      Uri.parse("http://localhost:8080/filterbyprice/$min/$max"),
+      Uri.parse('http://localhost:8080/filterbyprice/$min/$max'),
     );
     return (json.decode(response.body) as List)
         .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
@@ -76,7 +106,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPetType(String petType) async {
     var response = await http.get(
-      Uri.parse("http://localhost:8080/filterbypettype/$petType"),
+      Uri.parse('http://localhost:8080/filterbypettype/$petType'),
     );
     return (json.decode(response.body) as List)
         .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
@@ -85,7 +115,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByLocation(String location) async {
     var response = await http.get(
-      Uri.parse("http://localhost:8080/filterbyaddress/$location"),
+      Uri.parse('http://localhost:8080/filterbyaddress/$location'),
     );
     return (json.decode(response.body) as List)
         .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
