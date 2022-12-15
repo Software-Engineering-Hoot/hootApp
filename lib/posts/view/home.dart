@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/fragment/RFAccountFragment.dart';
-import 'package:flutter_infinite_list/posts/fragment/RFSearchFragment.dart';
-import 'package:flutter_infinite_list/posts/fragment/RFSettingsFragment.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/images.dart';
 import 'package:flutter_infinite_list/posts/view/add_advert.dart';
-import 'package:flutter_infinite_list/posts/view/posts_page.dart';
+import 'package:flutter_infinite_list/posts/view/advert_page.dart';
+import 'package:flutter_infinite_list/posts/view/profile.dart';
+import 'package:flutter_infinite_list/posts/view/search.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -21,10 +20,10 @@ class HomeState extends State<Home> {
 
   final _pages = [
     PostsPage(),
-    RFSearchFragment(),
+    Search(),
     AddAdvert(),
-    RFAccountFragment(),
-    RFAccountFragment(),
+    Profile(),
+    Profile(),
   ];
 
   Widget _bottomTab() {

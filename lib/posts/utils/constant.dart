@@ -15,3 +15,5 @@ const textSizeLarge = 24.0;
 const textSizeXLarge = 30.0;
 
 const profileImage = 'assets/images/profile.png';
+
+const List<String> petTypes = ['Dog', 'Cat', 'Bird'];

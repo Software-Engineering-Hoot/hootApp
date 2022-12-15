@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/RoomFinderModel.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/utils/data_generator.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class RFSearchFragment extends StatefulWidget {
-  const RFSearchFragment({super.key});
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  _RFSearchFragmentState createState() => _RFSearchFragmentState();
+  _SearchState createState() => _SearchState();
 }
 
-class _RFSearchFragmentState extends State<RFSearchFragment> {
+class _SearchState extends State<Search> {
   TextEditingController addressController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController residentController = TextEditingController();
@@ -22,7 +20,7 @@ class _RFSearchFragmentState extends State<RFSearchFragment> {
   FocusNode priceFocusNode = FocusNode();
   FocusNode residentFocusNode = FocusNode();
 
-  List<RoomFinderModel> locationListData = locationList();
+  // List<RoomFinderModel> locationListData = locationList();
 
   @override
   void initState() {

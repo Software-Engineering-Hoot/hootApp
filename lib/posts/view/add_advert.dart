@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom/date_picker_widget.dart';
@@ -22,13 +23,11 @@ class AddAdvertState extends State<AddAdvert> {
   final _formKey = GlobalKey<FormState>();
   late AdvertModel advert = AdvertModel();
   final AdvertService _advertService = AdvertService();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
     init();
-    _auth.currentUser!.uid;
   }
 
   Future<void> init() async {
@@ -70,21 +69,39 @@ class AddAdvertState extends State<AddAdvert> {
                     },
                   ),
                   16.height,
-                  AppTextField(
-                    textFieldType: TextFieldType.NAME,
+                  DropdownButtonFormField(
+                    isExpanded: true,
                     decoration: rfInputDecoration(
                       lableText: 'Pet Type',
                       showLableText: true,
                     ),
+                    items: petTypes.map((taxGroup) {
+                      return DropdownMenuItem<String>(
+                        value: taxGroup,
+                        child: Text(
+                          taxGroup,
+                        ),
+                      );
+                    }).toList(),
                     onChanged: (value) {
-                      advert.petType = value;
-                    },
-                    validator: (value) {
-                      return value.isEmptyOrNull
-                          ? 'Please enter pet type'
-                          : null;
+                      advert.petType = value as String?;
                     },
                   ),
+                  // AppTextField(
+                  //   textFieldType: TextFieldType.NAME,
+                  //   decoration: rfInputDecoration(
+                  //     lableText: 'Pet Type',
+                  //     showLableText: true,
+                  //   ),
+                  //   onChanged: (value) {
+                  //     advert.petType = value;
+                  //   },
+                  //   validator: (value) {
+                  //     return value.isEmptyOrNull
+                  //         ? 'Please enter pet type'
+                  //         : null;
+                  //   },
+                  // ),
                   16.height,
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
@@ -197,7 +214,6 @@ class AddAdvertState extends State<AddAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        advert.userIds = <String>[_auth.currentUser!.uid];
                         await _advertService
                             .addAdvertWithBackEnd(advert)
                             .then((value) {

@@ -5,8 +5,8 @@ import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class RFSettingsFragment extends StatelessWidget {
-  const RFSettingsFragment({super.key});
+class Settings extends StatelessWidget {
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {

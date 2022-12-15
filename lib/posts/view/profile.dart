@@ -3,12 +3,12 @@ import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class RFAccountFragment extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  State<RFAccountFragment> createState() => _RFAccountFragmentState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _RFAccountFragmentState extends State<RFAccountFragment> {
+class _ProfileState extends State<Profile> {
   // final List<RoomFinderModel> settingData = settingList();
   // final List<RoomFinderModel> appliedHotelData = appliedHotelList();
   // final List<RoomFinderModel> applyHotelData = applyHotelList();

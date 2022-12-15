@@ -57,9 +57,15 @@ class AdvertService {
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     print(advert);
+    advert.userIds = ["1"];
+    advert.id = 1;
+    advert.favoriteCount = 2;
+    advert.publisherID = 2;
+    var advertJson = advert.toJson();
+
     var response = await http.post(
       Uri.parse("http://localhost:8080/addadvert"),
-      body: json.encode(advert),
+      body: "{$advertJson}",
     );
 
     // Check the response status code and return true if the request was successful
