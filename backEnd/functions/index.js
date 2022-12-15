@@ -4,6 +4,7 @@ const serviceAccount = require('./service-account-key.json');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { allowedNodeEnvironmentFlags } = require('process');
 
 app.use(cors());
 admin.initializeApp({
@@ -16,6 +17,34 @@ const db = admin.firestore();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const advertModel = {
+  advertID : String,
+  title : String,
+  petType : String,
+  address : String,
+  startDate : String,
+  endDate : String,
+  price : Number,
+  description : String,
+  photos : Array,
+  favoriteCount : Number,
+  publisherID : String,
+  userIDs: Array 
+}
+
+const userModel = {
+  userID : String,
+  name : String,
+  surname : String,
+  email : String,
+  password : String,
+  passwordAgain : String,
+  advertIDs : Array,
+  favIDs : Array,
+  phone : String
+}
+
+
 const actionCodeSettings = {
   handleCodeInApp: true,
   iOS: {
@@ -27,7 +56,7 @@ const actionCodeSettings = {
     minimumVersion: '12',
   },
   // FDL custom domain.
-  dynamicLinkDomain: 'coolapp.page.link',
+  dynamicLinkDomain: 'http://localhost:8080',
 };
 
 //in-progress
@@ -52,43 +81,28 @@ app.post('/signin', async (req, res) => {
 
 //in-progress
 app.post('/signup', async (req, res) => {
-  const docRef = db.collection('UserDB')
   try {
-		
     // create a new user in Firestore using the provided username and password
-    const userRecord = await admin.auth().createUser({
-      email: req.body.username,
-      password: req.body.password,
-			name: req.body.name,
-			surname: req.body.surname
-    });
+    const userRecord = await admin.auth().createUser(req.body);
     // send an email verification to the newly created user
-    await admin.auth().generateEmailVerificationLink(userRecord.email, actionCodeSettings);
+    await admin.auth().generateEmailVerificationLink(userRecord.email,actionCodeSettings);
     // do something with the newly created user...
     // and ensure that the object does not contain any circular references
     const jsonData = JSON.stringify(userRecord);
     // Convert the JSON string back to a JavaScript object
     const objectData = JSON.parse(jsonData);
-    docRef.add(objectData)
-    .then(() => {
-        // The data was successfully added to the database
-        console.log('Data added to the database');
-        console.log('REQ BODY', req.body);
-        res.status(200).send();
-    })
-    .catch((error) => {
-        // An error occurred while trying to add the data to the database
-        console.error('Error adding data to the database:', error);
-        // Set the response status code to 500
-        res.status(500);
-    });
-    // send a JSON response to the client
-    res.json({success: true});
+
+    // Add the user data to the database
+    await db.collection('UserDB').add(objectData);
+
+    // Send a success response to the client
+    res.status(200);
   } catch (error) {
     // handle errors
-    res.json({success: false, error: error});
+    res.status(500);
   }
 });
+
 
 //post single location to firestore cloud database
 app.post('/addlocation', (req, res) => {
@@ -126,16 +140,23 @@ app.get('/getlocations', async (req, res) => {
   }
 });
 
-
-
-
 //post single advert to firestore cloud database
 app.post('/addadvert', (req, res) => {
   const docRef = db.collection('AdvertDB');
-  req.body.id = Math.floor(Math.random() * 1000000) + 1;
-  req.body.favoriteCount = 0;
-  const advert = req.body;
-
+  const advert = {
+    advertID : docRef.doc().id,
+    title : req.body.title,
+    petType : req.body.petType,
+    address : req.body.address,
+    startDate : req.body.startDate,
+    endDate : req.body.endDate,
+    price : req.body.price,
+    description : req.body.description,
+    photos : req.body.photos,
+    favoriteCount : 0,
+    publisherID : req.body.publisherID,
+    userIDs: req.body.userIDs 
+  };
   // and ensure that the object does not contain any circular references
   const jsonData = JSON.stringify(advert);
   // Convert the JSON string back to a JavaScript object
