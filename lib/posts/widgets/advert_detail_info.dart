@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
+import 'package:flutter_infinite_list/posts/service/auth.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/images.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertDetailIfo extends StatelessWidget {
-  const AdvertDetailIfo({super.key, this.hotelData});
+  const AdvertDetailIfo(
+      {super.key, required this.hotelData, required this.user});
   // final List<RoomFinderModel> hotelImageData = hotelImageList();
-  final AdvertModel? hotelData;
+
+  final AdvertModel hotelData;
+  final UserModel? user;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +34,14 @@ class AdvertDetailIfo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Courtney Henry', style: boldTextStyle()),
+                    Text(user!.name ?? '', style: boldTextStyle()),
                     4.height,
-                    Text('Landlord', style: secondaryTextStyle()),
+                    Text(user!.surname ?? '', style: secondaryTextStyle()),
                   ],
                 ).expand(),
                 AppButton(
                   onTap: () {
-                    launchCall("1234567890");
+                    launchCall(user!.phoneNumber ?? '');
                   },
                   color: colorPrimary,
                   width: 15,
@@ -47,7 +52,7 @@ class AdvertDetailIfo extends StatelessWidget {
                 8.width,
                 AppButton(
                   onTap: () {
-                    launchMail("demo@gmail.com");
+                    launchMail(user!.email);
                   },
                   color: colorPrimary,
                   width: 15,
@@ -67,9 +72,9 @@ class AdvertDetailIfo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('1.2 km from Gwarko', style: boldTextStyle()),
+                    Text(hotelData.address ?? '', style: boldTextStyle()),
                     8.height,
-                    Text('Mahalaxmi, Lalitpur', style: primaryTextStyle()),
+                    Text(hotelData.title ?? '', style: primaryTextStyle()),
                     8.height,
                   ],
                 ).expand(),
@@ -86,12 +91,13 @@ class AdvertDetailIfo extends StatelessWidget {
                               boxShape: BoxShape.circle),
                         ),
                         6.width,
-                        Text("hotelData", style: secondaryTextStyle()),
+                        Text(hotelData.petType ?? '',
+                            style: secondaryTextStyle()),
                       ],
                     ),
                     8.height,
                     Text(
-                      'Property Owned By: Alok',
+                      '${hotelData.price} TL',
                       style: primaryTextStyle(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -133,59 +139,12 @@ class AdvertDetailIfo extends StatelessWidget {
             Text('Description', style: boldTextStyle()),
             8.height,
             Text(
-              '1 big hall room for rent at lalitpur, ktm with the facilities of bike parking and tap water . it offers 1 bedroom,and a 1 common bathroom for whole flat. It is suitable for student only. Price is negotiable for student only. ',
+              hotelData.description ?? '',
               style: secondaryTextStyle(),
             ),
-            24.height,
-            Text('Facilities', style: boldTextStyle()),
-            16.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.done, size: 16, color: colorPrimary),
-                        8.width,
-                        Text('1 Big Hall', style: secondaryTextStyle()),
-                      ],
-                    ),
-                    4.height,
-                    Row(
-                      children: [
-                        Icon(Icons.done, size: 16, color: colorPrimary),
-                        8.width,
-                        Text('Bikes and Car Parking ',
-                            style: secondaryTextStyle()),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.done, size: 16, color: colorPrimary),
-                        8.width,
-                        Text('Shared Toilet', style: secondaryTextStyle()),
-                      ],
-                    ),
-                    4.height,
-                    Row(
-                      children: [
-                        Icon(Icons.done, size: 16, color: colorPrimary),
-                        8.width,
-                        Text('24/7 Water facility',
-                            style: secondaryTextStyle()),
-                      ],
-                    ),
-                  ],
-                )
-              ],
             ),
           ],
         ).paddingOnly(left: 24, right: 24, top: 24, bottom: 8),

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/widgets/advert_detail_info.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertDetail extends StatelessWidget {
-  AdvertDetail({super.key, required this.post});
+  AdvertDetail({super.key, required this.post, required this.user});
 
   final AdvertModel post;
+  final UserModel user;
   final AdvertModel? newAdd = AdvertModel();
 
   @override
@@ -68,19 +70,6 @@ class AdvertDetail extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("widget.hotelData",
-                              style: boldTextStyle(color: white, size: 18)),
-                          8.height,
-                          Row(
-                            children: [
-                              Text("widget.hotelData ",
-                                  style: boldTextStyle(color: white)),
-                              Text("widget.hotelData!.",
-                                  style: secondaryTextStyle(color: white)),
-                            ],
-                          ),
-                        ],
                       ),
                     )
                   ],
@@ -92,7 +81,7 @@ class AdvertDetail extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              AdvertDetailIfo(hotelData: post),
+              AdvertDetailIfo(hotelData: post, user: user),
             ],
           ),
         ),
