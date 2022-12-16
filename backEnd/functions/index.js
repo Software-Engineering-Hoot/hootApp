@@ -170,7 +170,6 @@ app.post("/edituser", (req, res) => {
     });
 });
 
-
 //in-progress
 app.post("/signup", async (req, res) => {
   try {
@@ -463,6 +462,33 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
 
   // Create a query to find the documents with prices between the min and max
   var query = docRef.where("price", ">=", min).where("price", "<=", max);
+  // Get the matching documents
+  query
+    .get()
+    .then((querySnapshot) => {
+      // Convert the query snapshot to an array of results
+      const tempDoc = [];
+      querySnapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
+      });
+      res.status(200).send(JSON.stringify(tempDoc, null, "  "));
+    })
+    .catch((error) => {
+      // An error occurred while searching the database
+      console.error("Error searching the database:", error);
+      res.status(404);
+    });
+});
+
+app.get("/filterByAll/:city/:petType/:amount", (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection("AdvertDB");
+
+  // Create a query to find the documents with prices between the min and max
+  var query = docRef
+    .where("price", "<=", req.params.amount)
+    .where("petType", "==", req.body.petType)
+    .where("address", "==", req.params.city);
   // Get the matching documents
   query
     .get()

@@ -8,6 +8,7 @@ import 'package:flutter_infinite_list/posts/view/home.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom/date_picker_widget.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AddAdvert extends StatefulWidget {
@@ -23,11 +24,17 @@ class AddAdvertState extends State<AddAdvert> {
   final _formKey = GlobalKey<FormState>();
   late AdvertModel advert = AdvertModel();
   final AdvertService _advertService = AdvertService();
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? images = [];
 
   @override
   void initState() {
     super.initState();
     init();
+  }
+
+  Future<void> pickImage() async {
+    images = await _picker.pickMultiImage();
   }
 
   Future<void> init() async {
@@ -87,21 +94,6 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.petType = value as String?;
                     },
                   ),
-                  // AppTextField(
-                  //   textFieldType: TextFieldType.NAME,
-                  //   decoration: rfInputDecoration(
-                  //     lableText: 'Pet Type',
-                  //     showLableText: true,
-                  //   ),
-                  //   onChanged: (value) {
-                  //     advert.petType = value;
-                  //   },
-                  //   validator: (value) {
-                  //     return value.isEmptyOrNull
-                  //         ? 'Please enter pet type'
-                  //         : null;
-                  //   },
-                  // ),
                   16.height,
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
@@ -204,6 +196,10 @@ class AddAdvertState extends State<AddAdvert> {
                           ? 'Please enter description'
                           : null;
                     },
+                  ),
+                  AppButton(
+                    onTap: pickImage,
+                    child: Text("Pick Image"),
                   ),
                   16.height,
                   AppButton(
