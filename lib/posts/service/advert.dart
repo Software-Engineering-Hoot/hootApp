@@ -48,11 +48,11 @@ class AdvertService {
       body: data,
     );
 
-    print(st);
-    var UserMode = UserModel.fromJson(st.body as Map<String, dynamic>);
-    print(UserMode);
+    //var UserMode = UserModel.fromJson(st.body as Map<String, dynamic>);
+    var UserMode = jsonDecode(st.body);
+    var model = UserModel.fromJson(UserMode as Map<String, dynamic>);
 
-    return UserMode;
+    return model;
   }
 
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {

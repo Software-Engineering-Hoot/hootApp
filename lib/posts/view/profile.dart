@@ -38,8 +38,6 @@ class _ProfileState extends State<Profile> {
       myAdverts = await _advertService.getAdvert();
       favAdverts = await _advertService.getAdvert();
       user = await _advertService.getUserDetails();
-
-      print(user);
     } catch (e) {
       return false;
     }
@@ -164,7 +162,7 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                           onTap: () {
-                            //launchMail("demo@gmail.com");
+                            launchMail(user.email);
                           },
                         ).expand()
                       ],
@@ -183,7 +181,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Email', style: boldTextStyle()),
-                              Text('sefacahyir@gmail.com',
+                              Text("${user.email}",
                                   style: secondaryTextStyle()),
                             ],
                           ).paddingSymmetric(horizontal: 24, vertical: 16),
@@ -201,7 +199,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Phone No', style: boldTextStyle()),
-                              Text('(+90) 5527862400',
+                              Text('${user.phoneNumber}',
                                   style: secondaryTextStyle()),
                             ],
                           ).paddingSymmetric(horizontal: 24, vertical: 16),

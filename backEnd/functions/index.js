@@ -41,7 +41,7 @@ app.post("/adduser", (req, res) => {
 });
 
 // Get a single advert with the specified ID
-app.get("/getuser", (req, res) => {
+app.post("/getuser", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("UserDB");
 
@@ -56,7 +56,7 @@ app.get("/getuser", (req, res) => {
         // Do something with the matching document
         console.log(doc.id, " => ", doc.data());
         console.log(JSON.stringify(doc.data(), null, "  "));
-        res.status(200).send(JSON.stringify(doc.data(), null, "  "));
+        res.status(200).send(JSON.stringify(doc.data()));
       });
     })
     .catch(function (error) {
