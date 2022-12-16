@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Search extends StatefulWidget {
@@ -14,25 +16,26 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  String city = "";
-  String petType = "";
+  String city = '';
+  String petType = '';
   double amount = 0;
+  bool isSearched = false;
+  List<AdvertModel> searchedAdvert = [];
   final AdvertService _advertService = AdvertService();
-
-  FocusNode addressFocusNode = FocusNode();
-  FocusNode priceFocusNode = FocusNode();
-  FocusNode residentFocusNode = FocusNode();
-
-  // List<RoomFinderModel> locationListData = locationList();
 
   @override
   void initState() {
     super.initState();
-    init();
   }
 
-  void init() async {
-    //
+  Future<bool> getSearchedAdvert(
+      String city, String petType, double amount) async {
+    try {
+      searchedAdvert = await _advertService.getAdvert();
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -43,86 +46,137 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RFCommonAppComponent(
-        title: "Search",
-        mainWidgetHeight: 230,
-        subWidgetHeight: 160,
-        cardWidget: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Advasdance Search', style: boldTextStyle(size: 18)),
-            16.height,
-            DropdownButtonFormField(
-              isExpanded: true,
-              decoration: rfInputDecoration(
-                lableText: "Enter an address or city",
-                showLableText: true,
-                showPreFixIcon: true,
-                prefixIcon:
-                    Icon(Icons.location_on, color: colorPrimary, size: 16),
-              ),
-              items: petTypes.map((taxGroup) {
-                return DropdownMenuItem<String>(
-                  value: taxGroup,
-                  child: Text(
-                    taxGroup,
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                city = (value as String?)!;
-              },
+        body: RFCommonAppComponent(
+      title: 'Search',
+      mainWidgetHeight: 230,
+      subWidgetHeight: 160,
+      cardWidget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Advance Search', style: boldTextStyle(size: 18)),
+          16.height,
+          DropdownButtonFormField(
+            isExpanded: true,
+            decoration: rfInputDecoration(
+              lableText: 'Enter an address or city',
+              showLableText: true,
+              showPreFixIcon: true,
+              prefixIcon:
+                  const Icon(Icons.location_on, color: colorPrimary, size: 16),
             ),
-            8.height,
-            DropdownButtonFormField(
-              isExpanded: true,
-              decoration: rfInputDecoration(
-                lableText: 'Enter Pet Type',
-                showLableText: true,
-                showPreFixIcon: true,
-                prefixIcon: Icon(Icons.pets, color: colorPrimary, size: 16),
-              ),
-              items: petTypes.map((taxGroup) {
-                return DropdownMenuItem<String>(
-                  value: taxGroup,
-                  child: Text(
-                    taxGroup,
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                petType = (value as String?)!;
-              },
+            items: cities.map((taxGroup) {
+              return DropdownMenuItem<String>(
+                value: taxGroup,
+                child: Text(
+                  taxGroup,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              city = (value as String?)!;
+            },
+          ),
+          8.height,
+          DropdownButtonFormField(
+            isExpanded: true,
+            decoration: rfInputDecoration(
+              lableText: 'Enter Pet Type',
+              showLableText: true,
+              showPreFixIcon: true,
+              prefixIcon: const Icon(Icons.pets, color: colorPrimary, size: 16),
             ),
-            8.height,
-            AppTextField(
-              onChanged: (p0) {
-                amount = double.parse(p0);
-              },
-              focus: residentFocusNode,
-              textFieldType: TextFieldType.NUMBER,
-              decoration: rfInputDecoration(
-                lableText: 'Enter Amount',
-                showLableText: true,
-                showPreFixIcon: true,
-                prefixIcon:
-                    Icon(Icons.attach_money, color: colorPrimary, size: 16),
-              ),
+            items: petTypes.map((taxGroup) {
+              return DropdownMenuItem<String>(
+                value: taxGroup,
+                child: Text(
+                  taxGroup,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              petType = (value as String?)!;
+            },
+          ),
+          8.height,
+          AppTextField(
+            onChanged: (p0) {
+              amount = double.parse(p0);
+            },
+            textFieldType: TextFieldType.NUMBER,
+            decoration: rfInputDecoration(
+              lableText: 'Enter Amount',
+              showLableText: true,
+              showPreFixIcon: true,
+              prefixIcon:
+                  const Icon(Icons.attach_money, color: colorPrimary, size: 16),
             ),
-            16.height,
-            AppButton(
-              color: colorPrimary,
-              child: Text('Search Now', style: boldTextStyle(color: white)),
-              width: context.width(),
-              elevation: 0,
-              onTap: () {
-                _advertService.filterByAll(city, petType, amount);
-              },
-            ),
-          ],
-        ),
+          ),
+          16.height,
+          AppButton(
+            color: colorPrimary,
+            width: context.width(),
+            elevation: 0,
+            onTap: () async {
+              await getSearchedAdvert(city, petType, amount).then((value) {
+                return isSearched = true;
+              }).then((value) => setState(() {}));
+            },
+            child: Text('Search Now', style: boldTextStyle(color: white)),
+          ),
+        ],
       ),
-    );
+      subWidget: FutureBuilder<bool>(
+        future: getSearchedAdvert(
+          city,
+          petType,
+          amount,
+        ), // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              if (isSearched == true)
+                ListView.builder(
+                  padding: const EdgeInsets.only(right: 16, left: 16, top: 16),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: searchedAdvert.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PostListItem(post: searchedAdvert[index]);
+                  },
+                )
+              else
+                Container(),
+            ];
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ];
+          } else {
+            children = <Widget>[];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },
+      ),
+      // subWidget: BlocProvider(
+      //     create: (_) => PostBloc(httpClient: http.Client())
+      //       ..add(PostFetched("", "", 0)),
+      //     child: const PostsList()),
+    ));
   }
 }

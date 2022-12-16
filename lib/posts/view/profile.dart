@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
+import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Profile extends StatefulWidget {
@@ -12,6 +15,10 @@ class _ProfileState extends State<Profile> {
   // final List<RoomFinderModel> settingData = settingList();
   // final List<RoomFinderModel> appliedHotelData = appliedHotelList();
   // final List<RoomFinderModel> applyHotelData = applyHotelList();
+  List<String> categotyData = ['Ilanlarım', 'Favorilerim'];
+  List<AdvertModel> myAdverts = [];
+  List<AdvertModel> favAdverts = [];
+  final AdvertService _advertService = AdvertService();
 
   int selectedIndex = 0;
 
@@ -21,8 +28,14 @@ class _ProfileState extends State<Profile> {
     init();
   }
 
-  void init() async {
-    //
+  Future<bool> init() async {
+    try {
+      myAdverts = await _advertService.getAdvert();
+      favAdverts = await _advertService.getAdvert();
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -34,7 +47,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: "Account",
+        title: 'Account',
         mainWidgetHeight: 200,
         subWidgetHeight: 100,
         accountCircleWidget: Align(
@@ -172,6 +185,93 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             16.height,
+            FutureBuilder<bool>(
+              future: init(), // a previously-obtained Future<String> or null
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  children = <Widget>[
+                    HorizontalList(
+                      wrapAlignment: WrapAlignment.spaceAround,
+                      itemCount: categotyData.length,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      itemBuilder: (_, index) {
+                        final data = categotyData[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          decoration: boxDecorationWithRoundedCorners(
+                            backgroundColor: selectedIndex == index
+                                ? colorPrimary_light
+                                : Colors.transparent,
+                          ),
+                          child: Text(
+                            '$data (${selectedIndex == 0 ? myAdverts.length : favAdverts.length})',
+                            style: boldTextStyle(
+                                color: selectedIndex == index
+                                    ? colorPrimary
+                                    : gray.withOpacity(0.4)),
+                          ),
+                        ).onTap(() {
+                          selectedIndex = index;
+                          setState(() {});
+                        },
+                            splashColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent);
+                      },
+                    ),
+                    ListView.builder(
+                      padding:
+                          const EdgeInsets.only(right: 16, left: 16, top: 16),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: selectedIndex == 0
+                          ? myAdverts.length
+                          : favAdverts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostListItem(
+                            post: selectedIndex == 0
+                                ? myAdverts[index]
+                                : favAdverts[index]);
+                      },
+                    )
+                  ];
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    ),
+                  ];
+                } else {
+                  children = const <Widget>[
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    ),
+                  ];
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: children,
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -11,7 +11,8 @@ class PostsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (_) => PostBloc(httpClient: http.Client())..add(PostFetched()),
+        create: (_) =>
+            PostBloc(httpClient: http.Client())..add(PostFetched("", "", 0)),
         child: const PostsList(),
       ),
     );

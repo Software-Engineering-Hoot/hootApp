@@ -13,6 +13,7 @@ part 'post_event.dart';
 part 'post_state.dart';
 
 const _postLimit = 20;
+const startIndex = 0;
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
@@ -38,8 +39,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   ) async {
     if (state.hasReachedMax) return;
     try {
+      late final List<AdvertModel> posts;
+      if (event.petType.isNotEmpty ||
+          event.city.isNotEmpty ||
+          event.amount != 0) {
+        posts =
+            await _fetchPostsByFilter(event.city, event.petType, event.amount);
+      } else {
+        posts = await _fetchPosts();
+      }
       if (state.status == PostStatus.initial) {
-        final posts = await _fetchPosts();
         return emit(
           state.copyWith(
             status: PostStatus.success,
@@ -48,7 +57,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           ),
         );
       }
-      final posts = await _fetchPosts(state.posts.length);
       posts.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
@@ -64,8 +72,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<List<AdvertModel>> _fetchPosts([int startIndex = 0]) async {
-    var advertList = await advertService.getAdvertWithBackEnd();
+    var advertList = await advertService.getAdvert();
     print(advertList);
     return advertList;
+  }
+
+  Future<List<AdvertModel>> _fetchPostsByFilter(
+      String city, String petType, double amount) async {
+    var resp = await advertService.filterByAll(city, petType, amount);
+    return resp;
   }
 }

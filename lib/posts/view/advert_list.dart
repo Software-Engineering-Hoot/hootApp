@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/widgets/bottom_loader.dart';
+import 'package:flutter_infinite_list/posts/utils/constant.dart';
+import 'package:flutter_infinite_list/posts/widgets/advert_detail.dart';
 import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -15,11 +16,11 @@ class PostsList extends StatefulWidget {
 
 class _PostsListState extends State<PostsList> {
   final _scrollController = ScrollController();
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -36,7 +37,7 @@ class _PostsListState extends State<PostsList> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: colorPrimary,
-                title: Text("Home"),
+                title: const Text('Home'),
               ),
               body: Container(
                 width: context.width(),
@@ -44,72 +45,56 @@ class _PostsListState extends State<PostsList> {
                 child: Column(
                   children: [
                     10.height,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: filter_color),
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: SizedBox(
-                                  child: Text(
-                                'Köpek',
-                                style: TextStyle(
-                                    fontFamily: 'Halvetica', fontSize: 15),
-                              )),
-                            )),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: filter_color),
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: SizedBox(
-                                  child: Text(
-                                'Kedi',
-                                style: TextStyle(
-                                    fontFamily: 'Halvetica', fontSize: 15),
-                              )),
-                            )),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: filter_color),
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: SizedBox(
-                                  child: Text(
-                                'Kuş',
-                                style: TextStyle(
-                                    fontFamily: 'Halvetica', fontSize: 15),
-                              )),
-                            )),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: filter_color),
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: SizedBox(
-                                  child: Text(
-                                'Balık',
-                                style: TextStyle(
-                                    fontFamily: 'Halvetica', fontSize: 15),
-                              )),
-                            )),
-                      ],
+                    HorizontalList(
+                      wrapAlignment: WrapAlignment.start,
+                      itemCount: petTypes.length,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 0,
+                      ),
+                      itemBuilder: (_, index) {
+                        final data = petTypes[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          decoration: boxDecorationWithRoundedCorners(
+                            backgroundColor: selectedIndex == index
+                                ? colorPrimary_light
+                                : Colors.transparent,
+                          ),
+                          child: Text(
+                            data,
+                            style: boldTextStyle(
+                                color: selectedIndex == index
+                                    ? colorPrimary
+                                    : gray.withOpacity(0.4)),
+                          ),
+                        ).onTap(() {
+                          selectedIndex = index;
+                          setState(() {});
+                        },
+                            splashColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent);
+                      },
                     ),
                     10.height,
                     Expanded(
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
-                          return PostListItem(post: state.posts[index]);
+                          return InkWell(
+                            child: PostListItem(post: state.posts[index]),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdvertDetail(
+                                          post: state.posts[index],
+                                        )),
+                              );
+                            },
+                          );
                         },
-                        // itemCount: state.hasReachedMax
-                        //     ? state.posts.length
-                        //     : state.posts.length + 1,
                         itemCount: state.posts.length,
                         controller: _scrollController,
                       ),
@@ -124,23 +109,4 @@ class _PostsListState extends State<PostsList> {
       },
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _scrollController
-  //     ..removeListener(_onScroll)
-  //     ..dispose();
-  //   super.dispose();
-  // }
-
-  // void _onScroll() {
-  //   if (_isBottom) context.read<PostBloc>().add(PostFetched());
-  // }
-
-  // bool get _isBottom {
-  //   if (!_scrollController.hasClients) return false;
-  //   final maxScroll = _scrollController.position.maxScrollExtent;
-  //   final currentScroll = _scrollController.offset;
-  //   return currentScroll >= (maxScroll * 0.9);
-  // }
 }

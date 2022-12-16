@@ -142,7 +142,7 @@ class AdvertService {
   Future<List<AdvertModel>> filterByAll(
       String city, String petType, double amount) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8080/filterbyprice/$city/$petType/$amount'),
+      Uri.parse('http://localhost:8080/filterAll/$city/$petType/$amount'),
     );
     print(response);
     return (json.decode(response.body) as List)

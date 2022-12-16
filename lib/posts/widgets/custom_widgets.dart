@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 InputDecoration rfInputDecoration(
     {Widget? suffixIcon,
@@ -69,6 +70,44 @@ Widget rfCommonRichText(
       ],
     ),
   );
+}
+
+Future<void> commonLaunchUrl(String address,
+    {LaunchMode launchMode = LaunchMode.inAppWebView}) async {
+  await launchUrl(Uri.parse(address), mode: launchMode).catchError((e) {
+    toast('Invalid URL: $address');
+  });
+}
+
+void launchMail(String? url) {
+  if (url.validate().isNotEmpty) {
+    commonLaunchUrl('mailto:' + url!,
+        launchMode: LaunchMode.externalApplication);
+  }
+}
+
+void launchCall(String? url) {
+  if (url.validate().isNotEmpty) {
+    if (isIOS)
+      commonLaunchUrl('tel://' + url!,
+          launchMode: LaunchMode.externalApplication);
+    else
+      commonLaunchUrl('tel:' + url!,
+          launchMode: LaunchMode.externalApplication);
+  }
+}
+
+extension strExt on String {
+  Widget iconImage({Color? iconColor, double size = bottomNavigationIconSize}) {
+    return Image.asset(
+      this,
+      width: size,
+      height: size,
+      color: iconColor ?? gray,
+      errorBuilder: (_, __, ___) =>
+          placeHolderWidget(width: size, height: size),
+    );
+  }
 }
 
 Decoration shadowWidget(BuildContext context) {
@@ -151,15 +190,15 @@ PreferredSizeWidget commonAppBarWidget(BuildContext context,
   );
 }
 
-extension strExt on String {
-  Widget iconImage({Color? iconColor, double size = bottomNavigationIconSize}) {
-    return Image.asset(
-      this,
-      width: size,
-      height: size,
-      color: iconColor ?? gray,
-      errorBuilder: (_, __, ___) =>
-          placeHolderWidget(width: size, height: size),
-    );
-  }
-}
+// extension strExt on String {
+//   Widget iconImage({Color? iconColor, double size = bottomNavigationIconSize}) {
+//     return Image.asset(
+//       this,
+//       width: size,
+//       height: size,
+//       color: iconColor ?? gray,
+//       errorBuilder: (_, __, ___) =>
+//           placeHolderWidget(width: size, height: size),
+//     );
+//   }
+// }
