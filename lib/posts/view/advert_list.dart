@@ -4,7 +4,7 @@ import 'package:flutter_infinite_list/posts/bloc/advert_bloc.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/widgets/advert_detail.dart';
-import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
+import 'package:flutter_infinite_list/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertsList extends StatefulWidget {
