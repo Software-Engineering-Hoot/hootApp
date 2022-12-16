@@ -7,7 +7,7 @@ part of 'advert_model.dart';
 // **************************************************************************
 
 AdvertModel _$AdvertModelFromJson(Map<String, dynamic> json) => AdvertModel(
-      id: json['id'] as int?,
+      id: json['id'] as String?,
       title: json['title'] as String?,
       petType: json['petType'] as String?,
       address: json['address'] as String?,
@@ -18,7 +18,7 @@ AdvertModel _$AdvertModelFromJson(Map<String, dynamic> json) => AdvertModel(
       photos:
           (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
       favoriteCount: json['favoriteCount'] as int?,
-      publisherID: json['publisherID'] as int?,
+      publisherID: json['publisherID'] as String?,
       userIds:
           (json['userIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );

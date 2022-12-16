@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ class AdvertService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<AdvertModel>> getAdvert() async {
-    List<AdvertModel> advertList = [];
+    final List<AdvertModel> advertList = [];
     await _firestore.collection('AdvertDB').get().then(
       (res) async {
         for (var element in res.docs) {
@@ -34,10 +33,8 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> getAdvertWithBackEnd() async {
-    //TODO: bu satırda ilan açan user'a ait advertslerin listesine eklenmeli
-    var st = await http.get(Uri.parse("http://localhost:8080/adverts"));
-    var temp = json.decode(st.body) as List;
-    print(temp);
+    final st = await http.get(Uri.parse("http://localhost:8080/adverts"));
+    final temp = json.decode(st.body) as List;
     return (temp)
         .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
         .toList();
@@ -45,7 +42,7 @@ class AdvertService {
 
   Future<AdvertModel> getAdvertDetails(AdvertModel advert) async {
     print(advert);
-    var st = await http.post(
+    final st = await http.post(
       Uri.parse('http://localhost:8080/advertdetails'),
       body: json.encode(advert),
     );
@@ -53,20 +50,14 @@ class AdvertService {
     return jsonDecode(st.body) as AdvertModel;
   }
 
-  //TODO: postAdvert backendi tamamlandı burdan api verilip test edilmeli
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
-    print(advert);
-    advert.userIds = ["1"];
-    advert.id = 1;
-    advert.favoriteCount = 2;
-    advert.publisherID = 2;
-    var advertJson = advert.toJson();
-
-    var response = await http.post(
-      Uri.parse("http://localhost:8080/addadvert"),
-      body: "{$advertJson}",
-    );
+    advert.publisherID = _auth.currentUser?.uid;
+    final advertJson = json.encode(advert);
+    final response = await http.post(
+        Uri.parse("http://localhost:8080/addadvert"),
+        body: advertJson,
+        headers: {"Content-Type": "application/json"});
 
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
@@ -74,7 +65,7 @@ class AdvertService {
 
   Future<bool> editAdvert(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
-    var response = await http.post(
+    final response = await http.post(
       Uri.parse("http://localhost:8080/editadvert"),
       body: json.encode(advert),
     );
@@ -85,7 +76,7 @@ class AdvertService {
 
   Future<bool> deleteAdvert(AdvertModel advert) async {
     // Send a DELETE request to the specified URL
-    var response = await http.delete(
+    final response = await http.delete(
       Uri.parse("http://localhost:8080/deleteadvert"),
       body: json.encode(advert),
     );
@@ -106,7 +97,7 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> filterByPrice(num min, num max) async {
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse('http://localhost:8080/filterbyprice/$min/$max'),
     );
     return (json.decode(response.body) as List)
@@ -115,7 +106,7 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> filterByPetType(String petType) async {
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse('http://localhost:8080/filterbypettype/$petType'),
     );
     return (json.decode(response.body) as List)
@@ -124,7 +115,7 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> filterByLocation(String location) async {
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse('http://localhost:8080/filterbyaddress/$location'),
     );
     return (json.decode(response.body) as List)

@@ -6,7 +6,7 @@ part 'advert_model.g.dart';
 
 @JsonSerializable()
 class AdvertModel {
-  int? id;
+  String? id;
   String? address;
   String? description;
   String? endDate;
@@ -16,7 +16,7 @@ class AdvertModel {
   double? price;
   String? startDate;
   String? title;
-  int? publisherID; //userID of the owner of advert
+  String? publisherID; //userID of the owner of advert
   List<String>?
       userIds; // list of ids who adds this advert to his/her favorites
 

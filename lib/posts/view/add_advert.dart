@@ -178,9 +178,7 @@ class AddAdvertState extends State<AddAdvert> {
                       showLableText: true,
                     ),
                     onChanged: (value) {
-                      advert.photos ??= [];
-
-                      advert.photos?.add(value);
+                      advert.photos ??= [value];
                     },
                     validator: (value) {
                       return value.isEmptyOrNull
