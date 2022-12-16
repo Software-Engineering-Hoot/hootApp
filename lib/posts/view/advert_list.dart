@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/advert_bloc.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/service/advert.dart';
-import 'package:flutter_infinite_list/posts/service/auth.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/widgets/advert_detail.dart';
@@ -18,13 +17,17 @@ class AdvertsList extends StatefulWidget {
 }
 
 class _AdvertsListState extends State<AdvertsList> {
-
   final AdvertService _advertService = AdvertService();
-  UserModel? user;
+  UserModel user = UserModel();
   final _scrollController = ScrollController();
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   Future<bool> init() async {
     try {
       user = await _advertService.getUserDetails();
@@ -106,8 +109,7 @@ class _AdvertsListState extends State<AdvertsList> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AdvertDetail(
-                                          post: state.adverts[index], user: user!
-                                        )),
+                                        advert: state.adverts[index])),
                               );
                             },
                           );

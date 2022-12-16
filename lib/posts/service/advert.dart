@@ -37,22 +37,34 @@ class AdvertService {
     final st = await http.get(Uri.parse('http://localhost:8080/adverts'));
     final temp = json.decode(st.body) as List;
     return (temp)
-        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
         .toList();
   }
 
   Future<UserModel> getUserDetails() async {
-    Map data = {'userID': '${_auth.currentUser?.uid}'};
     final st = await http.post(
       Uri.parse('http://localhost:8080/getuser'),
-      body: data,
+      body: {'userID': '${_auth.currentUser?.uid}'},
     );
 
-    //var UserMode = UserModel.fromJson(st.body as Map<String, dynamic>);
-    var UserMode = jsonDecode(st.body);
-    var model = UserModel.fromJson(UserMode as Map<String, dynamic>);
+    final model =
+        UserModel.fromJson(jsonDecode(st.body) as Map<String, dynamic>);
 
     return model;
+  }
+
+  Future<List<AdvertModel>> getUserAdvers() async {
+    final st = await http.post(
+      Uri.parse('http://localhost:8080/useradverts'),
+      body: {'publisherID': '${_auth.currentUser?.uid}'},
+    );
+
+    print(st);
+    final temp = json.decode(st.body) as List;
+    print(temp);
+    return (temp)
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
+        .toList();
   }
 
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
@@ -63,6 +75,18 @@ class AdvertService {
         body: json.encode(advert),
         headers: {'Content-Type': 'application/json'});
 
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
+  Future<bool> addAdvertFavorite(AdvertModel advert) async {
+    // Send a POST request to the specified URL with the data as the request body
+    advert.publisherID = _auth.currentUser?.uid;
+    final response = await http.post(Uri.parse('http://localhost:8080/favplus'),
+        body: json.encode(advert),
+        headers: {'Content-Type': 'application/json'});
+
+    print(response);
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }
@@ -116,7 +140,7 @@ class AdvertService {
       Uri.parse('http://localhost:8080/filterbyprice/$min/$max'),
     );
     return (json.decode(response.body) as List)
-        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
         .toList();
   }
 
@@ -136,7 +160,7 @@ class AdvertService {
       Uri.parse('http://localhost:8080/filterbypettype/$petType'),
     );
     return (json.decode(response.body) as List)
-        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
         .toList();
   }
 
@@ -145,7 +169,7 @@ class AdvertService {
       Uri.parse('http://localhost:8080/filterbyaddress/$location'),
     );
     return (json.decode(response.body) as List)
-        .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
         .toList();
   }
 }

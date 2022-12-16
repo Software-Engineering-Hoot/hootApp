@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
 
   Future<bool> init() async {
     try {
-      myAdverts = await _advertService.getAdvert();
+      myAdverts = await _advertService.getUserAdvers();
       favAdverts = await _advertService.getAdvert();
       user = await _advertService.getUserDetails();
     } catch (e) {
@@ -110,7 +110,7 @@ class _ProfileState extends State<Profile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('${user.advertIDs?.length.toString()} Advert',
+                        Text('${myAdverts.length.toString()} Advert',
                             style: secondaryTextStyle()),
                         8.width,
                         Container(

@@ -302,7 +302,7 @@ app.get("/advertdetails", (req, res) => {
     });
 });
 
-app.get("/useradverts", (req, res) => {
+app.post("/useradverts", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
 

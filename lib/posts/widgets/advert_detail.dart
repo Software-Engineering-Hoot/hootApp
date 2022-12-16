@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
+import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/widgets/advert_detail_info.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class AdvertDetail extends StatelessWidget {
-  AdvertDetail({super.key, required this.post, required this.user});
+class AdvertDetail extends StatefulWidget {
+  AdvertDetail({super.key, required this.advert});
 
-  final AdvertModel post;
-  final UserModel user;
+  final AdvertModel advert;
+
+  @override
+  State<AdvertDetail> createState() => _AdvertDetailState();
+}
+
+class _AdvertDetailState extends State<AdvertDetail> {
   final AdvertModel? newAdd = AdvertModel();
+  final AdvertService _advertService = AdvertService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: AppButton(
-      //   color: colorPrimary,
-      //   elevation: 0,
-      //   child: Text('Book Now', style: boldTextStyle(color: white)),
-      //   width: context.width(),
-      //   onTap: () {
-      //     showInDialog(context, barrierDismissible: true, builder: (context) {
-      //       return RFCongratulatedDialog();
-      //     });
-      //   },
-      // ).paddingSymmetric(horizontal: 16, vertical: 24),
+      bottomNavigationBar: AppButton(
+        color: colorPrimary,
+        elevation: 0,
+        child: Text('Add To Favorites', style: boldTextStyle(color: white)),
+        width: context.width(),
+        onTap: () {
+          _advertService.addAdvertFavorite(widget.advert);
+        },
+      ).paddingSymmetric(horizontal: 16, vertical: 24),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -53,7 +58,7 @@ class AdvertDetail extends StatelessWidget {
                 background: Stack(
                   children: [
                     Image.network(
-                      post.photos!.first,
+                      widget.advert.photos!.first,
                       fit: BoxFit.cover,
                       height: 350,
                       width: context.width(),
@@ -81,7 +86,7 @@ class AdvertDetail extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              AdvertDetailIfo(hotelData: post, user: user),
+              AdvertDetailIfo(hotelData: widget.advert),
             ],
           ),
         ),
