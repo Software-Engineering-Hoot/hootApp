@@ -1,16 +1,16 @@
-part of 'post_bloc.dart';
+part of 'advert_bloc.dart';
 
-abstract class PostEvent extends Equatable {
+abstract class AdvertEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class PostFetched extends PostEvent {
+class AdvertFetched extends AdvertEvent {
   final String city;
   final String petType;
   final double amount;
 
-  PostFetched(this.city, this.petType, this.amount);
+  AdvertFetched(this.city, this.petType, this.amount);
 
   List<Object> get props => [city, petType, amount];
 }

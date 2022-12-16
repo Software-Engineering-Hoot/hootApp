@@ -3,7 +3,7 @@ import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
-import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
+import 'package:flutter_infinite_list/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Profile extends StatefulWidget {
@@ -232,7 +232,7 @@ class _ProfileState extends State<Profile> {
                           ? myAdverts.length
                           : favAdverts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return PostListItem(
+                        return AdvertListItem(
                             post: selectedIndex == 0
                                 ? myAdverts[index]
                                 : favAdverts[index]);

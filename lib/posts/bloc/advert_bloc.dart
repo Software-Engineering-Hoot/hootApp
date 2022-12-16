@@ -9,8 +9,8 @@ import 'package:flutter_infinite_list/posts/service/advert.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 
-part 'post_event.dart';
-part 'post_state.dart';
+part 'advert_event.dart';
+part 'advert_state.dart';
 
 const _postLimit = 20;
 const startIndex = 0;
@@ -22,10 +22,10 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc({required this.httpClient}) : super(const PostState()) {
-    on<PostFetched>(
-      _onPostFetched,
+class AdvertBloc extends Bloc<AdvertEvent, AdvertState> {
+  AdvertBloc({required this.httpClient}) : super(const AdvertState()) {
+    on<AdvertFetched>(
+      _onAdvertFetched,
       transformer: throttleDroppable(throttleDuration),
     );
   }
@@ -33,9 +33,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   final http.Client httpClient;
   final AdvertService advertService = AdvertService();
 
-  Future<void> _onPostFetched(
-    PostFetched event,
-    Emitter<PostState> emit,
+  Future<void> _onAdvertFetched(
+    AdvertFetched event,
+    Emitter<AdvertState> emit,
   ) async {
     if (state.hasReachedMax) return;
     try {
@@ -43,15 +43,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       if (event.petType.isNotEmpty ||
           event.city.isNotEmpty ||
           event.amount != 0) {
-        posts =
-            await _fetchPostsByFilter(event.city, event.petType, event.amount);
+        posts = await _fetchAdvertsByFilter(
+            event.city, event.petType, event.amount);
       } else {
-        posts = await _fetchPosts();
+        posts = await _fetchAdverts();
       }
-      if (state.status == PostStatus.initial) {
+      if (state.status == AdvertStatus.initial) {
         return emit(
           state.copyWith(
-            status: PostStatus.success,
+            status: AdvertStatus.success,
             posts: posts,
             hasReachedMax: false,
           ),
@@ -61,23 +61,23 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
               state.copyWith(
-                status: PostStatus.success,
-                posts: List.of(state.posts),
+                status: AdvertStatus.success,
+                posts: List.of(state.adverts),
                 hasReachedMax: false,
               ),
             );
     } catch (_) {
-      emit(state.copyWith(status: PostStatus.failure));
+      emit(state.copyWith(status: AdvertStatus.failure));
     }
   }
 
-  Future<List<AdvertModel>> _fetchPosts([int startIndex = 0]) async {
+  Future<List<AdvertModel>> _fetchAdverts([int startIndex = 0]) async {
     var advertList = await advertService.getAdvert();
     print(advertList);
     return advertList;
   }
 
-  Future<List<AdvertModel>> _fetchPostsByFilter(
+  Future<List<AdvertModel>> _fetchAdvertsByFilter(
       String city, String petType, double amount) async {
     var resp = await advertService.filterByAll(city, petType, amount);
     return resp;

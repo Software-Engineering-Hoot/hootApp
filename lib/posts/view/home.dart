@@ -19,7 +19,7 @@ class HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final _pages = [
-    PostsPage(),
+    AdvertsPage(),
     Search(),
     AddAdvert(),
     Profile(),

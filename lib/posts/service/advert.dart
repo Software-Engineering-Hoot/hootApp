@@ -41,17 +41,22 @@ class AdvertService {
         .toList();
   }
 
-  Future<AdvertModel> getAdvertDetails(AdvertModel advert) async {
-    print(advert);
-    final st = await http.post(
-      Uri.parse('http://localhost:8080/advertdetails'),
-      body: json.encode(advert),
-    );
+  // Future<AdvertModel> getAdvertDetails() async {
+  //   final st = await http.get(Uri.parse("http://localhost:8080/advertdetails"));
+  //   final temp = json.decode(st.body);
+  //   return (temp)
+  //       .map((debit) => AdvertModel.fromJson(debit as Map<String, dynamic>))
+  //       .toList();
 
-    return jsonDecode(st.body) as AdvertModel;
-  }
+  //   print(advert);
+  //   final st = await http.post(
+  //     Uri.parse('http://localhost:8080/advertdetails'),
+  //   );
 
-   Future<UserModel> getUserDetails(UserModel user) async {
+  //   return jsonDecode(st.body) as AdvertModel;
+  // }
+
+  Future<UserModel> getUserDetails(UserModel user) async {
     final st = await http.post(
       Uri.parse('http://localhost:8080/getuser'),
       body: json.encode(user),
@@ -77,10 +82,8 @@ class AdvertService {
     // Send a POST request to the specified URL with the data as the request body
     user.userID = _auth.currentUser?.uid;
     final userJson = json.encode(user);
-    final response = await http.post(
-        Uri.parse("http://localhost:8080/adduser"),
-        body: userJson,
-        headers: {"Content-Type": "application/json"});
+    final response = await http.post(Uri.parse("http://localhost:8080/adduser"),
+        body: userJson, headers: {"Content-Type": "application/json"});
 
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;

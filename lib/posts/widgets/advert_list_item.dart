@@ -3,8 +3,8 @@ import 'package:flutter_infinite_list/posts/models/advert_model.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class PostListItem extends StatelessWidget {
-  PostListItem({super.key, required this.post});
+class AdvertListItem extends StatelessWidget {
+  AdvertListItem({super.key, required this.post});
 
   final AdvertModel post;
   final AdvertModel? newAdd = AdvertModel();

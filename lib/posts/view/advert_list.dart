@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/posts/bloc/post_bloc.dart';
+import 'package:flutter_infinite_list/posts/bloc/advert_bloc.dart';
 import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/widgets/advert_detail.dart';
 import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({super.key});
+class AdvertsList extends StatefulWidget {
+  const AdvertsList({super.key});
 
   @override
-  State<PostsList> createState() => _PostsListState();
+  State<AdvertsList> createState() => _AdvertsListState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _AdvertsListState extends State<AdvertsList> {
   final _scrollController = ScrollController();
   int selectedIndex = 0;
 
@@ -25,13 +25,13 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
+    return BlocBuilder<AdvertBloc, AdvertState>(
       builder: (context, state) {
         switch (state.status) {
-          case PostStatus.failure:
+          case AdvertStatus.failure:
             return const Center(child: Text('failed to fetch posts'));
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
+          case AdvertStatus.success:
+            if (state.adverts.isEmpty) {
               return const Center(child: Text('no posts'));
             }
             return Scaffold(
@@ -89,19 +89,19 @@ class _PostsListState extends State<PostsList> {
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            child: PostListItem(post: state.posts[index]),
+                            child: AdvertListItem(post: state.adverts[index]),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AdvertDetail(
-                                          post: state.posts[index],
+                                          post: state.adverts[index],
                                         )),
                               );
                             },
                           );
                         },
-                        itemCount: state.posts.length,
+                        itemCount: state.adverts.length,
                         controller: _scrollController,
                       ),
                     ),
@@ -109,7 +109,7 @@ class _PostsListState extends State<PostsList> {
                 ),
               ),
             );
-          case PostStatus.initial:
+          case AdvertStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },

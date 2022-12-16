@@ -5,7 +5,7 @@ import 'package:flutter_infinite_list/posts/utils/colors.dart';
 import 'package:flutter_infinite_list/posts/utils/constant.dart';
 import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
 import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
-import 'package:flutter_infinite_list/posts/widgets/post_list_item.dart';
+import 'package:flutter_infinite_list/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Search extends StatefulWidget {
@@ -144,7 +144,7 @@ class _SearchState extends State<Search> {
                   scrollDirection: Axis.vertical,
                   itemCount: searchedAdvert.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return PostListItem(post: searchedAdvert[index]);
+                    return AdvertListItem(post: searchedAdvert[index]);
                   },
                 )
               else
@@ -174,9 +174,9 @@ class _SearchState extends State<Search> {
         },
       ),
       // subWidget: BlocProvider(
-      //     create: (_) => PostBloc(httpClient: http.Client())
-      //       ..add(PostFetched("", "", 0)),
-      //     child: const PostsList()),
+      //     create: (_) => AdvertBloc(httpClient: http.Client())
+      //       ..add(AdvertFetched("", "", 0)),
+      //     child: const AdvertsList()),
     ));
   }
 }
