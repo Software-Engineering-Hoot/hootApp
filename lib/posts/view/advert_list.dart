@@ -36,8 +36,14 @@ class _PostsListState extends State<PostsList> {
             }
             return Scaffold(
               appBar: AppBar(
+                title: Text("Home"),
                 backgroundColor: colorPrimary,
-                title: const Text('Home'),
+                automaticallyImplyLeading: false,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16)),
+                ),
               ),
               body: Container(
                 width: context.width(),

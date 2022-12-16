@@ -71,7 +71,7 @@ class HomeState extends State<Home> {
       ],
     );
   }
-  
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -81,7 +81,6 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    print("sdfsd");
     init();
   }
 
