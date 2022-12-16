@@ -483,11 +483,12 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
 app.get("/filterByAll/:city/:petType/:amount", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
-
+  console.log(req.params);
+  console.log(req.body);
   // Create a query to find the documents with prices between the min and max
   var query = docRef
     .where("price", "<=", req.params.amount)
-    .where("petType", "==", req.body.petType)
+    .where("petType", "==", req.params.petType)
     .where("address", "==", req.params.city);
   // Get the matching documents
   query
@@ -536,9 +537,11 @@ app.get("/filterbypettype/:petType", (req, res) => {
   var petType = req.params.petType;
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
+  console.log(req.params);
+  console.log(req.body);
 
   // Create a query to find the documents with requested petType
-  var query = docRef.where("petType", "==", req.body.petType);
+  var query = docRef.where("petType", "==", req.params.petType);
 
   // Get the matching documents
   query
