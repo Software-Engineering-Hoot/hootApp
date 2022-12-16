@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/utils/custom_methods.dart';
+import 'package:http/http.dart' as http;
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,6 +36,7 @@ class AuthService {
         user?.sendEmailVerification();
       });
 
+      await addUserWithBackEnd(userModel);
       await _firestore.collection('UserDB').add(userModel.toJson());
       await _firestore.collection('Users').doc('Users').set({
         'Name': userModel.name,
@@ -46,6 +50,17 @@ class AuthService {
     }
     flutterToast('Please_Verify', Colors.green);
     return true;
+  }
+
+  Future<bool> addUserWithBackEnd(UserModel user) async {
+    // Send a POST request to the specified URL with the data as the request body
+    user.userID = _auth.currentUser?.uid;
+    final userJson = json.encode(user);
+    final response = await http.post(Uri.parse("http://localhost:8080/adduser"),
+        body: userJson, headers: {"Content-Type": "application/json"});
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
   }
 
   Future<bool> resetPassword(String email) async {

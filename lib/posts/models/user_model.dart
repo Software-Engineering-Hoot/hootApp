@@ -14,21 +14,22 @@ class UserModel {
   String? email;
   String? password;
   String? passwordAgain;
-  List<String> advertIDs;
-  List<String> favAdvertIDs;
+  List<String>? advertIDs;
+  List<String>? favAdvertIDs;
   String? userID;
   String? phoneNumber;
 
-  UserModel(
-      {this.name,
-      this.surname,
-      this.email,
-      this.password,
-      this.passwordAgain,
-      this.advertIDs = const [],
-      this.favAdvertIDs = const [],
-      this.phoneNumber,
-      this.userID});
+  UserModel({
+    this.name,
+    this.surname,
+    this.email,
+    this.password,
+    this.passwordAgain,
+    this.advertIDs,
+    this.favAdvertIDs,
+    this.phoneNumber,
+    this.userID,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

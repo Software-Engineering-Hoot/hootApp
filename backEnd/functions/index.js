@@ -55,7 +55,8 @@ app.get("/getuser", (req, res) => {
       querySnapshot.forEach(function (doc) {
         // Do something with the matching document
         console.log(doc.id, " => ", doc.data());
-        res.status(200).send(doc.data());
+        console.log(JSON.stringify(doc.data(), null, "  "));
+        res.status(200).send(JSON.stringify(doc.data(), null, "  "));
       });
     })
     .catch(function (error) {
@@ -372,7 +373,9 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
   var docRef = db.collection("AdvertDB");
 
   // Create a query to find the documents with prices between the min and max
-  var query = docRef.where("price", ">=", Number(min)).where("price", "<=", Number(max));
+  var query = docRef
+    .where("price", ">=", Number(min))
+    .where("price", "<=", Number(max));
   // Get the matching documents
   query
     .get()
@@ -430,22 +433,22 @@ app.get("/filterbyaddress/:address", (req, res) => {
 
   // Get the matching documents
   query
-  .get()
-  .then((querySnapshot) => {
-    // Convert the query snapshot into an array
-    const docs = Array.from(querySnapshot);
+    .get()
+    .then((querySnapshot) => {
+      // Convert the query snapshot into an array
+      const docs = Array.from(querySnapshot);
 
-    // Transform the array of documents into an array of results
-    const results = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      // Transform the array of documents into an array of results
+      const results = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // Send the results as a JSON string
-    res.status(200).send(JSON.stringify(results, null, "  "));
-  })
-  .catch((error) => {
-    // An error occurred while searching the database
-    console.error("Error searching the database:", error);
-    res.status(404);
-  });
+      // Send the results as a JSON string
+      res.status(200).send(JSON.stringify(results, null, "  "));
+    })
+    .catch((error) => {
+      // An error occurred while searching the database
+      console.error("Error searching the database:", error);
+      res.status(404);
+    });
 });
 app.get("/filterbypettype/:petType", (req, res) => {
   var petType = req.params.petType;
