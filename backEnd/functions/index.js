@@ -80,6 +80,97 @@ app.post("/signin", async (req, res) => {
   }
 });
 
+app.post("/adduser", (req, res) => {
+  const docRef = db.collection("UserDB");
+  const user = req.body;
+  // and ensure that the object does not contain any circular references
+  const jsonData = JSON.stringify(user);
+  // Convert the JSON string back to a JavaScript object
+  const objectData = JSON.parse(jsonData);
+  docRef
+    .add(objectData)
+    .then(() => {
+      // The data was successfully added to the database
+      console.log("Data added to the database");
+      console.log("REQ BODY", req.body);
+      res.status(200);
+    })
+    .catch((error) => {
+      // An error occurred while trying to add the data to the database
+      console.error("Error adding data to the database:", error);
+      // Set the response status code to 500
+      res.status(500);
+    });
+});
+
+// Get a single advert with the specified ID
+app.get("/getuser", (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection("UserDB");
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // Do something with the matching document
+        console.log(doc.id, " => ", doc.data());
+        res.status(200).send(doc.data());
+      });
+    })
+    .catch(function (error) {
+      console.error("Error getting documents: ", error);
+    });
+});
+
+app.delete("/deleteuser", (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection("UserDB");
+  // Create a query to find the document you want to delete
+  var query = docRef.where("id", "==", req.body.id);
+  // Delete the matching document
+  query
+    .get()
+    .then(function (querySnapshot) {
+      var batch = db.batch();
+      querySnapshot.forEach(function (doc) {
+        batch.delete(doc.ref);
+      });
+      res.status(200);
+      return batch.commit();
+    })
+    .catch(function (error) {
+      res.status(500).send("Error removing document: ", error);
+    });
+});
+
+app.post("/edituser", (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection("UserDB");
+
+  // Create a query to find the document you want
+  var query = docRef.where("id", "==", req.body.id);
+
+  // Get the matching document
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // Update the document with the new data
+        doc.ref.update(req.body);
+      });
+      // Send a response to the client
+      res.sendStatus(200);
+    })
+    .catch(function (error) {
+      console.error("Error getting documents: ", error);
+    });
+});
+
+
 //in-progress
 app.post("/signup", async (req, res) => {
   try {
@@ -121,7 +212,7 @@ app.post("/addlocation", (req, res) => {
       // The data was successfully added to the database
       console.log("Data added to the database");
       console.log("REQ BODY", req.body);
-      res.status(200).send(objectData);
+      res.status(200);
     })
     .catch((error) => {
       // An error occurred while trying to add the data to the database
@@ -146,26 +237,11 @@ app.get("/getlocations", async (req, res) => {
 //post single advert to firestore cloud database
 app.post("/addadvert", (req, res) => {
   const docRef = db.collection("AdvertDB");
-
-  const advert = {
-    advertID: docRef.doc().id,
-    title: req.body.title,
-    petType: req.body.petType,
-    address: req.body.address,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    price: req.body.price,
-    description: req.body.description,
-    photos: req.body.photos,
-    favoriteCount: 0,
-    publisherID: req.body.publisherID,
-    userIDs: req.body.userIDs,
-  };
-  console.log("Reqqq ", req);
+  const advert = req.body;
+  advert.advertID = docRef.doc().id;
+  advert.favoriteCount = 0;
   // and ensure that the object does not contain any circular references
   const jsonData = JSON.stringify(advert);
-
-  console.log("Json dataa = ", jsonData);
   // Convert the JSON string back to a JavaScript object
   const objectData = JSON.parse(jsonData);
   docRef
@@ -174,7 +250,7 @@ app.post("/addadvert", (req, res) => {
       // The data was successfully added to the database
       console.log("Data added to the database");
       console.log("REQ BODY", req.body);
-      res.status(200).send(objectData);
+      res.status(200);
     })
     .catch((error) => {
       // An error occurred while trying to add the data to the database
