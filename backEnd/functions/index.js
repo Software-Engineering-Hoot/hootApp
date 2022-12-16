@@ -17,69 +17,6 @@ const db = admin.firestore();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const advertModel = {
-  advertID: String,
-  title: String,
-  petType: String,
-  address: String,
-  startDate: String,
-  endDate: String,
-  price: Number,
-  description: String,
-  photos: Byte,
-  favoriteCount: Number,
-  publisherID: String,
-  userIDs: Array,
-};
-
-const userModel = {
-  userID: String,
-  name: String,
-  surname: String,
-  email: String,
-  password: String,
-  passwordAgain: String,
-  advertIDs: Array,
-  favIDs: Array,
-  phone: String,
-};
-
-const actionCodeSettings = {
-  handleCodeInApp: true,
-  iOS: {
-    bundleId: "com.example.ios",
-  },
-  android: {
-    packageName: "com.example.android",
-    installApp: true,
-    minimumVersion: "12",
-  },
-  // FDL custom domain.
-  dynamicLinkDomain: "http://localhost:8080",
-};
-
-//in-progress
-app.post("/signin", async (req, res) => {
-  try {
-    // get the user data from Firestore using the provided username
-    const userRecord = await admin.auth().getUserByEmail(req.body.username);
-    // check if the provided password matches the user's hashed password
-    const success = await admin
-      .auth()
-      .verifyPassword(req.body.password, userRecord.passwordHash);
-    if (success) {
-      console.log("oldu");
-    } else {
-      // authentication failed, do something...
-    }
-    // send a JSON response to the client
-    res.json({ success: success });
-  } catch (error) {
-    // handle errors
-    res.json({ success: false, error: error });
-  }
-});
-
 app.post("/adduser", (req, res) => {
   const docRef = db.collection("UserDB");
   const user = req.body;
@@ -109,7 +46,7 @@ app.get("/getuser", (req, res) => {
   var docRef = db.collection("UserDB");
 
   // Create a query to find the document you want
-  var query = docRef.where("id", "==", req.body.id);
+  var query = docRef.where("userID", "==", req.body.userID);
 
   // Get the matching document
   query
@@ -130,7 +67,7 @@ app.delete("/deleteuser", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("UserDB");
   // Create a query to find the document you want to delete
-  var query = docRef.where("id", "==", req.body.id);
+  var query = docRef.where("userID", "==", req.body.userID);
   // Delete the matching document
   query
     .get()
@@ -152,7 +89,7 @@ app.post("/edituser", (req, res) => {
   var docRef = db.collection("UserDB");
 
   // Create a query to find the document you want
-  var query = docRef.where("id", "==", req.body.id);
+  var query = docRef.where("userID", "==", req.body.userID);
 
   // Get the matching document
   query
@@ -168,32 +105,6 @@ app.post("/edituser", (req, res) => {
     .catch(function (error) {
       console.error("Error getting documents: ", error);
     });
-});
-
-//in-progress
-app.post("/signup", async (req, res) => {
-  try {
-    // create a new user in Firestore using the provided username and password
-    const userRecord = await admin.auth().createUser(req.body);
-    // send an email verification to the newly created user
-    await admin
-      .auth()
-      .generateEmailVerificationLink(userRecord.email, actionCodeSettings);
-    // do something with the newly created user...
-    // and ensure that the object does not contain any circular references
-    const jsonData = JSON.stringify(userRecord);
-    // Convert the JSON string back to a JavaScript object
-    const objectData = JSON.parse(jsonData);
-
-    // Add the user data to the database
-    await db.collection("UserDB").add(objectData);
-
-    // Send a success response to the client
-    res.status(200);
-  } catch (error) {
-    // handle errors
-    res.status(500);
-  }
 });
 
 //post single location to firestore cloud database
