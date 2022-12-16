@@ -26,7 +26,7 @@ const advertModel = {
   endDate: String,
   price: Number,
   description: String,
-  photos: Array,
+  photos: Byte,
   favoriteCount: Number,
   publisherID: String,
   userIDs: Array,
