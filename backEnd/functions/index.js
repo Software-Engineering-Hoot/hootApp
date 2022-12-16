@@ -461,7 +461,7 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
   var docRef = db.collection("AdvertDB");
 
   // Create a query to find the documents with prices between the min and max
-  var query = docRef.where("price", ">=", min).where("price", "<=", max);
+  var query = docRef.where("price", ">=", Number(min)).where("price", "<=", Number(max));
   // Get the matching documents
   query
     .get()
@@ -482,29 +482,30 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
 
 app.get("/filterByAll/:city/:petType/:amount", (req, res) => {
   // Get a reference to the collection
+  const address = req.params.city;
+  const amount = req.params.amount;
+  const etype = req.params.petType;
+
   var docRef = db.collection("AdvertDB");
-  console.log(req.params);
-  console.log(req.body);
+
   // Create a query to find the documents with prices between the min and max
   var query = docRef
-    .where("price", "<=", req.params.amount)
-    .where("petType", "==", req.params.petType)
-    .where("address", "==", req.params.city);
+    .where("price", "<=", Number(amount))
+    .where("petType", "==", etype)
+    .where("address", "==", address);
   // Get the matching documents
+
   query
     .get()
-    .then((querySnapshot) => {
-      // Convert the query snapshot to an array of results
-      const tempDoc = [];
-      querySnapshot.forEach((doc) => {
-        tempDoc.push({ id: doc.id, ...doc.data() });
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // Do something with the matching document
+        console.log(doc.id, " => ", doc.data());
+        res.status(200).send(doc.data());
       });
-      res.status(200).send(JSON.stringify(tempDoc, null, "  "));
     })
-    .catch((error) => {
-      // An error occurred while searching the database
-      console.error("Error searching the database:", error);
-      res.status(404);
+    .catch(function (error) {
+      console.error("Error getting documents: ", error);
     });
 });
 
@@ -518,30 +519,30 @@ app.get("/filterbyaddress/:address", (req, res) => {
 
   // Get the matching documents
   query
-    .get()
-    .then((querySnapshot) => {
-      // Convert the query snapshot to an array of results
-      const tempDoc = [];
-      querySnapshot.forEach((doc) => {
-        tempDoc.push({ id: doc.id, ...doc.data() });
-      });
-      res.status(200).send(JSON.stringify(tempDoc, null, "  "));
-    })
-    .catch((error) => {
-      // An error occurred while searching the database
-      console.error("Error searching the database:", error);
-      res.status(404);
-    });
+  .get()
+  .then((querySnapshot) => {
+    // Convert the query snapshot into an array
+    const docs = Array.from(querySnapshot);
+
+    // Transform the array of documents into an array of results
+    const results = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    // Send the results as a JSON string
+    res.status(200).send(JSON.stringify(results, null, "  "));
+  })
+  .catch((error) => {
+    // An error occurred while searching the database
+    console.error("Error searching the database:", error);
+    res.status(404);
+  });
 });
 app.get("/filterbypettype/:petType", (req, res) => {
   var petType = req.params.petType;
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
-  console.log(req.params);
-  console.log(req.body);
 
   // Create a query to find the documents with requested petType
-  var query = docRef.where("petType", "==", req.params.petType);
+  var query = docRef.where("petType", "==", req.body.petType);
 
   // Get the matching documents
   query

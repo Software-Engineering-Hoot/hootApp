@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:flutter_infinite_list/posts/models/user_model.dart';
 import 'package:flutter_infinite_list/posts/utils/custom_methods.dart';
 import 'package:http/http.dart' as http;
 
@@ -50,6 +51,15 @@ class AdvertService {
     return jsonDecode(st.body) as AdvertModel;
   }
 
+   Future<UserModel> getUserDetails(UserModel user) async {
+    final st = await http.post(
+      Uri.parse('http://localhost:8080/getuser'),
+      body: json.encode(user),
+    );
+
+    return jsonDecode(st.body) as UserModel;
+  }
+
   Future<bool> addAdvertWithBackEnd(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     advert.publisherID = _auth.currentUser?.uid;
@@ -63,11 +73,35 @@ class AdvertService {
     return response.statusCode == 200;
   }
 
+  Future<bool> addUserWithBackEnd(UserModel user) async {
+    // Send a POST request to the specified URL with the data as the request body
+    user.userID = _auth.currentUser?.uid;
+    final userJson = json.encode(user);
+    final response = await http.post(
+        Uri.parse("http://localhost:8080/adduser"),
+        body: userJson,
+        headers: {"Content-Type": "application/json"});
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
   Future<bool> editAdvert(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
       Uri.parse("http://localhost:8080/editadvert"),
       body: json.encode(advert),
+    );
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
+  Future<bool> editUser(UserModel user) async {
+    // Send a POST request to the specified URL with the data as the request body
+    final response = await http.post(
+      Uri.parse("http://localhost:8080/edituser"),
+      body: json.encode(user),
     );
 
     // Check the response status code and return true if the request was successful

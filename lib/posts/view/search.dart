@@ -51,7 +51,7 @@ class _SearchState extends State<Search> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Advance Search', style: boldTextStyle(size: 18)),
+            Text('Advasdance Search', style: boldTextStyle(size: 18)),
             16.height,
             DropdownButtonFormField(
               isExpanded: true,

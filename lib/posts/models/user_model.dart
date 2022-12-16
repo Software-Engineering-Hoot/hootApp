@@ -14,21 +14,21 @@ class UserModel {
   String? email;
   String? password;
   String? passwordAgain;
-  List<int> advertIDs;
-  List<int> favAdvertIDs;
-  int? userID;
+  List<String> advertIDs;
+  List<String> favAdvertIDs;
+  String? userID;
+  String? phoneNumber;
 
-  UserModel({
-    this.name,
-    this.surname,
-    this.email,
-    this.password,
-    this.passwordAgain,
-    this.advertIDs = const [],
-    this.favAdvertIDs = const [],
-  }) {
-    userID = Random().nextInt(10000);
-  }
+  UserModel(
+      {this.name,
+      this.surname,
+      this.email,
+      this.password,
+      this.passwordAgain,
+      this.advertIDs = const [],
+      this.favAdvertIDs = const [],
+      this.phoneNumber,
+      this.userID});
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
