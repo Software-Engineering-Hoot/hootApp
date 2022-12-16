@@ -59,7 +59,7 @@ app.get("/getuser", (req, res) => {
       });
     })
     .catch(function (error) {
-      console.error("Error getting documents: ", error);
+      res.status(500).send("Error getting document: ", error);
     });
 });
 
