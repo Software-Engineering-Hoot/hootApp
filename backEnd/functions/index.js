@@ -217,6 +217,30 @@ app.post("/editadvert", (req, res) => {
     });
 });
 
+// Get a single advert with the specified ID
+app.post("/getfavs", (req, res) => {
+  // Get a reference to the collection
+  var docRef = db.collection("UserDB");
+
+  // Create a query to find the document you want
+  var query = docRef.where("userID", "==", req.body.userID);
+
+  // Get the matching document
+  query
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // Do something with the matching document
+        console.log(doc.id, " => ", doc.data());
+        console.log(JSON.stringify(doc.data(), null, "  "));
+        res.status(200).send(JSON.stringify(doc.data().favAdvertIDs));
+      });
+    })
+    .catch(function (error) {
+      res.status(500).send("Error getting document: ", error);
+    });
+});
+
 app.post("/favplus", (req, res) => {
   var advertID = req.body.advertID;
   var docRef= db.collection("UserDB");
@@ -245,31 +269,27 @@ app.post("/favplus", (req, res) => {
 });
 
 app.post("/favminus", (req, res) => {
-  // Get a reference to the collection
-  var docRef = db.collection("AdvertDB");
-
-  // Create a query to find the document you want
-  var query = docRef.where("id", "==", req.body.id);
-
-  // Get the matching document
+  var advertID = req.body.advertID;
+  var docRef= db.collection("UserDB");
+  var query = docRef.where("userID", "==", req.body.userID);
   query
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        // Do something with the matching document
-        console.log(doc.id, " => ", doc.data());
-        var data = doc.data();
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      var data = doc.data();
 
-        // Set properties of the found data
-        if (data.favoriteCount > 0) {
-          data.favoriteCount = data.favoriteCount - 1;
-          // Update the document with the new data
-          doc.ref.set(data);
-        }
-        // Send the updated data to the client
-        res.status(200).send(data);
-      });
-    })
+      // Set properties of the found data
+      data.favAdvertIDs.pop(advertID)
+
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  })
+
+
     .catch(function (error) {
       console.error("Error getting documents: ", error);
     });
