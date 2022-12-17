@@ -5,8 +5,9 @@ import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
+import 'package:hoot/posts/widgets/advert_detail.dart';
+import 'package:hoot/posts/widgets/advert_list_item_profile.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
-import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -16,9 +17,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  // final List<RoomFinderModel> settingData = settingList();
-  // final List<RoomFinderModel> appliedHotelData = appliedHotelList();
-  // final List<RoomFinderModel> applyHotelData = applyHotelList();
   List<String> categotyData = ['Ilanlarım', 'Favorilerim'];
   List<AdvertModel> myAdverts = [];
   List<AdvertModel> favAdverts = [];
@@ -35,7 +33,7 @@ class _ProfileState extends State<Profile> {
 
   Future<bool> init() async {
     try {
-      myAdverts = await _advertService.getUserAdvers();
+      myAdverts = await _advertService.getUserAdverts();
       favAdverts = await _advertService.getAdvert();
       user = await _advertService.getUserDetails();
     } catch (e) {
@@ -247,10 +245,22 @@ class _ProfileState extends State<Profile> {
                           ? myAdverts.length
                           : favAdverts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return AdvertListItem(
-                            post: selectedIndex == 0
-                                ? myAdverts[index]
-                                : favAdverts[index]);
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdvertDetail(
+                                      advert: selectedIndex == 0
+                                          ? myAdverts[index]
+                                          : favAdverts[index])),
+                            );
+                          },
+                          child: AdvertListItemProfile(
+                              advert: selectedIndex == 0
+                                  ? myAdverts[index]
+                                  : favAdverts[index]),
+                        );
                       },
                     ),
                     16.height,

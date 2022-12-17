@@ -36,8 +36,7 @@ class AdvertListItem extends StatelessWidget {
                       child: SizedBox(
                         height: context.height() * 0.6,
                         width: context.width() * 0.30,
-                        child:
-                          Image.memory(post.photos![0].buffer.asUint8List()),
+                        child: Image.asset(post.photos![0]),
                       )),
                   8.width,
                   Column(

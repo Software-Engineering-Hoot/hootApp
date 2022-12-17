@@ -13,7 +13,7 @@ class AdvertModel {
   String? endDate;
   int? favoriteCount;
   String? petType;
-  List<ByteData>? photos;
+  List<String>? photos;
   double? price;
   String? startDate;
   String? title;

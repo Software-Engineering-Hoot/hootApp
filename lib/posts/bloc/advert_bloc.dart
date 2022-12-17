@@ -39,11 +39,11 @@ class AdvertBloc extends Bloc<AdvertEvent, AdvertState> {
   ) async {
     if (state.hasReachedMax) return;
     try {
-      late final List<AdvertModel> posts;
+      final List<AdvertModel> posts;
       if (event.petType.isNotEmpty ||
           event.city.isNotEmpty ||
           event.amount != 0) {
-        posts = await _fetchAdvertsByFilter(
+        posts = await _fetchAdvertsByFilterAll(
             event.city, event.petType, event.amount);
       } else {
         posts = await _fetchAdverts();
@@ -72,13 +72,15 @@ class AdvertBloc extends Bloc<AdvertEvent, AdvertState> {
   }
 
   Future<List<AdvertModel>> _fetchAdverts([int startIndex = 0]) async {
-    var advertList = await advertService.getAdvert();
+    var advertList = await advertService.getAdvertWithBackEnd();
     print(advertList);
     return advertList;
   }
 
-  Future<List<AdvertModel>> _fetchAdvertsByFilter(
+  Future<List<AdvertModel>> _fetchAdvertsByFilterAll(
       String city, String petType, double amount) async {
+    if (city.isEmpty) city = "all";
+    if (petType.isEmpty) city = "all";
     var resp = await advertService.filterByAll(city, petType, amount);
     return resp;
   }

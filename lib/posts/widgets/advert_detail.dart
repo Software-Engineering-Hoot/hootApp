@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
-import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/view/edit_advert.dart';
 import 'package:hoot/posts/widgets/advert_detail_info.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -16,7 +16,6 @@ class AdvertDetail extends StatefulWidget {
 }
 
 class _AdvertDetailState extends State<AdvertDetail> {
-  final AdvertModel? newAdd = AdvertModel();
   final AdvertService _advertService = AdvertService();
 
   @override
@@ -25,24 +24,37 @@ class _AdvertDetailState extends State<AdvertDetail> {
       bottomNavigationBar: AppButton(
         color: colorPrimary,
         elevation: 0,
-        child: Text('Add To Favorites', style: boldTextStyle(color: white)),
         width: context.width(),
         onTap: () {
-          _advertService.addAdvertFavorite(widget.advert);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditAdvert(advert: widget.advert)),
+          );
         },
+        child: Text('Edit Advert', style: boldTextStyle(color: white)),
       ).paddingSymmetric(horizontal: 16, vertical: 24),
+      // bottomNavigationBar: AppButton(
+      //   color: colorPrimary,
+      //   elevation: 0,
+      //   width: context.width(),
+      //   onTap: () {
+      //     _advertService.addAdvertFavorite(widget.advert);
+      //   },
+      //   child: Text('Add To Favorites', style: boldTextStyle(color: white)),
+      // ).paddingSymmetric(horizontal: 16, vertical: 24),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios_new,
+                icon: const Icon(Icons.arrow_back_ios_new,
                     color: colorPrimary, size: 18),
                 onPressed: () {
                   finish(context);
                 },
               ),
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16)),
@@ -53,20 +65,19 @@ class _AdvertDetailState extends State<AdvertDetail> {
               expandedHeight: 300,
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.parallax,
-                titlePadding: EdgeInsets.all(10),
+                titlePadding: const EdgeInsets.all(10),
                 centerTitle: true,
                 background: Stack(
                   children: [
-                    Image.memory(widget.advert.photos![0].buffer.asUint8List()),
-                    // rfCommonCachedNetworkImage(
-                    //   widget.hotelData!.img.validate(),
-                    //   fit: BoxFit.cover,
-                    //   width: context.width(),
-                    //   height: 350,
-                    // ),
+                    Image.asset(
+                      widget.advert.photos![0],
+                      fit: BoxFit.cover,
+                      height: 350,
+                      width: context.width(),
+                    ),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 32),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +92,7 @@ class _AdvertDetailState extends State<AdvertDetail> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              AdvertDetailIfo(hotelData: widget.advert),
+              AdvertDetailIfo(advert: widget.advert),
             ],
           ),
         ),

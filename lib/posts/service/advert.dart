@@ -54,7 +54,7 @@ class AdvertService {
     return model;
   }
 
-  Future<List<AdvertModel>> getUserAdvers() async {
+  Future<List<AdvertModel>> getUserAdverts() async {
     final st = await http.post(
       Uri.parse('http://localhost:8080/useradverts'),
       body: {'publisherID': '${_auth.currentUser?.uid}'},
@@ -113,8 +113,10 @@ class AdvertService {
     final body = json.encode({'userID': userID, 'advertID': advertID});
     advert.userIds?.remove(userID);
     await editAdvert(advert);
-    final response = await http.post(Uri.parse('http://localhost:8080/favminus'),
-        body: body, headers: {'Content-Type': 'application/json'});
+    final response = await http.post(
+        Uri.parse('http://localhost:8080/favminus'),
+        body: body,
+        headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }

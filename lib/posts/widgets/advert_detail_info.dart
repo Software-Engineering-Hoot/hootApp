@@ -6,12 +6,13 @@ import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdvertDetailIfo extends StatefulWidget {
-  const AdvertDetailIfo({super.key, required this.hotelData});
+  const AdvertDetailIfo({super.key, required this.advert});
   // final List<RoomFinderModel> hotelImageData = hotelImageList();
 
-  final AdvertModel hotelData;
+  final AdvertModel advert;
 
   @override
   State<AdvertDetailIfo> createState() => _AdvertDetailIfoState();
@@ -62,14 +63,23 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(user.name ?? '', style: boldTextStyle()),
+                              Text(user.phoneNumber ?? '',
+                                  style: boldTextStyle()),
                               4.height,
                               Text(user.surname ?? '',
                                   style: secondaryTextStyle()),
                             ],
                           ).expand(),
                           AppButton(
-                            onTap: () {
-                              launchCall(user.phoneNumber ?? '');
+                            onTap: () async {
+                              // launchCall(user.phoneNumber ?? '');
+                              String telephoneNumber = '+2347012345678';
+                              String telephoneUrl = "tel:$telephoneNumber";
+                              if (await canLaunch(telephoneUrl)) {
+                                await launch(telephoneUrl);
+                              } else {
+                                throw "Error occured trying to call that number.";
+                              }
                             },
                             color: colorPrimary,
                             width: 15,
@@ -101,10 +111,10 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.hotelData.address ?? '',
+                              Text(widget.advert.address ?? '',
                                   style: boldTextStyle()),
                               8.height,
-                              Text(widget.hotelData.title ?? '',
+                              Text(widget.advert.title ?? '',
                                   style: primaryTextStyle()),
                               8.height,
                             ],
@@ -122,13 +132,13 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                                         boxShape: BoxShape.circle),
                                   ),
                                   6.width,
-                                  Text(widget.hotelData.petType ?? '',
+                                  Text(widget.advert.petType ?? '',
                                       style: secondaryTextStyle()),
                                 ],
                               ),
                               8.height,
                               Text(
-                                '${widget.hotelData.price} TL',
+                                '${widget.advert.price} TL',
                                 style: primaryTextStyle(),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -170,7 +180,7 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                       Text('Description', style: boldTextStyle()),
                       8.height,
                       Text(
-                        widget.hotelData.description ?? '',
+                        widget.advert.description ?? '',
                         style: secondaryTextStyle(),
                       ),
                       Row(
