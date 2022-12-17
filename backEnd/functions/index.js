@@ -4,7 +4,7 @@ const serviceAccount = require("./service-account-key.json");
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { allowedNodeEnvironmentFlags } = require("process");
+const port = 8080;
 
 app.use(cors());
 admin.initializeApp({
@@ -165,7 +165,6 @@ app.post("/addadvert", (req, res) => {
         // Update the document with the new data
         doc.ref.set(data);
         // Send the updated data to the client
-        res.status(200);
       });
     })
     .catch(function (error) {
@@ -181,7 +180,7 @@ app.post("/addadvert", (req, res) => {
       // The data was successfully added to the database
       console.log("Data added to the database");
       console.log("REQ BODY", req.body);
-      res.status(200);
+      res.status(200).send(advert);
     })
     .catch((error) => {
       // An error occurred while trying to add the data to the database
@@ -194,25 +193,68 @@ app.post("/addadvert", (req, res) => {
 // Delete a single advert from the Firestore cloud database
 // in every deletion user favorites should be updated
 app.delete("/deleteadvert", (req, res) => {
-  // Get a reference to the collection
-  var docRef = db.collection("AdvertDB");
-  // Create a query to find the document you want to delete
-  var query = docRef.where("id", "==", req.body.id);
+  const docRef = db.collection("AdvertDB");
+  const userDocRef = db.collection('UserDB');
+  const advert = req.body;
+  let favUsers = advert.userIDs;
+  var query0 = userDocRef.where("userID", "==", advert.publisherID);
   // Delete the matching document
   // Get the matching document
-  query
+  query0
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      var data = doc.data();
+      // Set properties of the found data
+      data.advertIDs.pop(advert.id);
+      // Update the document with the new data
+      doc.ref.set(data);
+      // Send the updated data to the client
+    });
+    }).catch(function (error) {
+      console.error("Error getting documents: ", error);
+    });
+
+  if(favUsers){
+    favUsers.forEach(element => {
+      var query1 = userDocRef.where("userID", "==", element);
+      query1
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          var data = doc.data();
+          // Set properties of the found data
+          data.favAdvertIDs.pop(element);
+          // Update the document with the new data
+          doc.ref.set(data);
+          // Send the updated data to the client
+          
+        });
+        }).catch(function (error) {
+          console.error("Error getting documents: ", error);
+        });
+    });
+  }
+  
+  // Create a query to find the document you want to delete
+  var query2 = docRef.where("id", "==", advert.id);
+  // Delete the matching document
+  // Get the matching document
+  query2
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         // delete the document with the new data
-        doc.ref.delete(req.body);
+        doc.ref.delete(advert);
       });
       // Send a response to the client
-      res.sendStatus(200);
+      res.status(200).send(advert);
     })
     .catch(function (error) {
       console.error("Error getting documents: ", error);
     });
+
+  
 });
 
 app.post("/editadvert", (req, res) => {
@@ -260,6 +302,29 @@ app.post("/getfavs", (req, res) => {
     });
 });
 
+app.post("/userfavorites", (req, res) => {
+   // Get a reference to the collection
+   var docRef = db.collection("UserDB");
+   // Create a query to find the documents with requested location
+   var query = docRef.where("userID", "==", req.body.userID);
+   // Get the matching documents
+   query
+     .get()
+     .then((querySnapshot) => {
+       // Convert the query snapshot to an array of results
+       const tempDoc = [];
+       querySnapshot.forEach((doc) => {
+         tempDoc.push({ id: doc.id, ...doc.data() });
+       });
+       res.status(200).send(JSON.stringify(tempDoc, null, "  "));
+     })
+     .catch((error) => {
+       // An error occurred while searching the database
+       console.error("Error searching the database:", error);
+       res.status(404);
+     });
+});
+
 app.post("/favplus", (req, res) => {
   var advertID = req.body.advertID;
   var userID = req.body.userID;
@@ -275,14 +340,10 @@ app.post("/favplus", (req, res) => {
         data.favAdvertIDs.push(advertID);
         data.favoriteCount = data.favoriteCount + 1;
 
-        // Update the document with the new data
-        doc.ref.set(data);
-
-        // Send the updated data to the client
-        res.status(200).send(data);
-      });
-    })
-    .catch(function (error) {
+      // Update the document with the new data
+      doc.ref.set(data);
+    });
+  }).catch(function (error) {
       console.error("Error getting documents: ", error);
     });
   var advertDocRef = db.collection("AdvertDB");
@@ -296,16 +357,14 @@ app.post("/favplus", (req, res) => {
         // Set properties of the found data
         data.userIDs.push(userID);
 
-        // Update the document with the new data
-        doc.ref.set(data);
-
-        // Send the updated data to the client
-        res.status(200).send(data);
-      });
-    })
-    .catch(function (error) {
-      console.error("Error getting documents: ", error);
+      // Update the document with the new data
+      doc.ref.set(data);
+      res.status(200).send(data);
     });
+  }).catch(function (error) {
+      console.error("Error getting documents: ", error);
+  });
+  res.status(200)
 });
 
 app.post("/favminus", (req, res) => {
@@ -413,32 +472,6 @@ app.get("/adverts", async (req, res) => {
   }
 });
 
-app.get("/sortby/:filter/:type"),
-  (req, res) => {
-    const filter = req.params.filter;
-    const type = req.params.type;
-    var docRef = db.collection("AdvertDB");
-
-    var query = docRef.orderBy(filter, type);
-    query
-      .get()
-      .then((querySnapshot) => {
-        // Convert the query snapshot into an array
-        const docs = Array.from(querySnapshot);
-
-        // Transform the array of documents into an array of results
-        const results = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-        // Send the results as a JSON string
-        res.status(200).send(JSON.stringify(results, null, "  "));
-      })
-      .catch((error) => {
-        // An error occurred while searching the database
-        console.error("Error searching the database:", error);
-        res.status(404);
-      });
-  };
-
 app.get("/filterbyprice/:min/:max", (req, res) => {
   // Get the min and max values from the query string parameters
   var min = req.params.min;
@@ -468,32 +501,42 @@ app.get("/filterbyprice/:min/:max", (req, res) => {
     });
 });
 
-app.get("/filterByAll/:city/:petType/:amount", (req, res) => {
+app.get("/filterByAll/:city/:petType/:price", (req, res) => {
   // Get a reference to the collection
   const address = req.params.city;
-  const amount = req.params.amount;
-  const etype = req.params.petType;
+  const price = req.params.price;
+  const petType = req.params.petType;
 
   var docRef = db.collection("AdvertDB");
 
   // Create a query to find the documents with prices between the min and max
-  var query = docRef
-    .where("price", "<=", Number(amount))
-    .where("petType", "==", etype)
-    .where("address", "==", address);
-  // Get the matching documents
+  var query = docRef;
+  if (address != "all") {
+    query = query.where("address", "==", address);
+  }
 
+  if (petType != "all") {
+    query = query.where("petType", "==", petType);
+  }
+
+  if (price != 0) {
+    query = query.where("price", "<=", Number(price));
+  }
+  // Get the matching documents
   query
     .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        // Do something with the matching document
-        console.log(doc.id, " => ", doc.data());
-        res.status(200).send(doc.data());
+    .then((querySnapshot) => {
+      // Convert the query snapshot to an array of results
+      const tempDoc = [];
+      querySnapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
       });
+      res.status(200).send(JSON.stringify(tempDoc, null, "  "));
     })
-    .catch(function (error) {
-      console.error("Error getting documents: ", error);
+    .catch((error) => {
+      // An error occurred while searching the database
+      console.error("Error searching the database:", error);
+      res.status(404);
     });
 });
 
@@ -509,14 +552,12 @@ app.get("/filterbyaddress/:address", (req, res) => {
   query
     .get()
     .then((querySnapshot) => {
-      // Convert the query snapshot into an array
-      const docs = Array.from(querySnapshot);
-
-      // Transform the array of documents into an array of results
-      const results = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      // Send the results as a JSON string
-      res.status(200).send(JSON.stringify(results, null, "  "));
+      // Convert the query snapshot to an array of results
+      const tempDoc = [];
+      querySnapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
+      });
+      res.status(200).send(JSON.stringify(tempDoc, null, "  "));
     })
     .catch((error) => {
       // An error occurred while searching the database
