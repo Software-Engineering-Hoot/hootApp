@@ -9,6 +9,7 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/utils/custom_methods.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AdvertService {
@@ -76,9 +77,41 @@ class AdvertService {
         .toList();
   }
 
+  Future<String> uploadFile(File _image) async {
+    Reference storageReference = FirebaseStorage.instance.ref().child("test/");
+
+    UploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask;
+    print('File Uploaded');
+    var returnURL = '';
+    await storageReference.getDownloadURL().then((fileURL) {
+      returnURL = fileURL;
+    });
+    return returnURL;
+  }
+
+  Future<void> saveImages(File image, DocumentReference ref) async {
+    String imageURL = await uploadFile(image);
+    await ref.update({
+      'images': FieldValue.arrayUnion([imageURL])
+    });
+  }
+
   Future<bool> addAdvertWithBackEnd(
       AdvertModel advert, List<XFile> files) async {
-    var file = File(files.first.path);
+    for (final element in files) {
+      var file = File(files.first.path);
+      Reference ref =
+          FirebaseStorage.instance.ref().child(file.hashCode.toString());
+      TaskSnapshot snapshot = await ref.putFile(file);
+      String url = await snapshot.ref.getDownloadURL();
+      print(url);
+
+      if (advert.photos == null) {
+        advert.photos = [];
+      }
+      advert.photos?.add(url);
+    }
 
     advert.publisherID = _auth.currentUser?.uid;
     final response = await http.post(
