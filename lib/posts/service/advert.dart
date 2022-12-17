@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
@@ -12,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 class AdvertService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   Future<List<AdvertModel>> getAdvert() async {
     final List<AdvertModel> advertList = [];
@@ -75,11 +78,8 @@ class AdvertService {
 
   Future<bool> addAdvertWithBackEnd(
       AdvertModel advert, List<XFile> files) async {
-    Uint8List data = await files.first.readAsBytes();
-    print(data);
-    // advert.photos?.add(await files.first.readAsString());
-    print(advert.photos);
-    // Send a POST request to the specified URL with the data as the request body
+    var file = File(files.first.path);
+
     advert.publisherID = _auth.currentUser?.uid;
     final response = await http.post(
         Uri.parse('http://192.168.1.21:8080/addadvert'),
@@ -89,18 +89,6 @@ class AdvertService {
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }
-
-  /*Future<bool> addAdvertFavorite(AdvertModel advert) async {
-    // Send a POST request to the specified URL with the data as the request body
-    advert.publisherID = _auth.currentUser?.uid;
-    final response = await http.post(Uri.parse('http://192.168.1.21:8080/favplus'),
-        body: json.encode(advert),
-        headers: {'Content-Type': 'application/json'});
-
-    print(response);
-    // Check the response status code and return true if the request was successful
-    return response.statusCode == 200;
-  }*/
 
   Future<bool> addAdvertFavorite(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
