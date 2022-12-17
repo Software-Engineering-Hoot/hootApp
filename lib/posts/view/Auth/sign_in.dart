@@ -4,6 +4,7 @@ import 'package:hoot/posts/service/auth.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/view/auth/reset_password.dart';
 import 'package:hoot/posts/view/auth/sign_up.dart';
+import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/view/home.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
@@ -106,7 +107,7 @@ class SignInState extends State<SignIn> {
                         .signIn(user.email!, user.password!)
                         .then((value) {
                       if (value) {
-                        const Home().launch(context);
+                        const Dashboard().launch(context);
                       }
                     });
                   }

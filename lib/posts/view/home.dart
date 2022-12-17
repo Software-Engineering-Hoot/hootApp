@@ -1,104 +1,168 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hoot/posts/bloc/advert_bloc.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/models/user_model.dart';
+import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
-import 'package:hoot/posts/utils/images.dart';
-import 'package:hoot/posts/view/add_advert.dart';
-import 'package:hoot/posts/view/advert_page.dart';
-import 'package:hoot/posts/view/profile.dart';
-import 'package:hoot/posts/view/search.dart';
-import 'package:hoot/posts/widgets/custom_widgets.dart';
+import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/widgets/advert_detail.dart';
+import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  HomeState createState() => HomeState();
+  State<Home> createState() => _HomeState();
 }
 
-class HomeState extends State<Home> {
-  int _selectedIndex = 0;
-
-  final _pages = [
-    AdvertsPage(),
-    Search(),
-    AddAdvert(),
-    Profile(),
-    Profile(),
-  ];
-
-  Widget _bottomTab() {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      selectedLabelStyle: boldTextStyle(size: 14),
-      selectedFontSize: 14,
-      unselectedFontSize: 14,
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined, size: 22),
-          label: 'Home',
-          activeIcon: Icon(Icons.home_outlined, color: colorPrimary, size: 22),
-        ),
-        BottomNavigationBarItem(
-          icon: search.iconImage(),
-          label: 'Search',
-          activeIcon: search.iconImage(iconColor: colorPrimary),
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Add',
-          activeIcon: Icon(
-            Icons.add,
-            color: colorPrimary,
-            size: 22,
-          ),
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notifications',
-          activeIcon: Icon(
-            Icons.notifications,
-            color: colorPrimary,
-            size: 22,
-          ),
-        ),
-        BottomNavigationBarItem(
-          icon: person.iconImage(),
-          label: 'Account',
-          activeIcon: person.iconImage(iconColor: colorPrimary),
-        ),
-      ],
-    );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+class _HomeState extends State<Home> {
+  final AdvertService _advertService = AdvertService();
+  UserModel user = UserModel();
+  List<AdvertModel> adverts = [];
+  final _scrollController = ScrollController();
+  int selectedIndex = 0;
 
   @override
   void initState() {
-    super.initState();
     init();
+    super.initState();
   }
 
-  Future<void> init() async {
-    await setStatusBarColor(colorPrimary,
-        statusBarIconBrightness: Brightness.light);
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
+  Future<bool> init() async {
+    try {
+      user = await _advertService.getUserDetails();
+      adverts = await _advertService.getAdvert();
+      print(adverts);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _bottomTab(),
-      body: Center(child: _pages.elementAt(_selectedIndex)),
+      appBar: AppBar(
+        title: Text("Home"),
+        backgroundColor: colorPrimary,
+        automaticallyImplyLeading: false,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16)),
+        ),
+      ),
+      body: FutureBuilder<bool>(
+        future: init(), // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              Container(
+                width: context.width(),
+                height: context.height(),
+                child: Column(
+                  children: [
+                    10.height,
+                    HorizontalList(
+                      wrapAlignment: WrapAlignment.start,
+                      itemCount: petTypes.length,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 0,
+                      ),
+                      itemBuilder: (_, index) {
+                        final data = petTypes[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          decoration: boxDecorationWithRoundedCorners(
+                            backgroundColor: selectedIndex == index
+                                ? colorPrimary_light
+                                : Colors.transparent,
+                          ),
+                          child: Text(
+                            data,
+                            style: boldTextStyle(
+                                color: selectedIndex == index
+                                    ? colorPrimary
+                                    : gray.withOpacity(0.4)),
+                          ),
+                        ).onTap(() async {
+                          selectedIndex = index;
+                          await refreshPage(petTypes[index])
+                              .then((value) => setState(() {}));
+                        },
+                            splashColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent);
+                      },
+                    ),
+                    10.height,
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            child: AdvertListItem(post: adverts[index]),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AdvertDetail(advert: adverts[index])),
+                              );
+                            },
+                          );
+                        },
+                        itemCount: adverts.length,
+                        controller: _scrollController,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ];
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ];
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              ),
+            ];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  Future<bool> refreshPage(String petType) async {
+    adverts = await _advertService.filterByAll("", petType, 0);
+    return true;
   }
 }

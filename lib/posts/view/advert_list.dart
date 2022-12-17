@@ -8,7 +8,6 @@ import 'package:hoot/posts/utils/constant.dart';
 import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:http/http.dart' as http;
 
 class AdvertsList extends StatefulWidget {
   const AdvertsList({super.key});
@@ -92,11 +91,7 @@ class _AdvertsListState extends State<AdvertsList> {
                           ),
                         ).onTap(() {
                           selectedIndex = index;
-                          setState(() {
-                            AdvertBloc(httpClient: http.Client())
-                              ..add(AdvertFetched(
-                                  "", petTypes[selectedIndex], 0));
-                          });
+                          setState(() {});
                         },
                             splashColor: Colors.transparent,
                             hoverColor: Colors.transparent,

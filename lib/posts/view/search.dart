@@ -3,9 +3,9 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
-import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Search extends StatefulWidget {
@@ -31,7 +31,8 @@ class _SearchState extends State<Search> {
   Future<bool> getSearchedAdvert(
       String city, String petType, double amount) async {
     try {
-      searchedAdvert = await _advertService.getAdvert();
+      searchedAdvert = await _advertService.filterByAll(city, petType, amount);
+      print(searchedAdvert);
     } catch (e) {
       return false;
     }

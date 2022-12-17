@@ -7,7 +7,7 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
-import 'package:hoot/posts/view/home.dart';
+import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
@@ -239,7 +239,7 @@ class AddAdvertState extends State<AddAdvert> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Home()),
+                                  builder: (context) => const Dashboard()),
                             );
                           }
                         });

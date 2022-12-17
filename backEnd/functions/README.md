@@ -11,4 +11,4 @@ npm -g install nodemon --save-dev
 
 ##RUN THIS COMMAND TO EXECUTE
 nodemon index.js
-http://192.168.1.21:8080 -> GO THIS URL
+http://localhost:8080 -> GO THIS URL

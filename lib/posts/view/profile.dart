@@ -36,6 +36,7 @@ class _ProfileState extends State<Profile> {
       user = await _advertService.getUserDetails();
       myAdverts = await _advertService.getUserAdverts();
       favAdverts = await _advertService.getAdvert();
+      print(favAdverts);
     } catch (e) {
       return false;
     }
@@ -220,7 +221,7 @@ class _ProfileState extends State<Profile> {
                                 : Colors.transparent,
                           ),
                           child: Text(
-                            '$data (${selectedIndex == 0 ? myAdverts.length : favAdverts.length})',
+                            '$data',
                             style: boldTextStyle(
                                 color: selectedIndex == index
                                     ? colorPrimary

@@ -21,28 +21,28 @@ class _AdvertDetailState extends State<AdvertDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AppButton(
-        color: colorPrimary,
-        elevation: 0,
-        width: context.width(),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditAdvert(advert: widget.advert)),
-          );
-        },
-        child: Text('Edit Advert', style: boldTextStyle(color: white)),
-      ).paddingSymmetric(horizontal: 16, vertical: 24),
       // bottomNavigationBar: AppButton(
       //   color: colorPrimary,
       //   elevation: 0,
       //   width: context.width(),
       //   onTap: () {
-      //     _advertService.addAdvertFavorite(widget.advert);
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => EditAdvert(advert: widget.advert)),
+      //     );
       //   },
-      //   child: Text('Add To Favorites', style: boldTextStyle(color: white)),
+      //   child: Text('Edit Advert', style: boldTextStyle(color: white)),
       // ).paddingSymmetric(horizontal: 16, vertical: 24),
+      bottomNavigationBar: AppButton(
+        color: colorPrimary,
+        elevation: 0,
+        width: context.width(),
+        onTap: () {
+          _advertService.addAdvertFavorite(widget.advert);
+        },
+        child: Text('Add To Favorites', style: boldTextStyle(color: white)),
+      ).paddingSymmetric(horizontal: 16, vertical: 24),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
