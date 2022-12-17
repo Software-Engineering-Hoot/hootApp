@@ -592,5 +592,5 @@ app.get("/filterbypettype/:petType", (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("listening on the port http://192.168.1.21:8080");
+  console.log("listening on the port http://localhost:8080");
 });
