@@ -52,11 +52,8 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                     children: [
                       Row(
                         children: [
-                          Image.network(
-                                  "https://i.pinimg.com/474x/82/a1/88/82a188d47fed928f11e994eb448dfe74.jpg",
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover)
+                          Image.network(widget.advert.photos![0],
+                                  width: 60, height: 60, fit: BoxFit.cover)
                               .cornerRadiusWithClipRRect(30),
                           16.width,
                           Column(
@@ -153,12 +150,12 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                   HorizontalList(
                     padding: EdgeInsets.only(right: 24, left: 24),
                     wrapAlignment: WrapAlignment.spaceEvenly,
-                    itemCount: 2,
+                    itemCount: widget.advert.photos!.length,
                     itemBuilder: (_, int index) => Stack(
                       alignment: Alignment.center,
                       children: [
-                        // rfCommonCachedNetworkImage(hotelImageData[index].img.validate(),
-                        //     height: 70, width: 70, fit: BoxFit.cover),
+                        Image.network(widget.advert.photos![index],
+                            height: 70, width: 70, fit: BoxFit.cover),
                         Container(
                           height: 70,
                           width: 70,
