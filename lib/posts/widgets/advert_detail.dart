@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
-import 'package:flutter_infinite_list/posts/service/advert.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/widgets/advert_detail_info.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/models/user_model.dart';
+import 'package:hoot/posts/service/advert.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/widgets/advert_detail_info.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertDetail extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/service/advert.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/utils/constant.dart';
-import 'package:flutter_infinite_list/posts/view/home.dart';
-import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
-import 'package:flutter_infinite_list/posts/widgets/custom/date_picker_widget.dart';
-import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/service/advert.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/view/home.dart';
+import 'package:hoot/posts/widgets/common_app_component.dart';
+import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
+import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 

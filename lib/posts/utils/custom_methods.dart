@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/utils/errors.dart';
+import 'package:hoot/posts/utils/errors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void flutterToast(String message, Color color) {

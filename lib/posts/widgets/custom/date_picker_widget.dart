@@ -1,7 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/utils/date_constants.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/date_constants.dart';
 import 'package:intl/intl.dart';
 
 class DatePickerWidget extends StatefulWidget {

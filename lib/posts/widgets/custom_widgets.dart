@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/utils/constant.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 

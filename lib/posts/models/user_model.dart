@@ -2,7 +2,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
+import 'package:hoot/posts/models/advert_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';

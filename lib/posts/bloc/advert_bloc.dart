@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/service/advert.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/service/advert.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 

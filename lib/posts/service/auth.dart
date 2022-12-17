@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
-import 'package:flutter_infinite_list/posts/utils/custom_methods.dart';
+import 'package:hoot/posts/models/user_model.dart';
+import 'package:hoot/posts/utils/custom_methods.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {

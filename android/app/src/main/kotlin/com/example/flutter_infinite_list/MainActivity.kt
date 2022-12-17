@@ -1,4 +1,4 @@
-package com.example.flutter_infinite_list
+package com.example.hoot
 
 import io.flutter.embedding.android.FlutterActivity
 

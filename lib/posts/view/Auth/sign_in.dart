@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
-import 'package:flutter_infinite_list/posts/service/auth.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/view/auth/reset_password.dart';
-import 'package:flutter_infinite_list/posts/view/auth/sign_up.dart';
-import 'package:flutter_infinite_list/posts/view/home.dart';
-import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
-import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:hoot/posts/models/user_model.dart';
+import 'package:hoot/posts/service/auth.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/view/auth/reset_password.dart';
+import 'package:hoot/posts/view/auth/sign_up.dart';
+import 'package:hoot/posts/view/home.dart';
+import 'package:hoot/posts/widgets/common_app_component.dart';
+import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 // ignore: must_be_immutable

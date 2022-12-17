@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class RFCommonAppComponent extends StatefulWidget {

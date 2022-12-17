@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/firebase_options.dart';
-import 'package:flutter_infinite_list/posts/service/auth.dart';
-import 'package:flutter_infinite_list/simple_bloc_observer.dart';
+import 'package:hoot/firebase_options.dart';
+import 'package:hoot/posts/service/auth.dart';
+import 'package:hoot/simple_bloc_observer.dart';
 import 'package:test/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/app.dart';
-import 'package:flutter_infinite_list/simple_bloc_observer.dart';
+import 'package:hoot/app.dart';
+import 'package:hoot/simple_bloc_observer.dart';
 
 /*added libs @emircand*/
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_infinite_list/firebase_options.dart';
+import 'package:hoot/firebase_options.dart';
 
 bool USE_FIRESTORE_EMULATOR = false;
 

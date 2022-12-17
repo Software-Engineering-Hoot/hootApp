@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/models/user_model.dart';
-import 'package:flutter_infinite_list/posts/service/advert.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
-import 'package:flutter_infinite_list/posts/utils/images.dart';
-import 'package:flutter_infinite_list/posts/widgets/common_app_component.dart';
-import 'package:flutter_infinite_list/posts/widgets/advert_list_item.dart';
-import 'package:flutter_infinite_list/posts/widgets/custom_widgets.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/models/user_model.dart';
+import 'package:hoot/posts/service/advert.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/images.dart';
+import 'package:hoot/posts/widgets/common_app_component.dart';
+import 'package:hoot/posts/widgets/advert_list_item.dart';
+import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Profile extends StatefulWidget {

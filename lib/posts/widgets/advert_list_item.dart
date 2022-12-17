@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/models/advert_model.dart';
-import 'package:flutter_infinite_list/posts/utils/colors.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertListItem extends StatelessWidget {
