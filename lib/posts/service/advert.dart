@@ -45,6 +45,7 @@ class AdvertService {
     final st = await http.post(
       Uri.parse('http://localhost:8080/getuser'),
       body: {'userID': '${_auth.currentUser?.uid}'},
+      headers: {'Content-Type': 'application/json'},
     );
 
     final model =
@@ -57,6 +58,7 @@ class AdvertService {
     final st = await http.post(
       Uri.parse('http://localhost:8080/useradverts'),
       body: {'publisherID': '${_auth.currentUser?.uid}'},
+      headers: {'Content-Type': 'application/json'},
     );
 
     print(st);
@@ -109,6 +111,7 @@ class AdvertService {
     final response = await http.post(
       Uri.parse('http://localhost:8080/editadvert'),
       body: json.encode(advert),
+      headers: {'Content-Type': 'application/json'},
     );
 
     // Check the response status code and return true if the request was successful
@@ -120,6 +123,7 @@ class AdvertService {
     final response = await http.post(
       Uri.parse('http://localhost:8080/edituser'),
       body: json.encode(user),
+      headers: {'Content-Type': 'application/json'},
     );
 
     // Check the response status code and return true if the request was successful
@@ -131,6 +135,7 @@ class AdvertService {
     final response = await http.delete(
       Uri.parse('http://localhost:8080/deleteadvert'),
       body: json.encode(advert),
+      headers: {'Content-Type': 'application/json'},
     );
 
     // Check the response status code and return true if the request was successful
