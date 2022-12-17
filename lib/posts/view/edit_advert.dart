@@ -204,17 +204,17 @@ class EditAdvertState extends State<EditAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        await _advertService
-                            .addAdvertWithBackEnd(widget.advert)
-                            .then((value) {
-                          if (value) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Home()),
-                            );
-                          }
-                        });
+                        // await _advertService
+                        //     .addAdvertWithBackEnd(widget.advert)
+                        //     .then((value) {
+                        //   if (value) {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => const Home()),
+                        //     );
+                        //   }
+                        // });
                       }
                     },
                     child: Text('Edit', style: boldTextStyle(color: white)),

@@ -28,6 +28,8 @@ dependencies:
   datetime_picker_formfield: ^2.0.0
   image_picker: ^0.8.6
   url_launcher: ^6.1.7
+  carousel_slider: ^4.2.1
+  firebase_storage: ^11.0.8
 
 dev_dependencies:
   flutter_test:

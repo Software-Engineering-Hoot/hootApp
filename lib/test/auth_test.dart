@@ -24,7 +24,9 @@ Future<void> main() async {
   await Firebase.initializeApp();
   if (USE_FIRESTORE_EMULATOR) {
     FirebaseFirestore.instance.settings = const Settings(
-        host: 'localhost:8080', sslEnabled: false, persistenceEnabled: false);
+        host: '192.168.1.21:8080',
+        sslEnabled: false,
+        persistenceEnabled: false);
   }
   group('Auth Tests', () {
     var authService = AuthService();

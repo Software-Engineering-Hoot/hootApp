@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,8 +20,7 @@ class AdvertModel {
   String? startDate;
   String? title;
   String? publisherID; //userID of the owner of advert
-  List<String>?
-      userIds; // list of ids who adds this advert to his/her favorites
+  List<String>? userIds;
 
   AdvertModel({
     this.id,

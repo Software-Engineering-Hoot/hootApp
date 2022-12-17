@@ -33,9 +33,9 @@ class _ProfileState extends State<Profile> {
 
   Future<bool> init() async {
     try {
+      user = await _advertService.getUserDetails();
       myAdverts = await _advertService.getUserAdverts();
       favAdverts = await _advertService.getAdvert();
-      user = await _advertService.getUserDetails();
     } catch (e) {
       return false;
     }
