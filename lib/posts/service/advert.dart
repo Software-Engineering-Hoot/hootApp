@@ -106,6 +106,19 @@ class AdvertService {
     return response.statusCode == 200;
   }
 
+  Future<bool> deleteAdvertFavorite(AdvertModel advert) async {
+    // Send a POST request to the specified URL with the data as the request body
+    final userID = _auth.currentUser!.uid;
+    final advertID = advert.id;
+    final body = json.encode({'userID': userID, 'advertID': advertID});
+    advert.userIds?.remove(userID);
+    await editAdvert(advert);
+    final response = await http.post(Uri.parse('http://localhost:8080/favminus'),
+        body: body, headers: {'Content-Type': 'application/json'});
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }
+
   Future<bool> editAdvert(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
