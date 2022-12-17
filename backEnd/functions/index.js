@@ -149,7 +149,7 @@ app.get("/getlocations", async (req, res) => {
 app.post("/addadvert", (req, res) => {
   const docRef = db.collection("AdvertDB");
   const advert = req.body;
-  advert.advertID = docRef.doc().id;
+  advert.id = docRef.doc().id;
   advert.favoriteCount = 0;
   // and ensure that the object does not contain any circular references
   const jsonData = JSON.stringify(advert);
