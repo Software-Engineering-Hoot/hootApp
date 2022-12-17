@@ -37,7 +37,7 @@ class AdvertListItem extends StatelessWidget {
                         height: context.height() * 0.6,
                         width: context.width() * 0.30,
                         child:
-                            Image.network(post.photos!.first, fit: BoxFit.fill),
+                          Image.memory(post.photos![0].buffer.asUint8List()),
                       )),
                   8.width,
                   Column(

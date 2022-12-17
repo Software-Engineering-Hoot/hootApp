@@ -57,12 +57,7 @@ class _AdvertDetailState extends State<AdvertDetail> {
                 centerTitle: true,
                 background: Stack(
                   children: [
-                    Image.network(
-                      widget.advert.photos!.first,
-                      fit: BoxFit.cover,
-                      height: 350,
-                      width: context.width(),
-                    ),
+                    Image.memory(widget.advert.photos![0].buffer.asUint8List()),
                     // rfCommonCachedNetworkImage(
                     //   widget.hotelData!.img.validate(),
                     //   fit: BoxFit.cover,

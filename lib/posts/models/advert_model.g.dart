@@ -16,7 +16,7 @@ AdvertModel _$AdvertModelFromJson(Map<String, dynamic> json) => AdvertModel(
       price: (json['price'] as num?)?.toDouble(),
       description: json['description'] as String?,
       photos:
-          (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
+          (json['photos'] as List<dynamic>?)?.map((e) => e as ByteData).toList(),
       favoriteCount: json['favoriteCount'] as int?,
       publisherID: json['publisherID'] as String?,
       userIds:
