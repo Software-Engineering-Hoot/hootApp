@@ -79,7 +79,7 @@ class AdvertService {
     return response.statusCode == 200;
   }
 
-  Future<bool> addAdvertFavorite(AdvertModel advert) async {
+  /*Future<bool> addAdvertFavorite(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     advert.publisherID = _auth.currentUser?.uid;
     final response = await http.post(Uri.parse('http://localhost:8080/favplus'),
@@ -87,6 +87,19 @@ class AdvertService {
         headers: {'Content-Type': 'application/json'});
 
     print(response);
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
+  }*/
+
+  Future<bool> addAdvertFavorite(AdvertModel advert) async {
+    // Send a POST request to the specified URL with the data as the request body
+    final userID = _auth.currentUser!.uid;
+    final advertID = advert.id;
+    final body = json.encode({'userID': userID, 'advertID': advertID});
+    advert.userIds?.add(userID);
+    await editAdvert(advert);
+    final response = await http.post(Uri.parse('http://localhost:8080/favplus'),
+        body: body, headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }

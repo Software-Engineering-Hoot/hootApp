@@ -218,28 +218,17 @@ app.post("/editadvert", (req, res) => {
 });
 
 app.post("/favplus", (req, res) => {
-  // Get a reference to the collection
-  var docRef = db.collection("AdvertDB");
-
-  var docRef2= db.collection("UserDB");
-  var query2 = docRef2.where("userID", "==", req.body.publisherID);
-
-  // Create a query to find the document you want
-  var query = docRef.where("id", "==", req.body.id);
-
-  // Get the matching document
-  
-    // Get the matching document
-  query2
+  var advertID = req.body.advertID;
+  var docRef= db.collection("UserDB");
+  var query = docRef.where("userID", "==", req.body.userID);
+  query
   .get()
   .then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-      // Do something with the matching document
-      console.log("sadfawerwe");
       var data = doc.data();
 
       // Set properties of the found data
-      data.favAdvertIDs.push(req.body.publisherID)
+      data.favAdvertIDs.push(advertID)
 
       // Update the document with the new data
       doc.ref.set(data);
