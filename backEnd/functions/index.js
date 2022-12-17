@@ -321,7 +321,7 @@ app.post("/useradverts", (req, res) => {
   var docRef = db.collection("AdvertDB");
 
   // Create a query to find the documents with requested location
-  var query = docRef.where("publisherID", "==", req.body.publisherID);
+  var query = docRef.where("publisherID", "==", req.body.userID);
 
   // Get the matching documents
   query
