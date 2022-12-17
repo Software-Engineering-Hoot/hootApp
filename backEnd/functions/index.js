@@ -179,18 +179,19 @@ app.delete("/deleteadvert", (req, res) => {
   // Create a query to find the document you want to delete
   var query = docRef.where("id", "==", req.body.id);
   // Delete the matching document
+  // Get the matching document
   query
     .get()
-    .then(function (querySnapshot) {
-      var batch = db.batch();
-      querySnapshot.forEach(function (doc) {
-        batch.delete(doc.ref);
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // delete the document with the new data
+        doc.ref.delete(req.body);
       });
-      res.status(200);
-      return batch.commit();
+      // Send a response to the client
+      res.sendStatus(200);
     })
     .catch(function (error) {
-      res.status(500).send("Error removing document: ", error);
+      console.error("Error getting documents: ", error);
     });
 });
 
@@ -260,10 +261,7 @@ app.post("/favplus", (req, res) => {
       // Send the updated data to the client
       res.status(200).send(data);
     });
-  })
-
-
-    .catch(function (error) {
+  }).catch(function (error) {
       console.error("Error getting documents: ", error);
     });
 });
