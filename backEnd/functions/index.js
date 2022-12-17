@@ -165,7 +165,6 @@ app.post("/addadvert", (req, res) => {
         // Update the document with the new data
         doc.ref.set(data);
         // Send the updated data to the client
-        res.status(200);
       });
     })
     .catch(function (error) {
@@ -181,7 +180,7 @@ app.post("/addadvert", (req, res) => {
       // The data was successfully added to the database
       console.log("Data added to the database");
       console.log("REQ BODY", req.body);
-      res.status(200);
+      res.status(200).send(advert);
     })
     .catch((error) => {
       // An error occurred while trying to add the data to the database
@@ -195,13 +194,13 @@ app.post("/addadvert", (req, res) => {
 // in every deletion user favorites should be updated
 app.delete("/deleteadvert", (req, res) => {
   const docRef = db.collection("AdvertDB");
-  const advert = req.body;
-  let favUsers = req.body.userIDs;
   const userDocRef = db.collection('UserDB');
-  var query = userDocRef.where("userID", "==", advert.publisherID);
+  const advert = req.body;
+  let favUsers = advert.userIDs;
+  var query0 = userDocRef.where("userID", "==", advert.publisherID);
   // Delete the matching document
   // Get the matching document
-  query
+  query0
   .get()
   .then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
@@ -211,7 +210,6 @@ app.delete("/deleteadvert", (req, res) => {
       // Update the document with the new data
       doc.ref.set(data);
       // Send the updated data to the client
-      res.status(200);
     });
     }).catch(function (error) {
       console.error("Error getting documents: ", error);
@@ -219,8 +217,8 @@ app.delete("/deleteadvert", (req, res) => {
 
   if(favUsers){
     favUsers.forEach(element => {
-      var query = userDocRef.where("userID", "==", element);
-      query
+      var query1 = userDocRef.where("userID", "==", element);
+      query1
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -230,7 +228,7 @@ app.delete("/deleteadvert", (req, res) => {
           // Update the document with the new data
           doc.ref.set(data);
           // Send the updated data to the client
-          res.status(200);
+          
         });
         }).catch(function (error) {
           console.error("Error getting documents: ", error);
@@ -239,10 +237,10 @@ app.delete("/deleteadvert", (req, res) => {
   }
   
   // Create a query to find the document you want to delete
-  var query = docRef.where("id", "==", advert.id);
+  var query2 = docRef.where("id", "==", advert.id);
   // Delete the matching document
   // Get the matching document
-  query
+  query2
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -250,7 +248,7 @@ app.delete("/deleteadvert", (req, res) => {
         doc.ref.delete(advert);
       });
       // Send a response to the client
-      res.status(200);
+      res.status(200).send(advert);
     })
     .catch(function (error) {
       console.error("Error getting documents: ", error);
@@ -302,6 +300,29 @@ app.post("/getfavs", (req, res) => {
     .catch(function (error) {
       res.status(500).send("Error getting document: ", error);
     });
+});
+
+app.post("/userfavorites", (req, res) => {
+   // Get a reference to the collection
+   var docRef = db.collection("UserDB");
+   // Create a query to find the documents with requested location
+   var query = docRef.where("userID", "==", req.body.userID);
+   // Get the matching documents
+   query
+     .get()
+     .then((querySnapshot) => {
+       // Convert the query snapshot to an array of results
+       const tempDoc = [];
+       querySnapshot.forEach((doc) => {
+         tempDoc.push({ id: doc.id, ...doc.data() });
+       });
+       res.status(200).send(JSON.stringify(tempDoc, null, "  "));
+     })
+     .catch((error) => {
+       // An error occurred while searching the database
+       console.error("Error searching the database:", error);
+       res.status(404);
+     });
 });
 
 app.post("/favplus", (req, res) => {
@@ -489,20 +510,17 @@ app.get("/filterByAll/:city/:petType/:price", (req, res) => {
   var docRef = db.collection("AdvertDB");
 
   // Create a query to find the documents with prices between the min and max
-  if(address == 'all' && petType == 'all' && price == 'all'){
-    var query = docRef;
-  } else if (address == "all" && petType == "all"){
-    var query = docRef
-    .where("price", "<=", Number(price));
-  } else if(address == "all"){
-    var query = docRef
-    .where("price", "<=", Number(price))
-    .where("petType", "==", petType);
-  }  else {
-    var query = docRef
-    .where("price", "<=", Number(price))
-    .where("petType", "==", petType)
-    .where("address", "==", address);
+  var query = docRef;
+  if (address != "all") {
+    query = query.where("address", "==", address);
+  }
+
+  if (petType != "all") {
+    query = query.where("petType", "==", petType);
+  }
+
+  if (price != 0) {
+    query = query.where("price", "<=", Number(price));
   }
   // Get the matching documents
   query
