@@ -211,7 +211,6 @@ class AdvertService {
       String city, String petType, double amount) async {
     if (city.isEmpty) city = "all";
     if (petType.isEmpty) petType = "all";
-    amount = 1000;
     print(petType);
     final response = await http.get(
       Uri.parse('http://localhost:8080/filterByAll/$city/$petType/$amount'),
