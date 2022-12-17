@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
@@ -24,7 +28,8 @@ class AddAdvertState extends State<AddAdvert> {
   late AdvertModel advert = AdvertModel();
   final AdvertService _advertService = AdvertService();
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? images = [];
+  List<XFile>? _imageFileList = [];
+  String? _retrieveDataError;
 
   @override
   void initState() {
@@ -33,7 +38,9 @@ class AddAdvertState extends State<AddAdvert> {
   }
 
   Future<void> pickImage() async {
-    images = await _picker.pickMultiImage();
+    _imageFileList = await _picker.pickMultiImage();
+    print(_imageFileList);
+    setState(() {});
   }
 
   Future<void> init() async {
@@ -94,19 +101,22 @@ class AddAdvertState extends State<AddAdvert> {
                     },
                   ),
                   16.height,
-                  AppTextField(
-                    textFieldType: TextFieldType.NAME,
+                  DropdownButtonFormField(
+                    isExpanded: true,
                     decoration: rfInputDecoration(
-                      lableText: 'Address',
+                      lableText: 'City',
                       showLableText: true,
                     ),
+                    items: cities.map((taxGroup) {
+                      return DropdownMenuItem<String>(
+                        value: taxGroup,
+                        child: Text(
+                          taxGroup,
+                        ),
+                      );
+                    }).toList(),
                     onChanged: (value) {
-                      advert.address = value;
-                    },
-                    validator: (value) {
-                      return value.isEmptyOrNull
-                          ? 'Please enter address'
-                          : null;
+                      advert.address = value as String?;
                     },
                   ),
                   16.height,
@@ -185,6 +195,37 @@ class AddAdvertState extends State<AddAdvert> {
                     child: Text("Pick Image"),
                   ),
                   16.height,
+                  SizedBox(
+                      height: 200,
+                      child: FutureBuilder<void>(
+                        future: retrieveLostData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<void> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return const Text(
+                                'You have not yet picked an image.',
+                                textAlign: TextAlign.center,
+                              );
+                            case ConnectionState.done:
+                              return _handlePreview();
+                            default:
+                              if (snapshot.hasError) {
+                                return Text(
+                                  'Pick image/video error: ${snapshot.error}}',
+                                  textAlign: TextAlign.center,
+                                );
+                              } else {
+                                return const Text(
+                                  'You have not yet picked an image.',
+                                  textAlign: TextAlign.center,
+                                );
+                              }
+                          }
+                        },
+                      )),
+                  16.height,
                   AppButton(
                     color: colorPrimary,
                     width: context.width(),
@@ -192,7 +233,7 @@ class AddAdvertState extends State<AddAdvert> {
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         await _advertService
-                            .addAdvertWithBackEnd(advert)
+                            .addAdvertWithBackEnd(advert, _imageFileList!)
                             .then((value) {
                           if (value) {
                             Navigator.push(
@@ -213,5 +254,57 @@ class AddAdvertState extends State<AddAdvert> {
         ),
       ),
     );
+  }
+
+  Widget _handlePreview() {
+    return _previewImages();
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostDataResponse response = await _picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        if (response.files == null) {
+          _setImageFileListFromFile(response.file);
+        } else {
+          _imageFileList = response.files;
+        }
+      });
+    } else {
+      _retrieveDataError = response.exception!.code;
+    }
+  }
+
+  void _setImageFileListFromFile(XFile? value) {
+    _imageFileList = value == null ? null : <XFile>[value];
+  }
+
+  Widget _previewImages() {
+    if (_imageFileList != null) {
+      return CarouselSlider(
+        options: CarouselOptions(height: 400.0),
+        items: _imageFileList?.map((i) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(color: Colors.amber),
+                child: Image.file(File(i.path), fit: BoxFit.cover),
+              );
+            },
+          );
+        }).toList(),
+      );
+    } else {
+      return const Text(
+        'You have not yet picked an image.',
+        textAlign: TextAlign.center,
+      );
+    }
   }
 }

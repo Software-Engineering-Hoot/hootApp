@@ -43,8 +43,8 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
                     child: SizedBox(
                       height: context.height() * 0.6,
                       width: context.width() * 0.30,
-                      child: Image.asset(widget.advert.photos![0],
-                          fit: BoxFit.fill),
+                      // child: Image.asset(widget.advert.photos![0],
+                      //     fit: BoxFit.fill),
                     ),
                   ),
                   8.width,

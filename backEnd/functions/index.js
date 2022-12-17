@@ -151,23 +151,24 @@ app.post("/addadvert", (req, res) => {
   const advert = req.body;
   advert.id = docRef.doc().id;
   advert.favoriteCount = 0;
-  const userDocRef = db.collection('UserDB');
+  const userDocRef = db.collection("UserDB");
   var query = userDocRef.where("userID", "==", req.body.publisherID);
   // Delete the matching document
   // Get the matching document
   query
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      var data = doc.data();
-      // Set properties of the found data
-      data.advertIDs.push(advert.id);
-      // Update the document with the new data
-      doc.ref.set(data);
-      // Send the updated data to the client
-      res.status(200);
-    });
-    }).catch(function (error) {
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data();
+        // Set properties of the found data
+        data.advertIDs.push(advert.id);
+        // Update the document with the new data
+        doc.ref.set(data);
+        // Send the updated data to the client
+        res.status(200);
+      });
+    })
+    .catch(function (error) {
       console.error("Error getting documents: ", error);
     });
   // and ensure that the object does not contain any circular references
@@ -262,96 +263,99 @@ app.post("/getfavs", (req, res) => {
 app.post("/favplus", (req, res) => {
   var advertID = req.body.advertID;
   var userID = req.body.userID;
-  var docRef= db.collection("UserDB");
+  var docRef = db.collection("UserDB");
   var query = docRef.where("userID", "==", req.body.userID);
   query
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      var data = doc.data();
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data();
 
-      // Set properties of the found data
-      data.favAdvertIDs.push(advertID);
-      data.favoriteCount = data.favoriteCount + 1;
+        // Set properties of the found data
+        data.favAdvertIDs.push(advertID);
+        data.favoriteCount = data.favoriteCount + 1;
 
-      // Update the document with the new data
-      doc.ref.set(data);
+        // Update the document with the new data
+        doc.ref.set(data);
 
-      // Send the updated data to the client
-      res.status(200).send(data);
-    });
-  }).catch(function (error) {
+        // Send the updated data to the client
+        res.status(200).send(data);
+      });
+    })
+    .catch(function (error) {
       console.error("Error getting documents: ", error);
-  });
+    });
   var advertDocRef = db.collection("AdvertDB");
   var query2 = advertDocRef.where("id", "==", advertID);
   query2
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      var data = doc.data();
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data();
 
-      // Set properties of the found data
-      data.userIDs.push(userID);
+        // Set properties of the found data
+        data.userIDs.push(userID);
 
-      // Update the document with the new data
-      doc.ref.set(data);
+        // Update the document with the new data
+        doc.ref.set(data);
 
-      // Send the updated data to the client
-      res.status(200).send(data);
-    });
-  }).catch(function (error) {
+        // Send the updated data to the client
+        res.status(200).send(data);
+      });
+    })
+    .catch(function (error) {
       console.error("Error getting documents: ", error);
-  });
-  
+    });
 });
 
 app.post("/favminus", (req, res) => {
   var advertID = req.body.advertID;
   var userID = req.body.userID;
-  var docRef= db.collection("UserDB");
+  var docRef = db.collection("UserDB");
   var query = docRef.where("userID", "==", req.body.userID);
   query
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      var data = doc.data();
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data();
 
-      // Set properties of the found data
-      data.favAdvertIDs.pop(advertID);
-      if(data.favoriteCount > 0){
-        data.favoriteCount = data.favoriteCount - 1;
-      }
+        // Set properties of the found data
+        data.favAdvertIDs.pop(advertID);
+        if (data.favoriteCount > 0) {
+          data.favoriteCount = data.favoriteCount - 1;
+        }
 
-      // Update the document with the new data
-      doc.ref.set(data);
+        // Update the document with the new data
+        doc.ref.set(data);
 
-      // Send the updated data to the client
-      res.status(200).send(data);
-    });
-  }).catch(function (error) {
+        // Send the updated data to the client
+        res.status(200).send(data);
+      });
+    })
+    .catch(function (error) {
       console.error("Error getting documents: ", error);
-  });
+    });
   var advertDocRef = db.collection("AdvertDB");
   var query2 = advertDocRef.where("id", "==", advertID);
   query2
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      var data = doc.data();
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data();
 
-      // Set properties of the found data
-      data.userIDs.pop(userID);
+        // Set properties of the found data
+        data.userIDs.pop(userID);
 
-      // Update the document with the new data
-      doc.ref.set(data);
+        // Update the document with the new data
+        doc.ref.set(data);
 
-      // Send the updated data to the client
-      res.status(200).send(data);
-    });
-  }).catch(function (error) {
+        // Send the updated data to the client
+        res.status(200).send(data);
+      });
+    })
+    .catch(function (error) {
       console.error("Error getting documents: ", error);
-  });
+    });
 });
 
 // Get a single advert with the specified ID
@@ -547,5 +551,5 @@ app.get("/filterbypettype/:petType", (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("listening on the port http://localhost:8080");
+  console.log("listening on the port http://192.168.1.21:8080");
 });

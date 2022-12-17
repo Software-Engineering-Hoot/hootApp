@@ -69,12 +69,12 @@ class _AdvertDetailState extends State<AdvertDetail> {
                 centerTitle: true,
                 background: Stack(
                   children: [
-                    Image.asset(
-                      widget.advert.photos![0],
-                      fit: BoxFit.cover,
-                      height: 350,
-                      width: context.width(),
-                    ),
+                    // Image.asset(
+                    //   widget.advert.photos![0].hashCode,
+                    //   fit: BoxFit.cover,
+                    //   height: 350,
+                    //   width: context.width(),
+                    // ),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 32),
