@@ -221,28 +221,35 @@ app.post("/favplus", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
 
+  var docRef2= db.collection("UserDB");
+  var query2 = docRef2.where("userID", "==", req.body.publisherID);
+
   // Create a query to find the document you want
   var query = docRef.where("id", "==", req.body.id);
 
   // Get the matching document
-  query
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        // Do something with the matching document
-        console.log(doc.id, " => ", doc.data());
-        var data = doc.data();
+  
+    // Get the matching document
+  query2
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      // Do something with the matching document
+      console.log("sadfawerwe");
+      var data = doc.data();
 
-        // Set properties of the found data
-        data.favoriteCount = data.favoriteCount + 1;
+      // Set properties of the found data
+      data.favAdvertIDs.push(req.body.publisherID)
 
-        // Update the document with the new data
-        doc.ref.set(data);
+      // Update the document with the new data
+      doc.ref.set(data);
 
-        // Send the updated data to the client
-        res.status(200).send(data);
-      });
-    })
+      // Send the updated data to the client
+      res.status(200).send(data);
+    });
+  })
+
+
     .catch(function (error) {
       console.error("Error getting documents: ", error);
     });
