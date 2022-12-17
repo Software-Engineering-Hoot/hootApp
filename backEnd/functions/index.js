@@ -151,6 +151,25 @@ app.post("/addadvert", (req, res) => {
   const advert = req.body;
   advert.id = docRef.doc().id;
   advert.favoriteCount = 0;
+  const userDocRef = db.collection('UserDB');
+  var query = userDocRef.where("userID", "==", req.body.publisherID);
+  // Delete the matching document
+  // Get the matching document
+  query
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      var data = doc.data();
+      // Set properties of the found data
+      data.advertIDs.push(advert.id);
+      // Update the document with the new data
+      doc.ref.set(data);
+      // Send the updated data to the client
+      res.status(200);
+    });
+    }).catch(function (error) {
+      console.error("Error getting documents: ", error);
+    });
   // and ensure that the object does not contain any circular references
   const jsonData = JSON.stringify(advert);
   // Convert the JSON string back to a JavaScript object
@@ -198,10 +217,8 @@ app.delete("/deleteadvert", (req, res) => {
 app.post("/editadvert", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
-
   // Create a query to find the document you want
   var query = docRef.where("id", "==", req.body.id);
-
   // Get the matching document
   query
     .get()
@@ -244,6 +261,7 @@ app.post("/getfavs", (req, res) => {
 
 app.post("/favplus", (req, res) => {
   var advertID = req.body.advertID;
+  var userID = req.body.userID;
   var docRef= db.collection("UserDB");
   var query = docRef.where("userID", "==", req.body.userID);
   query
@@ -253,7 +271,8 @@ app.post("/favplus", (req, res) => {
       var data = doc.data();
 
       // Set properties of the found data
-      data.favAdvertIDs.push(advertID)
+      data.favAdvertIDs.push(advertID);
+      data.favoriteCount = data.favoriteCount + 1;
 
       // Update the document with the new data
       doc.ref.set(data);
@@ -263,11 +282,33 @@ app.post("/favplus", (req, res) => {
     });
   }).catch(function (error) {
       console.error("Error getting documents: ", error);
+  });
+  var advertDocRef = db.collection("AdvertDB");
+  var query2 = advertDocRef.where("id", "==", advertID);
+  query2
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      var data = doc.data();
+
+      // Set properties of the found data
+      data.userIDs.push(userID);
+
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
     });
+  }).catch(function (error) {
+      console.error("Error getting documents: ", error);
+  });
+  
 });
 
 app.post("/favminus", (req, res) => {
   var advertID = req.body.advertID;
+  var userID = req.body.userID;
   var docRef= db.collection("UserDB");
   var query = docRef.where("userID", "==", req.body.userID);
   query
@@ -277,7 +318,10 @@ app.post("/favminus", (req, res) => {
       var data = doc.data();
 
       // Set properties of the found data
-      data.favAdvertIDs.pop(advertID)
+      data.favAdvertIDs.pop(advertID);
+      if(data.favoriteCount > 0){
+        data.favoriteCount = data.favoriteCount - 1;
+      }
 
       // Update the document with the new data
       doc.ref.set(data);
@@ -285,22 +329,37 @@ app.post("/favminus", (req, res) => {
       // Send the updated data to the client
       res.status(200).send(data);
     });
-  })
-
-
-    .catch(function (error) {
+  }).catch(function (error) {
       console.error("Error getting documents: ", error);
+  });
+  var advertDocRef = db.collection("AdvertDB");
+  var query2 = advertDocRef.where("id", "==", advertID);
+  query2
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      var data = doc.data();
+
+      // Set properties of the found data
+      data.userIDs.pop(userID);
+
+      // Update the document with the new data
+      doc.ref.set(data);
+
+      // Send the updated data to the client
+      res.status(200).send(data);
     });
+  }).catch(function (error) {
+      console.error("Error getting documents: ", error);
+  });
 });
 
 // Get a single advert with the specified ID
 app.get("/advertdetails", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
-
   // Create a query to find the document you want
   var query = docRef.where("id", "==", req.body.id);
-
   // Get the matching document
   query
     .get()
@@ -319,10 +378,8 @@ app.get("/advertdetails", (req, res) => {
 app.post("/useradverts", (req, res) => {
   // Get a reference to the collection
   var docRef = db.collection("AdvertDB");
-
   // Create a query to find the documents with requested location
-  var query = docRef.where("publisherID", "==", req.body.publisherID);
-
+  var query = docRef.where("publisherID", "==", req.body.userID);
   // Get the matching documents
   query
     .get()
@@ -345,7 +402,6 @@ app.post("/useradverts", (req, res) => {
 app.get("/adverts", async (req, res) => {
   const docRef = db.collection("AdvertDB");
   const data = await docRef.get();
-
   if (data) {
     const dataArray = data.docs;
     const tempDoc = dataArray.map((doc) => ({ id: doc.id, ...doc.data() }));
