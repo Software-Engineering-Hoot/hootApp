@@ -56,8 +56,10 @@ class AuthService {
     // Send a POST request to the specified URL with the data as the request body
     user.userID = _auth.currentUser?.uid;
     final userJson = json.encode(user);
-    final response = await http.post(Uri.parse("http://localhost:8080/adduser"),
-        body: userJson, headers: {"Content-Type": "application/json"});
+    final response = await http.post(
+        Uri.parse("http://localhost:5000/hoot-44046/us-central1/app/adduser"),
+        body: userJson,
+        headers: {"Content-Type": "application/json"});
 
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;

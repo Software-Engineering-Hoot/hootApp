@@ -40,7 +40,8 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> getAdvertWithBackEnd() async {
-    final st = await http.get(Uri.parse('http://localhost:8080/adverts'));
+    final st = await http.get(
+        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/adverts'));
     final temp = json.decode(st.body) as List;
     return (temp)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -49,7 +50,7 @@ class AdvertService {
 
   Future<UserModel> getUserDetails() async {
     final st = await http.post(
-      Uri.parse('http://localhost:8080/getuser'),
+      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/getuser'),
       body: {'userID': '${_auth.currentUser?.uid}'},
     );
 
@@ -64,7 +65,7 @@ class AdvertService {
     final bodyString = json.encode(body);
 
     final st = await http.post(
-      Uri.parse('http://localhost:8080/useradverts'),
+      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/useradverts'),
       body: bodyString,
       headers: {'Content-Type': 'application/json'},
     );
@@ -115,7 +116,7 @@ class AdvertService {
 
     advert.publisherID = _auth.currentUser?.uid;
     final response = await http.post(
-        Uri.parse('http://localhost:8080/addadvert'),
+        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/addadvert'),
         body: json.encode(advert),
         headers: {'Content-Type': 'application/json'});
 
@@ -130,8 +131,10 @@ class AdvertService {
     final body = json.encode({'userID': userID, 'advertID': advertID});
     advert.userIds?.add(userID);
     await editAdvert(advert);
-    final response = await http.post(Uri.parse('http://localhost:8080/favplus'),
-        body: body, headers: {'Content-Type': 'application/json'});
+    final response = await http.post(
+        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/favplus'),
+        body: body,
+        headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }
@@ -144,7 +147,7 @@ class AdvertService {
     advert.userIds?.remove(userID);
     await editAdvert(advert);
     final response = await http.post(
-        Uri.parse('http://localhost:8080/favminus'),
+        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/favminus'),
         body: body,
         headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
@@ -154,7 +157,7 @@ class AdvertService {
   Future<bool> editAdvert(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
-      Uri.parse('http://localhost:8080/editadvert'),
+      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/editadvert'),
       body: json.encode(advert),
       headers: {'Content-Type': 'application/json'},
     );
@@ -166,7 +169,7 @@ class AdvertService {
   Future<bool> editUser(UserModel user) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
-      Uri.parse('http://localhost:8080/edituser'),
+      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/edituser'),
       body: json.encode(user),
       headers: {'Content-Type': 'application/json'},
     );
@@ -178,7 +181,8 @@ class AdvertService {
   Future<bool> deleteAdvert(AdvertModel advert) async {
     // Send a DELETE request to the specified URL
     final response = await http.delete(
-      Uri.parse('http://localhost:8080/deleteadvert'),
+      Uri.parse(
+          'http://localhost:5000/hoot-44046/us-central1/app/deleteadvert'),
       body: json.encode(advert),
       headers: {'Content-Type': 'application/json'},
     );
@@ -200,7 +204,8 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPrice(num min, num max) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8080/filterbyprice/$min/$max'),
+      Uri.parse(
+          'http://localhost:5000/hoot-44046/us-central1/app/filterbyprice/$min/$max'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -213,7 +218,8 @@ class AdvertService {
     if (petType.isEmpty) petType = "all";
     print(petType);
     final response = await http.get(
-      Uri.parse('http://localhost:8080/filterByAll/$city/$petType/$amount'),
+      Uri.parse(
+          'http://localhost:5000/hoot-44046/us-central1/app/filterByAll/$city/$petType/$amount'),
     );
     print(response);
     return (json.decode(response.body) as List)
@@ -223,7 +229,8 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPetType(String petType) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8080/filterbypettype/$petType'),
+      Uri.parse(
+          'http://localhost:5000/hoot-44046/us-central1/app/filterbypettype/$petType'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -232,7 +239,8 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByLocation(String location) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8080/filterbyaddress/$location'),
+      Uri.parse(
+          'http://localhost:5000/hoot-44046/us-central1/app/filterbyaddress/$location'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
