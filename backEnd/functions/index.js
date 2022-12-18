@@ -4,7 +4,7 @@ const serviceAccount = require("./service-account-key.json");
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 admin.initializeApp({
@@ -594,6 +594,8 @@ app.get("/filterbypettype/:petType", (req, res) => {
     });
 });
 
-app.listen(8080, () => {
-  console.log("listening on the port http://localhost:8080");
-});
+exports.app = functions.https.onRequest(app);
+
+/*app.listen(port, () => {
+  console.log("listening on the port http://localhost:%d", port);
+});*/

@@ -10,5 +10,5 @@ npm -g install --save express
 npm -g install nodemon --save-dev
 
 ##RUN THIS COMMAND TO EXECUTE
-nodemon index.js
-http://localhost:8080 -> GO THIS URL
+firebase serve
+http://localhost:5000/hoot-44046/us-central1/app -> GO THIS URL 
