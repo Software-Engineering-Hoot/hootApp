@@ -57,7 +57,7 @@ class AuthService {
     user.userID = _auth.currentUser?.uid;
     final userJson = json.encode(user);
     final response = await http.post(
-        Uri.parse("http://localhost:5000/hoot-44046/us-central1/app/adduser"),
+        Uri.parse("https://alesta-hoot.herokuapp.com/adduser"),
         body: userJson,
         headers: {"Content-Type": "application/json"});
 

@@ -40,8 +40,8 @@ class AdvertService {
   }
 
   Future<List<AdvertModel>> getAdvertWithBackEnd() async {
-    final st = await http.get(
-        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/adverts'));
+    final st =
+        await http.get(Uri.parse('https://alesta-hoot.herokuapp.com/adverts'));
     final temp = json.decode(st.body) as List;
     return (temp)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -50,7 +50,7 @@ class AdvertService {
 
   Future<UserModel> getUserDetails() async {
     final st = await http.post(
-      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/getuser'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/getuser'),
       body: {'userID': '${_auth.currentUser?.uid}'},
     );
 
@@ -65,7 +65,7 @@ class AdvertService {
     final bodyString = json.encode(body);
 
     final st = await http.post(
-      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/useradverts'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/useradverts'),
       body: bodyString,
       headers: {'Content-Type': 'application/json'},
     );
@@ -74,6 +74,21 @@ class AdvertService {
     final temp = json.decode(st.body) as List;
     print(temp);
     return (temp)
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<AdvertModel>> getUserFavorites() async {
+    final body = {'userID': '${_auth.currentUser?.uid}'};
+    final bodyString = json.encode(body);
+
+    final st = await http.post(
+      Uri.parse('https://alesta-hoot.herokuapp.com/getfavs'),
+      body: bodyString,
+      headers: {'Content-Type': 'application/json'},
+    );
+    final temp = json.decode(st.body) as List;
+    return temp
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
         .toList();
   }
@@ -116,7 +131,7 @@ class AdvertService {
 
     advert.publisherID = _auth.currentUser?.uid;
     final response = await http.post(
-        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/addadvert'),
+        Uri.parse('https://alesta-hoot.herokuapp.com/addadvert'),
         body: json.encode(advert),
         headers: {'Content-Type': 'application/json'});
 
@@ -129,10 +144,8 @@ class AdvertService {
     final userID = _auth.currentUser!.uid;
     final advertID = advert.id;
     final body = json.encode({'userID': userID, 'advertID': advertID});
-    advert.userIds?.add(userID);
-    await editAdvert(advert);
     final response = await http.post(
-        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/favplus'),
+        Uri.parse('https://alesta-hoot.herokuapp.com/favplus'),
         body: body,
         headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
@@ -144,10 +157,8 @@ class AdvertService {
     final userID = _auth.currentUser!.uid;
     final advertID = advert.id;
     final body = json.encode({'userID': userID, 'advertID': advertID});
-    advert.userIds?.remove(userID);
-    await editAdvert(advert);
     final response = await http.post(
-        Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/favminus'),
+        Uri.parse('https://alesta-hoot.herokuapp.com/favminus'),
         body: body,
         headers: {'Content-Type': 'application/json'});
     // Check the response status code and return true if the request was successful
@@ -157,7 +168,7 @@ class AdvertService {
   Future<bool> editAdvert(AdvertModel advert) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
-      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/editadvert'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/editadvert'),
       body: json.encode(advert),
       headers: {'Content-Type': 'application/json'},
     );
@@ -169,7 +180,7 @@ class AdvertService {
   Future<bool> editUser(UserModel user) async {
     // Send a POST request to the specified URL with the data as the request body
     final response = await http.post(
-      Uri.parse('http://localhost:5000/hoot-44046/us-central1/app/edituser'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/edituser'),
       body: json.encode(user),
       headers: {'Content-Type': 'application/json'},
     );
@@ -181,8 +192,7 @@ class AdvertService {
   Future<bool> deleteAdvert(AdvertModel advert) async {
     // Send a DELETE request to the specified URL
     final response = await http.delete(
-      Uri.parse(
-          'http://localhost:5000/hoot-44046/us-central1/app/deleteadvert'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/deleteadvert'),
       body: json.encode(advert),
       headers: {'Content-Type': 'application/json'},
     );
@@ -204,8 +214,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPrice(num min, num max) async {
     final response = await http.get(
-      Uri.parse(
-          'http://localhost:5000/hoot-44046/us-central1/app/filterbyprice/$min/$max'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/filterbyprice/$min/$max'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -219,7 +228,7 @@ class AdvertService {
     print(petType);
     final response = await http.get(
       Uri.parse(
-          'http://localhost:5000/hoot-44046/us-central1/app/filterByAll/$city/$petType/$amount'),
+          'https://alesta-hoot.herokuapp.com/filterByAll/$city/$petType/$amount'),
     );
     print(response);
     return (json.decode(response.body) as List)
@@ -229,8 +238,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByPetType(String petType) async {
     final response = await http.get(
-      Uri.parse(
-          'http://localhost:5000/hoot-44046/us-central1/app/filterbypettype/$petType'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/filterbypettype/$petType'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
@@ -239,8 +247,7 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByLocation(String location) async {
     final response = await http.get(
-      Uri.parse(
-          'http://localhost:5000/hoot-44046/us-central1/app/filterbyaddress/$location'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/filterbyaddress/$location'),
     );
     return (json.decode(response.body) as List)
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
