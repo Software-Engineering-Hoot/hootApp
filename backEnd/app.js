@@ -301,6 +301,7 @@ app.post("/getfavs", (req, res) => {
 app.post("/favplus", (req, res) => {
 	var advertID = req.body.advertID;
 	var userID = req.body.userID;
+	var publisherID = req.body.publisherID;
 
 	// Query the "UserDB" collection in the database
 	var userQuery = db.collection("UserDB").where("userID", "==", userID);
@@ -339,6 +340,41 @@ app.post("/favplus", (req, res) => {
 			});
 		});
 
+	var publisherQuery = db.collection("UserDB").where("userID", "==", publisherID);
+	publisherQuery
+		.get()
+		.then(function(querySnapshot) {
+			// If no matching documents are found, send an error response to the client
+			if (querySnapshot.empty) {
+				return res.status(404).send({
+					error: "Advert not found"
+				});
+			}
+
+			// If multiple matching documents are found, send an error response to the client
+			if (querySnapshot.size > 1) {
+				return res.status(500).send({
+					error: "User Not Found."
+				});
+			}
+
+			// Get the first (and only) matching document
+			var publisherDoc = querySnapshot.docs[0];
+			var publisherData = publisherDoc.data();
+
+			// Notification messages has been added.
+			publisherData.notifications.push(advertID);
+			
+			// Update the document with the modified data
+			publisherDoc.ref.set(publisherData);
+		})
+		.catch(function(error) {
+			console.error("Error getting publisher documents: ", error);
+			res.status(500).send({
+				error: "Error getting publisher documents"
+			});
+		});
+
 	// Query the "AdvertDB" collection in the database
 	var advertQuery = db.collection("AdvertDB").where("id", "==", advertID);
 	advertQuery
@@ -364,7 +400,7 @@ app.post("/favplus", (req, res) => {
 
 			// Add the "userID" value to the "userIDs" array
 			advertData.userIDs.push(userID);
-
+			
 			// Update the document with the modified data
 			advertDoc.ref.set(advertData);
 		})
@@ -383,6 +419,7 @@ app.post("/favplus", (req, res) => {
 app.post("/favminus", (req, res) => {
 	var advertID = req.body.advertID;
 	var userID = req.body.userID;
+	var publisherID = req.body.publisherID;
 
 	// Query the "UserDB" collection in the database
 	var userQuery = db.collection("UserDB").where("userID", "==", userID);
@@ -423,6 +460,41 @@ app.post("/favminus", (req, res) => {
 			});
 		});
 
+	var publisherQuery = db.collection("UserDB").where("userID", "==", publisherID);
+	publisherQuery
+		.get()
+		.then(function(querySnapshot) {
+			// If no matching documents are found, send an error response to the client
+			if (querySnapshot.empty) {
+				return res.status(404).send({
+					error: "Advert not found"
+				});
+			}
+
+			// If multiple matching documents are found, send an error response to the client
+			if (querySnapshot.size > 1) {
+				return res.status(500).send({
+					error: "User Not Found."
+				});
+			}
+
+			// Get the first (and only) matching document
+			var publisherDoc = querySnapshot.docs[0];
+			var publisherData = publisherDoc.data();
+
+			// Notification messages has been added.
+			publisherData.notifications.pop(publisherID);
+			
+			// Update the document with the modified data
+			publisherDoc.ref.set(publisherData);
+		})
+		.catch(function(error) {
+			console.error("Error getting publisher documents: ", error);
+			res.status(500).send({
+				error: "Error getting publisher documents"
+			});
+		});
+		
 	// Query the "AdvertDB" collection in the database
 	var advertQuery = db.collection("AdvertDB").where("id", "==", advertID);
 	advertQuery

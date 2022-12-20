@@ -16,6 +16,7 @@ class UserModel {
   String? passwordAgain;
   List<String>? advertIDs;
   List<String>? favAdvertIDs;
+  List<String>? notifications; //Notification messages for user to be viewed
   String? userID;
   String? phoneNumber;
 
@@ -29,6 +30,7 @@ class UserModel {
     this.favAdvertIDs,
     this.phoneNumber,
     this.userID,
+    this.notifications //Notification 
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

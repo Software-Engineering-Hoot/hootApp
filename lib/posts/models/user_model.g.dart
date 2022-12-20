@@ -20,6 +20,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
           .toList(),
       phoneNumber: json['phoneNumber'] as String?,
       userID: json['userID'] as String?,
+      notifications: (json['notifications'] as List<dynamic>?) //Notification messages for user to be viewed
+          ?.map((e) => e as String)
+          .toList()
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -32,4 +35,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'favAdvertIDs': instance.favAdvertIDs,
       'userID': instance.userID,
       'phoneNumber': instance.phoneNumber,
+      'notifications': instance.notifications //Notification messages for user to be viewed
     };
