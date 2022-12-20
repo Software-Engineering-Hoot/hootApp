@@ -143,7 +143,11 @@ class AdvertService {
     // Send a POST request to the specified URL with the data as the request body
     final userID = _auth.currentUser!.uid;
     final advertID = advert.id;
-    final body = json.encode({'userID': userID, 'advertID': advertID});
+    final body = json.encode({
+      'userID': userID,
+      'advertID': advertID,
+      'publisherID': advert.publisherID
+    });
     final response = await http.post(
         Uri.parse('https://alesta-hoot.herokuapp.com/favplus'),
         body: body,
@@ -156,7 +160,11 @@ class AdvertService {
     // Send a POST request to the specified URL with the data as the request body
     final userID = _auth.currentUser!.uid;
     final advertID = advert.id;
-    final body = json.encode({'userID': userID, 'advertID': advertID});
+    final body = json.encode({
+      'userID': userID,
+      'advertID': advertID,
+      'publisherID': advert.publisherID
+    });
     final response = await http.post(
         Uri.parse('https://alesta-hoot.herokuapp.com/favminus'),
         body: body,

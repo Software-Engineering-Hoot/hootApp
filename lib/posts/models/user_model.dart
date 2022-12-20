@@ -17,6 +17,7 @@ class UserModel {
   List<String>? advertIDs;
   List<String>? favAdvertIDs;
   List<String>? notifications; //Notification messages for user to be viewed
+  bool? isModerator;
   String? userID;
   String? phoneNumber;
 
@@ -30,7 +31,8 @@ class UserModel {
     this.favAdvertIDs,
     this.phoneNumber,
     this.userID,
-    this.notifications //Notification 
+    this.notifications, //Notification
+    this.isModerator,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
