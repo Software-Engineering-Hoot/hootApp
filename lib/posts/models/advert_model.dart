@@ -20,7 +20,7 @@ class AdvertModel {
   String? startDate;
   String? title;
   String? publisherID; //userID of the owner of advert
-  List<String>? userIds;
+  List<String>? userIDs;
 
   AdvertModel({
     this.id,
@@ -34,8 +34,10 @@ class AdvertModel {
     this.photos,
     this.favoriteCount,
     this.publisherID,
-    this.userIds,
-  });
+    this.userIDs,
+  }) {
+    userIDs = [];
+  }
 
   factory AdvertModel.fromJson(Map<String, dynamic> json) =>
       _$AdvertModelFromJson(json);

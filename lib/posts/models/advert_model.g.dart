@@ -19,8 +19,8 @@ AdvertModel _$AdvertModelFromJson(Map<String, dynamic> json) => AdvertModel(
           (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
       favoriteCount: json['favoriteCount'] as int?,
       publisherID: json['publisherID'] as String?,
-      userIds:
-          (json['userIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      userIDs:
+          (json['userIDs'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$AdvertModelToJson(AdvertModel instance) =>
@@ -36,5 +36,5 @@ Map<String, dynamic> _$AdvertModelToJson(AdvertModel instance) =>
       'startDate': instance.startDate,
       'title': instance.title,
       'publisherID': instance.publisherID,
-      'userIds': instance.userIds,
+      'userIDs': instance.userIDs,
     };
