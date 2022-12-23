@@ -37,7 +37,6 @@ class AuthService {
       });
 
       await addUserWithBackEnd(userModel);
-      await _firestore.collection('UserDB').add(userModel.toJson());
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return false;

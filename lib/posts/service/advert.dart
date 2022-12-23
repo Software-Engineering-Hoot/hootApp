@@ -83,7 +83,7 @@ class AdvertService {
     final bodyString = json.encode(body);
 
     final st = await http.post(
-      Uri.parse('https://alesta-hoot.herokuapp.com/getfavs'),
+      Uri.parse('https://alesta-hoot.herokuapp.com/userfavorites'),
       body: bodyString,
       headers: {'Content-Type': 'application/json'},
     );
@@ -202,7 +202,7 @@ class AdvertService {
       body: json.encode(advert),
       headers: {'Content-Type': 'application/json'},
     );
-
+    print(response);
     // Check the response status code and return true if the request was successful
     return response.statusCode == 200;
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/view/dashboard.dart';
+import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertListItemProfile extends StatefulWidget {
@@ -102,9 +104,13 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
                           _advertService
                               .deleteAdvert(widget.advert)
                               .then((value) {
-                            setState(() {
-                              finish(context);
-                            });
+                            finish(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Dashboard(),
+                              ),
+                            );
                           });
                         },
                       );

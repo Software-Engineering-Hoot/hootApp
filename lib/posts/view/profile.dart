@@ -1,8 +1,11 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
+import 'package:hoot/posts/service/auth.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
 import 'package:hoot/posts/view/auth/sign_in.dart';
@@ -23,6 +26,9 @@ class _ProfileState extends State<Profile> {
   List<AdvertModel> favAdverts = [];
   UserModel user = UserModel();
   final AdvertService _advertService = AdvertService();
+  UserModel userModel = UserModel();
+  final AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
   int selectedIndex = 0;
 
@@ -36,7 +42,7 @@ class _ProfileState extends State<Profile> {
     try {
       user = await _advertService.getUserDetails();
       myAdverts = await _advertService.getUserAdverts();
-      favAdverts = await _advertService.getAdvert();
+      favAdverts = await _advertService.getUserFavorites();
       print(favAdverts);
     } catch (e) {
       return false;
@@ -71,6 +77,7 @@ class _ProfileState extends State<Profile> {
                     border: Border.all(color: white, width: 4)),
                 child: Container(),
               ),
+              // AppButton(onTap: mFormBottomSheet(context, _formKey, user, _authService),child: const Icon(Icons.abc),),
               Positioned(
                 bottom: 8,
                 right: -4,
@@ -286,16 +293,19 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AdvertDetail(
-                                      advert: selectedIndex == 0
-                                          ? myAdverts[index]
-                                          : favAdverts[index])),
+                                builder: (context) => AdvertDetail(
+                                  advert: selectedIndex == 0
+                                      ? myAdverts[index]
+                                      : favAdverts[index],
+                                ),
+                              ),
                             );
                           },
                           child: AdvertListItemProfile(
-                              advert: selectedIndex == 0
-                                  ? myAdverts[index]
-                                  : favAdverts[index]),
+                            advert: selectedIndex == 0
+                                ? myAdverts[index]
+                                : favAdverts[index],
+                          ),
                         );
                       },
                     ),
@@ -339,4 +349,150 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+
+// ignore: inference_failure_on_function_return_type
+mFormBottomSheet(BuildContext aContext, Key _formKey, UserModel userModel,
+    AuthService _authService) {
+  showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    context: aContext,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: colorPrimary),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    AppTextField(
+                      textFieldType: TextFieldType.NAME,
+                      decoration: rfInputDecoration(
+                        lableText: 'Name',
+                        showLableText: true,
+                      ),
+                      onChanged: (value) {
+                        userModel.name = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some name';
+                        }
+                        return null;
+                      },
+                    ),
+                    16.height,
+                    AppTextField(
+                      textFieldType: TextFieldType.NAME,
+                      decoration: rfInputDecoration(
+                        lableText: 'Surname',
+                        showLableText: true,
+                      ),
+                      onChanged: (value) {
+                        userModel.surname = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter surname';
+                        }
+                        return null;
+                      },
+                    ),
+                    16.height,
+                    AppTextField(
+                      textFieldType: TextFieldType.EMAIL,
+                      decoration: rfInputDecoration(
+                        lableText: 'Email Address',
+                        showLableText: true,
+                        suffixIcon: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: boxDecorationWithRoundedCorners(
+                              boxShape: BoxShape.circle,
+                              backgroundColor: app_background),
+                          child: const Icon(Icons.done,
+                              color: Colors.white, size: 14),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        userModel.email = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    16.height,
+                    AppTextField(
+                      textFieldType: TextFieldType.PASSWORD,
+                      decoration: rfInputDecoration(
+                        lableText: 'Password',
+                        showLableText: true,
+                      ),
+                      onChanged: (value) {
+                        userModel.password = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter password';
+                        }
+                        if (userModel.password != userModel.passwordAgain) {
+                          return 'Please enter same password';
+                        }
+                        return null;
+                      },
+                    ),
+                    16.height,
+                    AppTextField(
+                      textFieldType: TextFieldType.PASSWORD,
+                      decoration: rfInputDecoration(
+                        lableText: 'Password Again',
+                        showLableText: true,
+                      ),
+                      onChanged: (value) {
+                        userModel.passwordAgain = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter password again';
+                        }
+                        if (userModel.password != userModel.passwordAgain) {
+                          return 'Please enter same password';
+                        }
+                        return null;
+                      },
+                    ),
+                    32.height,
+                    AppButton(
+                      color: colorPrimary,
+                      width: context.width(),
+                      elevation: 0,
+                      onTap: () async {
+                        // if (_formKey.currentState!.validate()) {
+                        //   await _authService.signUp(userModel).then((value) {
+                        //     if (value) {
+                        //       SignIn().launch(context);
+                        //     }
+                        //   });
+                        // }
+                      },
+                      child:
+                          Text('Sign up', style: boldTextStyle(color: white)),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+      );
+    },
+  );
 }

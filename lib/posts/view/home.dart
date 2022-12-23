@@ -9,7 +9,6 @@ import 'package:hoot/posts/utils/constant.dart';
 import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -35,6 +34,7 @@ class _HomeState extends State<Home> {
     try {
       user = await _advertService.getUserDetails();
       adverts = await _advertService.getAdvert();
+
       print(adverts);
     } catch (e) {
       return false;
@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
             children = <Widget>[
               Container(
                 width: context.width(),
-                height: context.height(),
+                height: context.height() - 193,
                 child: Column(
                   children: [
                     10.height,
