@@ -3,6 +3,7 @@ const serviceAccount = require("./service-account-key.json");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const { firestore } = require("firebase-admin");
 const port = process.env.PORT || 8080;
 
 app.use(cors());
@@ -276,26 +277,64 @@ app.post("/editadvert", (req, res) => {
 		});
 });
 
-// Get a single advert with the specified ID
-app.post("/getfavs", (req, res) => {
-	// Get a reference to the collection
-	var docRef = db.collection("UserDB");
+app.post("/notifications", (req, res) => {
+	// Get a reference to the UserDB collection
+	var userRef = db.collection("UserDB");
 	// Create a query to find the document you want
-	var query = docRef.where("userID", "==", req.body.userID);
+	var userQuery = userRef.where("userID", "==", req.body.userID);
 	// Get the matching document
-	query
-		.get()
-		.then(function(querySnapshot) {
-			querySnapshot.forEach(function(doc) {
-				// Do something with the matching document
-				console.log(doc.id, " => ", doc.data());
-				console.log(JSON.stringify(doc.data(), null, "  "));
-				res.status(200).send(JSON.stringify(doc.data().favAdvertIDs));
-			});
-		})
-		.catch(function(error) {
-			res.status(500).send("Error getting document: ", error);
+	userQuery
+	  .get()
+	  .then(function(userQuerySnapshot) {
+		userQuerySnapshot.forEach(function(userDoc) {
+		  // Get a reference to the AdvertDB collection
+		  var advertRef = db.collection("AdvertDB");
+		  // Iterate over the notifications array
+		  userDoc.data().notifications.forEach(function(notificationID) {
+			// Create a query to find the details of the notification
+			var advertQuery = advertRef.where("id", "==", notificationID);
+			// Get the matching document
+			advertQuery
+			  .get()
+			  .then(function(advertQuerySnapshot) {
+				var tempDoc = [];
+				advertQuerySnapshot.forEach(function(advertDoc) {
+					tempDoc.push(advertDoc.data());
+				});
+				res.status(200).send(JSON.stringify(tempDoc, null, "  "));
+			  })
+			  .catch(function(error) {
+				console.error("Error getting document: ", error);
+			  });
+		  });
 		});
+	  })
+	  .catch(function(error) {
+		res.status(500).send("Error getting document: ", error);
+	  });
+  });
+  
+
+// Get a single advert with the specified ID
+app.post("/userfavorites", (req, res) => {
+	// Get a reference to the AdvertDB collection
+	const userID = req.body.userID;
+	var docRef = db.collection("AdvertDB");
+	// Create a query to find the documents you want
+	var query = docRef.where("userIDs", "array-contains", userID);
+	// Get the matching documents
+	query
+	  .get()
+	  .then(function(querySnapshot) {
+		var favorites = [];
+		querySnapshot.forEach(function(doc) {
+		  favorites.push(doc.data());
+		});
+		res.status(200).send(JSON.stringify(favorites, null, "  "));
+	  })
+	  .catch(function(error) {
+		res.status(500).send("Error getting documents: ", error);
+	  });
 });
 
 app.post("/favplus", async (req, res) => {
@@ -339,40 +378,40 @@ app.post("/favplus", async (req, res) => {
 			});
 		});
 
+	// Create a query to find the document you want
 	var publisherQuery = db.collection("UserDB").where("userID", "==", publisherID);
 	await publisherQuery
-		.get()
-		.then(function(querySnapshot) {
-			// If no matching documents are found, send an error response to the client
-			if (querySnapshot.empty) {
-				return res.status(404).send({
-					error: "Advert not found"
-				});
-			}
-
-			// If multiple matching documents are found, send an error response to the client
-			if (querySnapshot.size > 1) {
-				return res.status(500).send({
-					error: "User Not Found."
-				});
-			}
-
-			// Get the first (and only) matching document
-			var publisherDoc = querySnapshot.docs[0];
-			var publisherData = publisherDoc.data();
-
-			// Notification messages has been added.
-			publisherData.notifications.push(advertID);
-			
-			// Update the document with the modified data
-			publisherDoc.ref.set(publisherData);
-		})
-		.catch(function(error) {
-			console.error("Error getting publisher documents: ", error);
-			res.status(500).send({
-				error: "Error getting publisher documents"
-			});
+	.get()
+	.then(function(querySnapshot) {
+		// If no matching documents are found, send an error response to the client
+		if (querySnapshot.empty) {
+		return res.status(404).send({
+			error: "Advert not found"
 		});
+		}
+
+		// If multiple matching documents are found, send an error response to the client
+		if (querySnapshot.size > 1) {
+		return res.status(500).send({
+			error: "User Not Found."
+		});
+		}
+
+		// Get the first (and only) matching document
+		var publisherDoc = querySnapshot.docs[0];
+
+		// Update the notifications field using the arrayUnion operator
+		publisherDoc.ref.update({
+		notifications: firestore.FieldValue.arrayUnion(advertID)
+		});
+	})
+	.catch(function(error) {
+		console.error("Error getting publisher documents: ", error);
+		res.status(500).send({
+		error: "Error getting publisher documents"
+		});
+	});
+
 
 	// Query the "AdvertDB" collection in the database
 	var advertQuery = db.collection("AdvertDB").where("id", "==", advertID);
@@ -452,7 +491,6 @@ app.post("/favminus", async (req, res) => {
 				error: "Error getting user documents"
 			});
 		});
-	/* şimdilik comment
 	var publisherQuery = db.collection("UserDB").where("userID", "==", publisherID);
 	await publisherQuery
 		.get()
@@ -474,19 +512,16 @@ app.post("/favminus", async (req, res) => {
 			// Get the first (and only) matching document
 			var publisherDoc = querySnapshot.docs[0];
 			var publisherData = publisherDoc.data();
-
-			// Notification messages has been added.
-			publisherData.notifications = publisherData.notifications.filter((id) => id !== advertID);
-			
-			// Update the document with the modified data
-			publisherDoc.ref.set(publisherData);
+			publisherDoc.ref.update({
+				notifications: firestore.FieldValue.arrayRemove(advertID)
+			  });
 		})
 		.catch(function(error) {
 			console.error("Error getting publisher documents: ", error);
 			res.status(500).send({
 				error: "Error getting publisher documents"
 			});
-		});*/
+		});
 		
 	// Query the "AdvertDB" collection in the database
 	var advertQuery = db.collection("AdvertDB").where("id", "==", advertID);
@@ -559,7 +594,7 @@ app.post("/useradverts", async (req, res) => {
 			const tempDoc = [];
 			querySnapshot.forEach((doc) => {
 				tempDoc.push({
-					id: doc.id,
+					id: doc.id, 
 					...doc.data()
 				});
 			});
