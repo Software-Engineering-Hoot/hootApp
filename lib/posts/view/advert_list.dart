@@ -20,6 +20,7 @@ class _AdvertsListState extends State<AdvertsList> {
   final AdvertService _advertService = AdvertService();
   UserModel user = UserModel();
   final _scrollController = ScrollController();
+  bool isOwnTheAdvert = false;
   int selectedIndex = 0;
 
   @override
@@ -108,8 +109,10 @@ class _AdvertsListState extends State<AdvertsList> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AdvertDetail(
-                                        advert: state.adverts[index])),
+                                  builder: (context) => AdvertDetail(
+                                    advert: state.adverts[index],
+                                  ),
+                                ),
                               );
                             },
                           );
