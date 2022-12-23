@@ -36,7 +36,14 @@ class AdvertListItem extends StatelessWidget {
                       child: SizedBox(
                         height: context.height() * 0.6,
                         width: context.width() * 0.30,
-                        // child: Image.asset(post.photos![0]),
+                        child: post.photos != null && post.photos?.length != 0
+                            ? Image.network(
+                                post.photos![0],
+                                fit: BoxFit.cover,
+                                height: 350,
+                                width: context.width(),
+                              )
+                            : Icon(Icons.landscape),
                       )),
                   8.width,
                   Column(

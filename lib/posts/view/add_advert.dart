@@ -69,6 +69,7 @@ class AddAdvertState extends State<AddAdvert> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
+                    maxLength: 20,
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
                       lableText: 'Title',
@@ -192,39 +193,40 @@ class AddAdvertState extends State<AddAdvert> {
                   ),
                   AppButton(
                     onTap: pickImage,
-                    child: Text("Pick Image"),
+                    child: const Text("Pick Image"),
                   ),
                   16.height,
-                  SizedBox(
-                      height: 200,
-                      child: FutureBuilder<void>(
-                        future: retrieveLostData(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<void> snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return const Text(
-                                'You have not yet picked an image.',
-                                textAlign: TextAlign.center,
-                              );
-                            case ConnectionState.done:
-                              return _handlePreview();
-                            default:
-                              if (snapshot.hasError) {
-                                return Text(
-                                  'Pick image/video error: ${snapshot.error}}',
-                                  textAlign: TextAlign.center,
-                                );
-                              } else {
-                                return const Text(
-                                  'You have not yet picked an image.',
-                                  textAlign: TextAlign.center,
-                                );
-                              }
+                  FutureBuilder<void>(
+                    future: retrieveLostData(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return const Text(
+                            'You have not yet picked an image.',
+                            textAlign: TextAlign.center,
+                          );
+                        case ConnectionState.done:
+                          return _imageFileList?.length != 0
+                              ? _handlePreview()
+                              : Container();
+                        // ignore: no_default_cases
+                        default:
+                          if (snapshot.hasError) {
+                            return Text(
+                              'Pick image/video error: ${snapshot.error}}',
+                              textAlign: TextAlign.center,
+                            );
+                          } else {
+                            return const Text(
+                              'You have not yet picked an image.',
+                              textAlign: TextAlign.center,
+                            );
                           }
-                        },
-                      )),
+                      }
+                    },
+                  ),
                   16.height,
                   AppButton(
                     color: colorPrimary,
@@ -232,6 +234,7 @@ class AddAdvertState extends State<AddAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
+                        const SnackBarPage();
                         await _advertService
                             .addAdvertWithBackEnd(advert, _imageFileList!)
                             .then((value) {
@@ -261,7 +264,7 @@ class AddAdvertState extends State<AddAdvert> {
   }
 
   Future<void> retrieveLostData() async {
-    final LostDataResponse response = await _picker.retrieveLostData();
+    final response = await _picker.retrieveLostData();
     if (response.isEmpty) {
       return;
     }
@@ -292,8 +295,8 @@ class AddAdvertState extends State<AddAdvert> {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: BoxDecoration(color: Colors.amber),
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: const BoxDecoration(color: Colors.amber),
                 child: Image.file(File(i.path), fit: BoxFit.cover),
               );
             },
@@ -306,5 +309,33 @@ class AddAdvertState extends State<AddAdvert> {
         textAlign: TextAlign.center,
       );
     }
+  }
+}
+
+class SnackBarPage extends StatelessWidget {
+  const SnackBarPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          final snackBar = SnackBar(
+            content: const Text('Yay! A SnackBar!'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+
+          // Find the ScaffoldMessenger in the widget tree
+          // and use it to show a SnackBar.
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        child: const Text('Show SnackBar'),
+      ),
+    );
   }
 }

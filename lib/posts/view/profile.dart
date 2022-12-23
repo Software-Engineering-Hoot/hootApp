@@ -5,6 +5,7 @@ import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
+import 'package:hoot/posts/view/auth/sign_in.dart';
 import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:hoot/posts/widgets/advert_list_item_profile.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
@@ -61,14 +62,15 @@ class _ProfileState extends State<Profile> {
             clipBehavior: Clip.none,
             children: [
               Container(
-                  alignment: Alignment.bottomCenter,
-                  margin: const EdgeInsets.only(top: 150),
-                  width: 100,
-                  height: 100,
-                  decoration: boxDecorationWithRoundedCorners(
-                      boxShape: BoxShape.circle,
-                      border: Border.all(color: white, width: 4)),
-                  child: Container()),
+                alignment: Alignment.bottomCenter,
+                margin: const EdgeInsets.only(top: 150),
+                width: 100,
+                height: 100,
+                decoration: boxDecorationWithRoundedCorners(
+                    boxShape: BoxShape.circle,
+                    border: Border.all(color: white, width: 4)),
+                child: Container(),
+              ),
               Positioned(
                 bottom: 8,
                 right: -4,
@@ -139,12 +141,12 @@ class _ProfileState extends State<Profile> {
                             children: [
                               call.iconImage(iconColor: colorPrimary),
                               8.width,
-                              Text('Call Me',
+                              Text('Call',
                                   style: boldTextStyle(color: colorPrimary)),
                             ],
                           ),
-                        ).expand(),
-                        16.width,
+                        ).expand(flex: 3),
+                        8.width,
                         AppButton(
                           color: colorPrimary,
                           elevation: 0.0,
@@ -156,14 +158,47 @@ class _ProfileState extends State<Profile> {
                             children: [
                               message.iconImage(iconColor: whiteColor),
                               8.width,
-                              Text('Message Me',
+                              Text('Message',
                                   style: boldTextStyle(color: white)),
                             ],
                           ),
                           onTap: () {
                             launchMail(user.email);
                           },
-                        ).expand()
+                        ).expand(flex: 3),
+                        8.width,
+                        OutlinedButton(
+                          onPressed: () {
+                            showConfirmDialogCustom(
+                              context,
+                              cancelable: false,
+                              title: "Are you sure you want to logout?",
+                              dialogType: DialogType.CONFIRMATION,
+                              onCancel: (v) {
+                                finish(context);
+                              },
+                              onAccept: (v) {
+                                SignIn().launch(v).then((value) {
+                                  finish(context);
+                                });
+                              },
+                            );
+                          },
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: context.scaffoldBackgroundColor,
+                            side: BorderSide(
+                                color: context.dividerColor, width: 1),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              sign_out.iconImage(iconColor: colorPrimary)
+                            ],
+                          ),
+                        ).expand(flex: 1)
                       ],
                     ).paddingSymmetric(horizontal: 16),
                     Container(

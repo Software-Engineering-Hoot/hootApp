@@ -3,6 +3,7 @@ import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
 import 'package:hoot/posts/view/add_advert.dart';
 import 'package:hoot/posts/view/home.dart';
+import 'package:hoot/posts/view/notifications.dart';
 import 'package:hoot/posts/view/profile.dart';
 import 'package:hoot/posts/view/search.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
@@ -19,10 +20,10 @@ class DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   final _pages = [
-    Home(),
-    Search(),
+    const Home(),
+    const Search(),
     AddAdvert(),
-    Profile(),
+    const Notifications(),
     Profile(),
   ];
 
@@ -43,10 +44,13 @@ class DashboardState extends State<Dashboard> {
         BottomNavigationBarItem(
           icon: search.iconImage(),
           label: 'Search',
-          activeIcon: search.iconImage(iconColor: colorPrimary),
+          activeIcon: search.iconImage(iconColor: colorPrimary, size: 22),
         ),
         const BottomNavigationBarItem(
-          icon: Icon(Icons.add),
+          icon: Icon(
+            Icons.add,
+            size: 17,
+          ),
           label: 'Add',
           activeIcon: Icon(
             Icons.add,
@@ -54,14 +58,10 @@ class DashboardState extends State<Dashboard> {
             size: 22,
           ),
         ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
+        BottomNavigationBarItem(
+          icon: notification.iconImage(),
           label: 'Notifications',
-          activeIcon: Icon(
-            Icons.notifications,
-            color: colorPrimary,
-            size: 22,
-          ),
+          activeIcon: notification.iconImage(iconColor: colorPrimary),
         ),
         BottomNavigationBarItem(
           icon: person.iconImage(),

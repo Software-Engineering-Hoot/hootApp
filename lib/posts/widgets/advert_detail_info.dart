@@ -52,8 +52,11 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                     children: [
                       Row(
                         children: [
-                          Image.network(widget.advert.photos![0],
-                                  width: 60, height: 60, fit: BoxFit.cover)
+                          Image.network(
+                                  "https://i.pinimg.com/474x/82/a1/88/82a188d47fed928f11e994eb448dfe74.jpg",
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover)
                               .cornerRadiusWithClipRRect(30),
                           16.width,
                           Column(
@@ -70,7 +73,7 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                           AppButton(
                             onTap: () async {
                               // launchCall(user.phoneNumber ?? '');
-                              String telephoneNumber = '+2347012345678';
+                              String telephoneNumber = user.phoneNumber!;
                               String telephoneUrl = "tel:$telephoneNumber";
                               if (await canLaunch(telephoneUrl)) {
                                 await launch(telephoneUrl);
@@ -156,18 +159,6 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                       children: [
                         Image.network(widget.advert.photos![index],
                             height: 70, width: 70, fit: BoxFit.cover),
-                        Container(
-                          height: 70,
-                          width: 70,
-                          decoration: boxDecorationWithRoundedCorners(
-                            borderRadius: BorderRadius.circular(8),
-                            backgroundColor: black.withOpacity(0.5),
-                          ),
-                        ),
-                        Text('+ 5',
-                                style: boldTextStyle(color: white, size: 20),
-                                textAlign: TextAlign.center)
-                            .visible(index == 3),
                       ],
                     ),
                   ),

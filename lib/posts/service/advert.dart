@@ -116,16 +116,14 @@ class AdvertService {
   Future<bool> addAdvertWithBackEnd(
       AdvertModel advert, List<XFile> files) async {
     for (final element in files) {
-      var file = File(files.first.path);
-      Reference ref =
+      var file = File(element.path);
+      final ref =
           FirebaseStorage.instance.ref().child(file.hashCode.toString());
-      TaskSnapshot snapshot = await ref.putFile(file);
-      String url = await snapshot.ref.getDownloadURL();
+      final snapshot = await ref.putFile(file);
+      final url = await snapshot.ref.getDownloadURL();
       print(url);
 
-      if (advert.photos == null) {
-        advert.photos = [];
-      }
+      advert.photos ??= [];
       advert.photos?.add(url);
     }
 
