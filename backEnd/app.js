@@ -548,24 +548,30 @@ app.get("/advertdetails", (req, res) => {
 
 app.post("/useradverts", async (req, res) => {
 	// Get a reference to the collection
-	var docRef = db.collection("UserDB");
+	var docRef = db.collection("AdvertDB");
 	// Create a query to find the document you want
-	var query = docRef.where("userID", "==", req.body.userID);
+	var query = docRef.where("publisherID", "==", req.body.userID);
 	// Get the matching document
 	query
 		.get()
-		.then(function(querySnapshot) {
-			querySnapshot.forEach(function(doc) {
-				// Do something with the matching document
-				console.log(doc.id, " => ", doc.data());
-				console.log(JSON.stringify(doc.data(), null, "  "));
-				res.status(200).send(JSON.stringify(doc.data().advertIDs));
+		.then((querySnapshot) => {
+			// Convert the query snapshot to an array of results
+			const tempDoc = [];
+			querySnapshot.forEach((doc) => {
+				tempDoc.push({
+					id: doc.id,
+					...doc.data()
+				});
 			});
+			res.status(200).send(JSON.stringify(tempDoc, null, "  "));
 		})
-		.catch(function(error) {
-			res.status(500).send("Error getting document: ", error);
+		.catch((error) => {
+			// An error occurred while searching the database
+			console.error("Error searching the database:", error);
+			res.status(404);
 		});
 });
+
 
 // Get all adverts
 app.get("/adverts", async (req, res) => {
