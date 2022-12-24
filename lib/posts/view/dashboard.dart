@@ -6,6 +6,7 @@ import 'package:hoot/posts/view/home.dart';
 import 'package:hoot/posts/view/notifications.dart';
 import 'package:hoot/posts/view/profile.dart';
 import 'package:hoot/posts/view/search.dart';
+import 'package:hoot/posts/view/settings.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -23,7 +24,7 @@ class DashboardState extends State<Dashboard> {
     const Home(),
     const Search(),
     AddAdvert(),
-    const Notifications(),
+    const Settings(),
     Profile(),
   ];
 
@@ -59,9 +60,9 @@ class DashboardState extends State<Dashboard> {
           ),
         ),
         BottomNavigationBarItem(
-          icon: notification.iconImage(),
-          label: 'Notifications',
-          activeIcon: notification.iconImage(iconColor: colorPrimary),
+          icon: setting.iconImage(),
+          label: 'Settings',
+          activeIcon: setting.iconImage(iconColor: colorPrimary),
         ),
         BottomNavigationBarItem(
           icon: person.iconImage(),

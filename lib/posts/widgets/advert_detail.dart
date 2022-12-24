@@ -7,9 +7,10 @@ import 'package:hoot/posts/widgets/advert_detail_info.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertDetail extends StatefulWidget {
-  AdvertDetail({super.key, required this.advert});
+  AdvertDetail({super.key, required this.advert, required this.isEditable});
 
   final AdvertModel advert;
+  final bool isEditable;
 
   @override
   State<AdvertDetail> createState() => _AdvertDetailState();
@@ -21,35 +22,40 @@ class _AdvertDetailState extends State<AdvertDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: AppButton(
-      //   color: colorPrimary,
-      //   elevation: 0,
-      //   width: context.width(),
-      //   onTap: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => EditAdvert(advert: widget.advert)),
-      //     );
-      //   },
-      //   child: Text('Edit Advert', style: boldTextStyle(color: white)),
-      // ).paddingSymmetric(horizontal: 16, vertical: 24),
-      bottomNavigationBar: AppButton(
-        color: colorPrimary,
-        elevation: 0,
-        width: context.width(),
-        onTap: () {
-          _advertService.addAdvertFavorite(widget.advert);
-        },
-        child: Text('Add To Favorites', style: boldTextStyle(color: white)),
-      ).paddingSymmetric(horizontal: 16, vertical: 24),
+      bottomNavigationBar: widget.isEditable == true
+          ? AppButton(
+              color: colorPrimary,
+              elevation: 0,
+              width: context.width(),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditAdvert(advert: widget.advert)),
+                );
+              },
+              child: Text('Edit Advert', style: boldTextStyle(color: white)),
+            ).paddingSymmetric(horizontal: 16, vertical: 24)
+          : null,
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    icon: const Icon(Icons.favorite,
+                        color: colorPrimary, size: 28),
+                    onPressed: () {
+                      _advertService.addAdvertFavorite(widget.advert);
+                    },
+                  ),
+                ),
+              ],
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new,
-                    color: colorPrimary, size: 18),
+                    color: colorPrimary, size: 28),
                 onPressed: () {
                   finish(context);
                 },

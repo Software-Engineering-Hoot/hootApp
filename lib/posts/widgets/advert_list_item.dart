@@ -4,9 +4,9 @@ import 'package:hoot/posts/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertListItem extends StatelessWidget {
-  AdvertListItem({super.key, required this.post});
+  AdvertListItem({super.key, required this.advert});
 
-  final AdvertModel post;
+  final AdvertModel advert;
   final AdvertModel? newAdd = AdvertModel();
 
   @override
@@ -36,26 +36,37 @@ class AdvertListItem extends StatelessWidget {
                       child: SizedBox(
                         height: context.height() * 0.6,
                         width: context.width() * 0.30,
-                        child: post.photos != null && post.photos?.length != 0
-                            ? Image.network(
-                                post.photos![0],
-                                fit: BoxFit.cover,
-                                height: 350,
-                                width: context.width(),
-                              )
-                            : Icon(Icons.landscape),
+                        child:
+                            advert.photos != null && advert.photos?.length != 0
+                                ? Image.network(
+                                    advert.photos![0],
+                                    fit: BoxFit.cover,
+                                    height: 350,
+                                    width: context.width(),
+                                  )
+                                : Icon(Icons.landscape),
                       )),
                   8.width,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        post.title ?? '',
-                        style: const TextStyle(fontSize: 20),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: context.width() * 0.5,
+                              child: Text(
+                                advert.title ?? '',
+                                style: const TextStyle(fontSize: 17),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       10.height,
                       Text(
-                        '${post.price} TL',
+                        '${advert.price} TL',
                         style: const TextStyle(
                             color: colorPrimary,
                             fontSize: 15,
@@ -69,7 +80,7 @@ class AdvertListItem extends StatelessWidget {
                             Icons.location_pin,
                             color: colorPrimary,
                           ),
-                          Text(post.address ?? ''),
+                          Text(advert.address ?? ''),
                         ],
                       ),
                     ],
@@ -86,7 +97,7 @@ class AdvertListItem extends StatelessWidget {
                   decoration: boxDecorationWithRoundedCorners(
                       backgroundColor: colorPrimary_light),
                   child: Text(
-                    post.petType ?? '',
+                    advert.petType ?? '',
                     style: boldTextStyle(color: colorPrimary, size: 12),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:hoot/posts/widgets/notificaition_widget.dart';
@@ -13,6 +14,7 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
   final AdvertService _advertService = AdvertService();
+  List<AdvertModel> adverts = [];
 
   @override
   void initState() {
@@ -22,10 +24,7 @@ class _NotificationsState extends State<Notifications> {
 
   Future<bool> init() async {
     try {
-      // user = await _advertService();
-      // myAdverts = await _advertService.getUserAdverts();
-      // favAdverts = await _advertService.getAdvert();
-      // print(favAdverts);
+      adverts = await _advertService.getUserNotificaitons();
     } catch (e) {
       return false;
     }

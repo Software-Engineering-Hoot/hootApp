@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +8,6 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/utils/custom_methods.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AdvertService {
@@ -87,6 +85,24 @@ class AdvertService {
       body: bodyString,
       headers: {'Content-Type': 'application/json'},
     );
+    final temp = json.decode(st.body) as List;
+    return temp
+        .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<AdvertModel>> getUserNotificaitons() async {
+    final body = {'userID': '${_auth.currentUser?.uid}'};
+    final bodyString = json.encode(body);
+
+    final st = await http.post(
+      Uri.parse('https://alesta-hoot.herokuapp.com/notifications'),
+      body: bodyString,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    print(st.body);
+
     final temp = json.decode(st.body) as List;
     return temp
         .map((advert) => AdvertModel.fromJson(advert as Map<String, dynamic>))

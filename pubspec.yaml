@@ -30,6 +30,7 @@ dependencies:
   url_launcher: ^6.1.7
   carousel_slider: ^4.2.1
   firebase_storage: ^11.0.8
+  cached_network_image: ^3.2.1
 
 dev_dependencies:
   flutter_test:

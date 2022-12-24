@@ -6,6 +6,7 @@ const colorBox = Color(0XFFF6F6F6);
 const colorEditableTextBox = Color(0xFFd9d9d9d9);
 const colorNonEditableTextBox = Color(0XFFa4a4a4a4);
 const notificationBgColor = Color(0xFFF2F2F2);
+const faqBgColor = Color(0xFFD5DDF2);
 
 const colorPrimaryDark = Color(0XFFff8080);
 const colorAccent = Color(0XFFff8080);

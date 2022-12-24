@@ -104,13 +104,14 @@ class _AdvertsListState extends State<AdvertsList> {
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            child: AdvertListItem(post: state.adverts[index]),
+                            child: AdvertListItem(advert: state.adverts[index]),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AdvertDetail(
                                     advert: state.adverts[index],
+                                    isEditable: false,
                                   ),
                                 ),
                               );

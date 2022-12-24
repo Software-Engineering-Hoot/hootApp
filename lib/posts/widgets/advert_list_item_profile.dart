@@ -3,13 +3,17 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/view/dashboard.dart';
-import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AdvertListItemProfile extends StatefulWidget {
-  AdvertListItemProfile({super.key, required this.advert});
+  const AdvertListItemProfile({
+    super.key,
+    required this.advert,
+    required this.isOwner,
+  });
 
   final AdvertModel advert;
+  final bool isOwner;
 
   @override
   State<AdvertListItemProfile> createState() => _AdvertListItemProfileState();
@@ -60,9 +64,19 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.advert.title ?? '',
-                        style: const TextStyle(fontSize: 20),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: context.width() * 0.43,
+                              child: Text(
+                                widget.advert.title ?? '',
+                                style: const TextStyle(fontSize: 17),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       10.height,
                       Text(
@@ -90,34 +104,61 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      showConfirmDialogCustom(
-                        context,
-                        cancelable: false,
-                        title: 'Are you sure you want to delete?',
-                        dialogType: DialogType.DELETE,
-                        onCancel: (v) {
-                          finish(context);
-                        },
-                        onAccept: (v) {
-                          _advertService
-                              .deleteAdvert(widget.advert)
-                              .then((value) {
+                  if (widget.isOwner)
+                    IconButton(
+                      onPressed: () {
+                        showConfirmDialogCustom(
+                          context,
+                          cancelable: false,
+                          title: 'Are you sure you want to delete?',
+                          dialogType: DialogType.DELETE,
+                          onCancel: (v) {
                             finish(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Dashboard(),
-                              ),
-                            );
-                          });
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.close_sharp),
-                    padding: EdgeInsets.only(bottom: 40, left: 10),
-                  ),
+                          },
+                          onAccept: (v) {
+                            _advertService
+                                .deleteAdvert(widget.advert)
+                                .then((value) {
+                              finish(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Dashboard(),
+                                ),
+                              );
+                            });
+                          },
+                        );
+                      },
+                      icon: Icon(Icons.close_sharp),
+                      padding: EdgeInsets.only(bottom: 40, left: 10),
+                    )
+                  else
+                    IconButton(
+                      onPressed: () {
+                        showConfirmDialogCustom(
+                          context,
+                          cancelable: false,
+                          positiveText: 'Remove',
+                          title:
+                              'Are you sure you want to remove from favorite ?',
+                          dialogType: DialogType.DELETE,
+                          onCancel: (v) {
+                            finish(context);
+                          },
+                          onAccept: (v) {
+                            _advertService
+                                .deleteAdvertFavorite(widget.advert)
+                                .then((value) {
+                              finish(context);
+                              setState(() {});
+                            });
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.heart_broken, color: colorPrimary),
+                      padding: EdgeInsets.only(bottom: 40, left: 10),
+                    ),
                   const Spacer(),
                   Container(
                     decoration: BoxDecoration(

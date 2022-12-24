@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/view/home.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
@@ -10,6 +15,7 @@ import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class EditAdvert extends StatefulWidget {
   EditAdvert({
@@ -29,7 +35,10 @@ class EditAdvertState extends State<EditAdvert> {
   final _formKey = GlobalKey<FormState>();
   final AdvertService _advertService = AdvertService();
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? images = [];
+  List<XFile>? _imageFileList = [];
+  String? _retrieveDataError;
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -37,13 +46,15 @@ class EditAdvertState extends State<EditAdvert> {
     init();
   }
 
-  Future<void> pickImage() async {
-    images = await _picker.pickMultiImage();
-  }
-
   Future<void> init() async {
     await setStatusBarColor(colorPrimary,
         statusBarIconBrightness: Brightness.light);
+  }
+
+  Future<void> pickImage() async {
+    _imageFileList = await _picker.pickMultiImage();
+    print(_imageFileList);
+    setState(() {});
   }
 
   @override
@@ -55,7 +66,7 @@ class EditAdvertState extends State<EditAdvert> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: 'Add Advert',
+        title: 'Edit Advert',
         mainWidgetHeight: 230,
         subWidgetHeight: 170,
         cardWidget: Column(
@@ -195,7 +206,40 @@ class EditAdvertState extends State<EditAdvert> {
                   ),
                   AppButton(
                     onTap: pickImage,
-                    child: Text("Pick Image"),
+                    child: const Text("Pick Image"),
+                  ),
+                  16.height,
+                  FutureBuilder<void>(
+                    future: init(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return const Text(
+                            'You have not yet picked an image.',
+                            textAlign: TextAlign.center,
+                          );
+                        case ConnectionState.done:
+                          return _imageFileList?.length != 0 ||
+                                  widget.advert.photos?.length != 0
+                              ? _handlePreview()
+                              : Container();
+                        // ignore: no_default_cases
+                        default:
+                          if (snapshot.hasError) {
+                            return Text(
+                              'Pick image/video error: ${snapshot.error}}',
+                              textAlign: TextAlign.center,
+                            );
+                          } else {
+                            return const Text(
+                              'You have not yet picked an image.',
+                              textAlign: TextAlign.center,
+                            );
+                          }
+                      }
+                    },
                   ),
                   16.height,
                   AppButton(
@@ -204,17 +248,17 @@ class EditAdvertState extends State<EditAdvert> {
                     elevation: 0,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // await _advertService
-                        //     .addAdvertWithBackEnd(widget.advert)
-                        //     .then((value) {
-                        //   if (value) {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => const Home()),
-                        //     );
-                        //   }
-                        // });
+                        await _advertService
+                            .editAdvert(widget.advert)
+                            .then((value) {
+                          if (value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Dashboard()),
+                            );
+                          }
+                        });
                       }
                     },
                     child: Text('Edit', style: boldTextStyle(color: white)),
@@ -226,5 +270,79 @@ class EditAdvertState extends State<EditAdvert> {
         ),
       ),
     );
+  }
+
+  Widget _handlePreview() {
+    return _previewImages();
+  }
+
+  Future<void> retrieveLostData() async {
+    final response = await _picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        if (response.files == null) {
+          _setImageFileListFromFile(response.file);
+        } else {
+          _imageFileList = response.files;
+        }
+      });
+    } else {
+      _retrieveDataError = response.exception!.code;
+    }
+  }
+
+  void _setImageFileListFromFile(XFile? value) {
+    _imageFileList = value == null ? null : <XFile>[value];
+  }
+
+  Widget _previewImages() {
+    if (_imageFileList!.isNotEmpty) {
+      return CarouselSlider(
+        options: CarouselOptions(height: 400.0),
+        items: _imageFileList?.map((i) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: const BoxDecoration(color: Colors.amber),
+                child: Image.file(File(i.path), fit: BoxFit.cover),
+              );
+            },
+          );
+        }).toList(),
+      );
+    } else if (widget.advert.photos != null) {
+      return CarouselSlider(
+        options: CarouselOptions(
+          height: 300.0,
+          initialPage: 0,
+          enlargeCenterPage: true,
+          enableInfiniteScroll: false,
+        ),
+        items: widget.advert.photos?.map((i) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: const BoxDecoration(color: Colors.amber),
+                child: Image.network(i, fit: BoxFit.cover),
+              );
+            },
+          );
+        }).toList(),
+      );
+    } else {
+      return const Text(
+        'You have not yet picked an image.',
+        textAlign: TextAlign.center,
+      );
+    }
   }
 }

@@ -106,13 +106,15 @@ class _HomeState extends State<Home> {
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            child: AdvertListItem(post: adverts[index]),
+                            child: AdvertListItem(advert: adverts[index]),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        AdvertDetail(advert: adverts[index])),
+                                    builder: (context) => AdvertDetail(
+                                          advert: adverts[index],
+                                          isEditable: false,
+                                        )),
                               );
                             },
                           );

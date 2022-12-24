@@ -147,7 +147,7 @@ class _SearchState extends State<Search> {
                     scrollDirection: Axis.vertical,
                     itemCount: searchedAdvert.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return AdvertListItem(post: searchedAdvert[index]);
+                      return AdvertListItem(advert: searchedAdvert[index]);
                     },
                   )
                 else
