@@ -19,14 +19,14 @@ app.use(express.urlencoded({
 	extended: true
 }));
 
-app.post("/adduser", (req, res) => {
+app.post("/adduser", async (req, res) => {
 	const docRef = db.collection("UserDB");
 	const user = req.body;
 	// and ensure that the object does not contain any circular references
 	const jsonData = JSON.stringify(user);
 	// Convert the JSON string back to a JavaScript object
 	const objectData = JSON.parse(jsonData);
-	docRef
+	await docRef
 		.add(objectData)
 		.then(() => {
 			// The data was successfully added to the database
@@ -66,13 +66,13 @@ app.post("/getuser", (req, res) => {
 		});
 });
 
-app.delete("/deleteuser", (req, res) => {
+app.delete("/deleteuser", async (req, res) => {
 	// Get a reference to the collection
 	var docRef = db.collection("UserDB");
 	// Create a query to find the document you want to delete
 	var query = docRef.where("userID", "==", req.body.userID);
 	// Delete the matching document
-	query
+	await query
 		.get()
 		.then(function(querySnapshot) {
 			var batch = db.batch();
@@ -87,7 +87,7 @@ app.delete("/deleteuser", (req, res) => {
 		});
 });
 
-app.post("/edituser", (req, res) => {
+app.post("/edituser", async (req, res) => {
 	// Get a reference to the collection
 	var docRef = db.collection("UserDB");
 
@@ -95,7 +95,7 @@ app.post("/edituser", (req, res) => {
 	var query = docRef.where("userID", "==", req.body.userID);
 
 	// Get the matching document
-	query
+	await query
 		.get()
 		.then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
@@ -111,7 +111,7 @@ app.post("/edituser", (req, res) => {
 });
 
 //post single advert to firestore cloud database
-app.post("/addadvert", (req, res) => {
+app.post("/addadvert", async (req, res) => {
 	const docRef = db.collection("AdvertDB");
 	const advert = req.body;
 	advert.id = docRef.doc().id;
@@ -120,7 +120,7 @@ app.post("/addadvert", (req, res) => {
 	var query = userDocRef.where("userID", "==", req.body.publisherID);
 	// Delete the matching document
 	// Get the matching document
-	query
+	await query
 		.get()
 		.then(function(querySnapshot) {
 			querySnapshot.forEach(function(doc) {
@@ -277,24 +277,24 @@ app.post("/editadvert", (req, res) => {
 		});
 });
 
-app.post("/notifications", (req, res) => {
+app.post("/notifications", async (req, res) => {
 	// Get a reference to the UserDB collection
 	var userRef = db.collection("UserDB");
 	// Create a query to find the document you want
 	var userQuery = userRef.where("userID", "==", req.body.userID);
 	// Get the matching document
-	userQuery
+	await userQuery
 	  .get()
 	  .then(function(userQuerySnapshot) {
 		userQuerySnapshot.forEach(function(userDoc) {
 		  // Get a reference to the AdvertDB collection
 		  var advertRef = db.collection("AdvertDB");
 		  // Iterate over the notifications array
-		  userDoc.data().notifications.forEach(function(notificationID) {
+		  userDoc.data().notifications.forEach(async function(notificationID) {
 			// Create a query to find the details of the notification
 			var advertQuery = advertRef.where("id", "==", notificationID);
 			// Get the matching document
-			advertQuery
+			await advertQuery
 			  .get()
 			  .then(function(advertQuerySnapshot) {
 				var tempDoc = [];
@@ -316,14 +316,14 @@ app.post("/notifications", (req, res) => {
   
 
 // Get a single advert with the specified ID
-app.post("/userfavorites", (req, res) => {
+app.post("/userfavorites", async (req, res) => {
 	// Get a reference to the AdvertDB collection
 	const userID = req.body.userID;
 	var docRef = db.collection("AdvertDB");
 	// Create a query to find the documents you want
 	var query = docRef.where("userIDs", "array-contains", userID);
 	// Get the matching documents
-	query
+	await query
 	  .get()
 	  .then(function(querySnapshot) {
 		var favorites = [];
@@ -587,7 +587,7 @@ app.post("/useradverts", async (req, res) => {
 	// Create a query to find the document you want
 	var query = docRef.where("publisherID", "==", req.body.userID);
 	// Get the matching document
-	query
+	await query
 		.get()
 		.then((querySnapshot) => {
 			// Convert the query snapshot to an array of results
@@ -622,7 +622,7 @@ app.get("/adverts", async (req, res) => {
 	}
 });
 
-app.get("/filterByAll/:city/:petType/:price", (req, res) => {
+app.get("/filterByAll/:city/:petType/:price", async (req, res) => {
 	// Get a reference to the collection
 	const address = req.params.city;
 	const price = req.params.price;
@@ -644,7 +644,7 @@ app.get("/filterByAll/:city/:petType/:price", (req, res) => {
 		query = query.where("price", "<=", Number(price));
 	}
 	// Get the matching documents
-	query
+	await query
 		.get()
 		.then((querySnapshot) => {
 			// Convert the query snapshot to an array of results
