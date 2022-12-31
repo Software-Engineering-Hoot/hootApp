@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
@@ -8,13 +5,24 @@ import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/service/auth.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/images.dart';
-import 'package:hoot/posts/view/auth/sign_in.dart';
 import 'package:hoot/posts/widgets/advert_detail.dart';
-import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:hoot/posts/widgets/advert_list_item_profile.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
-import 'package:hoot/posts/widgets/edit_user_bottom_sheet.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:hoot/posts/models/advert_model.dart';
+import 'package:hoot/posts/service/advert.dart';
+import 'package:hoot/posts/utils/colors.dart';
+import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/view/dashboard.dart';
+import 'package:hoot/posts/widgets/common_app_component.dart';
+import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
+import 'package:hoot/posts/widgets/custom_widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Profile extends StatefulWidget {
@@ -30,6 +38,8 @@ class _ProfileState extends State<Profile> {
   final AdvertService _advertService = AdvertService();
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
 
   int selectedIndex = 0;
 
@@ -44,7 +54,6 @@ class _ProfileState extends State<Profile> {
       currenctUser = await _advertService.getUserDetails();
       myAdverts = await _advertService.getUserAdverts();
       favAdverts = await _advertService.getUserFavorites();
-      print(favAdverts);
     } catch (e) {
       return false;
     }
@@ -56,8 +65,15 @@ class _ProfileState extends State<Profile> {
     if (mounted) super.setState(fn);
   }
 
+  Future<void> pickImage() async {
+    _image = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageUrl =
+        currenctUser.profilPic == null ? user : currenctUser.profilPic;
     return Scaffold(
       body: RFCommonAppComponent(
         title: 'Account',
@@ -78,7 +94,7 @@ class _ProfileState extends State<Profile> {
                   border: Border.all(color: white, width: 4),
                 ),
                 child: commonCachedNetworkImage(
-                  user,
+                  imageUrl,
                   fit: BoxFit.cover,
                   width: 100,
                   height: 100,
@@ -86,26 +102,32 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Positioned(
-                bottom: 8,
-                right: -4,
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  padding: const EdgeInsets.all(6),
-                  decoration: boxDecorationWithRoundedCorners(
-                    backgroundColor: context.cardColor,
-                    boxShape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: 0.4,
-                        blurRadius: 3,
-                        color: gray.withOpacity(0.1),
-                        offset: const Offset(1, 6),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(Icons.add, color: colorPrimary, size: 16),
-                ),
-              ),
+                  bottom: 8,
+                  right: -4,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.all(6),
+                    decoration: boxDecorationWithRoundedCorners(
+                      backgroundColor: context.cardColor,
+                      boxShape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0.4,
+                          blurRadius: 3,
+                          color: gray.withOpacity(0.1),
+                          offset: const Offset(1, 6),
+                        ),
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        await pickImage();
+                        _advertService.updateAccountWithBackEnd(
+                            currenctUser, _image!);
+                      },
+                      child: Icon(Icons.add, color: colorPrimary, size: 16),
+                    ),
+                  ))
             ],
           ),
         ),
@@ -145,60 +167,6 @@ class _ProfileState extends State<Profile> {
                       ],
                     ),
                     32.height,
-                    Row(
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            launchCall(currenctUser.phoneNumber);
-                          },
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: context.scaffoldBackgroundColor,
-                            side: BorderSide(
-                              color: context.dividerColor,
-                              width: 1,
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              call.iconImage(iconColor: colorPrimary),
-                              8.width,
-                              Text(
-                                'Call',
-                                style: boldTextStyle(color: colorPrimary),
-                              ),
-                            ],
-                          ),
-                        ).expand(flex: 3),
-                        8.width,
-                        AppButton(
-                          color: colorPrimary,
-                          elevation: 0.0,
-                          shapeBorder: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          width: context.width(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              message.iconImage(iconColor: whiteColor),
-                              8.width,
-                              Text(
-                                'Message',
-                                style: boldTextStyle(color: white),
-                              ),
-                            ],
-                          ),
-                          onTap: () {
-                            launchMail(currenctUser.email);
-                          },
-                        ).expand(flex: 3),
-                      ],
-                    ).paddingSymmetric(horizontal: 16),
                     Container(
                       decoration: boxDecorationWithRoundedCorners(
                         border: Border.all(color: app_background),
@@ -227,7 +195,7 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text('Location', style: boldTextStyle()),
                               Text(
-                                'Erzincan, Merkez',
+                                "${currenctUser.location}",
                                 style: secondaryTextStyle(),
                               ),
                             ],

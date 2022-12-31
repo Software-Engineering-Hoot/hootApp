@@ -88,6 +88,23 @@ class SignUpState extends State<SignUp> {
                   ),
                   16.height,
                   AppTextField(
+                    textFieldType: TextFieldType.NAME,
+                    decoration: rfInputDecoration(
+                      lableText: 'Location: ',
+                      showLableText: true,
+                    ),
+                    onChanged: (value) {
+                      userModel.location = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter location';
+                      }
+                      return null;
+                    },
+                  ),
+                  16.height,
+                  AppTextField(
                     textFieldType: TextFieldType.EMAIL,
                     decoration: rfInputDecoration(
                       lableText: 'Email Address',

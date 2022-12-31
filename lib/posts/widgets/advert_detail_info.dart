@@ -30,7 +30,7 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
 
   Future<bool> init() async {
     try {
-      user = await _advertService.getUserDetails();
+      user = await _advertService.getDiffUserDetails(widget.advert.publisherID);
     } catch (e) {
       return false;
     }
@@ -52,20 +52,13 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                     children: [
                       Row(
                         children: [
-                          Image.network(
-                                  "https://i.pinimg.com/474x/82/a1/88/82a188d47fed928f11e994eb448dfe74.jpg",
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover)
-                              .cornerRadiusWithClipRRect(30),
-                          16.width,
+                          const Icon(Icons.account_circle_sharp,
+                              color: colorPrimary, size: 30),
+                          8.width,
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(user.name ?? '', style: boldTextStyle()),
-                              Text(user.phoneNumber ?? '',
-                                  style: boldTextStyle()),
-                              4.height,
                               Text(user.surname ?? '',
                                   style: secondaryTextStyle()),
                             ],
@@ -157,8 +150,25 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                     itemBuilder: (_, int index) => Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.network(widget.advert.photos![index],
-                            height: 70, width: 70, fit: BoxFit.cover),
+                        InkWell(
+                          onTap: () {
+                            // Show the pop-up when the image is tapped
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: Image.network(
+                                      widget.advert.photos![index],
+                                      height: 500,
+                                      width: 500,
+                                      fit: BoxFit.cover),
+                                );
+                              },
+                            );
+                          },
+                          child: Image.network(widget.advert.photos![index],
+                              height: 70, width: 70, fit: BoxFit.cover),
+                        ),
                       ],
                     ),
                   ),

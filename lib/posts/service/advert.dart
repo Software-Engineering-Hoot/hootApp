@@ -58,6 +58,18 @@ class AdvertService {
     return model;
   }
 
+  Future<UserModel> getDiffUserDetails(String? id) async {
+    final st = await http.post(
+      Uri.parse('https://alesta-hoot.herokuapp.com/getuser'),
+      body: {'userID': id},
+    );
+
+    final model =
+        UserModel.fromJson(jsonDecode(st.body) as Map<String, dynamic>);
+
+    return model;
+  }
+
   Future<List<AdvertModel>> getUserAdverts() async {
     final body = {'userID': '${_auth.currentUser?.uid}'};
     final bodyString = json.encode(body);
@@ -127,6 +139,24 @@ class AdvertService {
     await ref.update({
       'images': FieldValue.arrayUnion([imageURL])
     });
+  }
+
+  Future<bool> updateAccountWithBackEnd(UserModel user, XFile filep) async {
+    var file = File(filep.path);
+    final ref = FirebaseStorage.instance.ref().child(file.hashCode.toString());
+    final snapshot = await ref.putFile(file);
+    final url = await snapshot.ref.getDownloadURL();
+    print(url);
+
+    user.profilPic = url;
+
+    final response = await http.post(
+        Uri.parse('https://alesta-hoot.herokuapp.com/edituser'),
+        body: json.encode(user),
+        headers: {'Content-Type': 'application/json'});
+
+    // Check the response status code and return true if the request was successful
+    return response.statusCode == 200;
   }
 
   Future<bool> addAdvertWithBackEnd(

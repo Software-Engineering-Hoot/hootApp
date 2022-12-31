@@ -20,6 +20,8 @@ class UserModel {
   bool? isModerator;
   String? userID;
   String? phoneNumber;
+  String? location;
+  String? profilPic;
 
   UserModel({
     this.name,
@@ -33,6 +35,8 @@ class UserModel {
     this.userID,
     this.notifications,
     this.isModerator,
+    this.location,
+    this.profilPic
   }) {
     advertIDs = [];
     favAdvertIDs = [];
