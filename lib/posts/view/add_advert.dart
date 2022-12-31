@@ -100,6 +100,12 @@ class AddAdvertState extends State<AddAdvert> {
                     onChanged: (value) {
                       advert.petType = value as String?;
                     },
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select a type';
+                      }
+                      return null;
+                    },
                   ),
                   16.height,
                   DropdownButtonFormField(
@@ -118,6 +124,12 @@ class AddAdvertState extends State<AddAdvert> {
                     }).toList(),
                     onChanged: (value) {
                       advert.address = value as String?;
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select a city';
+                      }
+                      return null;
                     },
                   ),
                   16.height,

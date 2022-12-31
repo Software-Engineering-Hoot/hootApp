@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
@@ -88,7 +89,9 @@ Future<void> editUserBottomSheet(
               ),
               16.height,
               AppTextField(
+                maxLength: 14,
                 textFieldType: TextFieldType.NUMBER,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(18))),
