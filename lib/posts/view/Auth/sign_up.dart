@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/auth.dart';
 import 'package:hoot/posts/utils/colors.dart';
@@ -82,6 +83,25 @@ class SignUpState extends State<SignUp> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter surname';
+                      }
+                      return null;
+                    },
+                  ),
+                  16.height,
+                  AppTextField(
+                    textFieldType: TextFieldType.PHONE,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    maxLength: 14,
+                    decoration: rfInputDecoration(
+                      lableText: 'Phone Number',
+                      showLableText: true,
+                    ),
+                    onChanged: (value) {
+                      userModel.phoneNumber = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
                       }
                       return null;
                     },
