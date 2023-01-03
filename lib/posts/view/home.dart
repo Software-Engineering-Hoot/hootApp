@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
             children = <Widget>[
               Container(
                 width: context.width(),
-                height: context.height() - 193,
+                height: context.height() - 136,
                 child: Column(
                   children: [
                     10.height,

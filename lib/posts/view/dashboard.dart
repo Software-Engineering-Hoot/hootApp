@@ -38,7 +38,7 @@ class DashboardState extends State<Dashboard> {
       type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
         const BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined, size: 22),
+          icon: Icon(Icons.home_outlined, size: 17),
           label: 'Dashboard',
           activeIcon: Icon(Icons.home_outlined, color: colorPrimary, size: 22),
         ),
@@ -62,12 +62,12 @@ class DashboardState extends State<Dashboard> {
         BottomNavigationBarItem(
           icon: setting.iconImage(),
           label: 'Settings',
-          activeIcon: setting.iconImage(iconColor: colorPrimary),
+          activeIcon: setting.iconImage(iconColor: colorPrimary, size: 22),
         ),
         BottomNavigationBarItem(
           icon: person.iconImage(),
           label: 'Account',
-          activeIcon: person.iconImage(iconColor: colorPrimary),
+          activeIcon: person.iconImage(iconColor: colorPrimary, size: 22),
         ),
       ],
     );

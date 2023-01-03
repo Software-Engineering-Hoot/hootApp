@@ -34,7 +34,7 @@
     </queries>
 
    <application
-        android:label="hoot"
+        android:label="HooT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

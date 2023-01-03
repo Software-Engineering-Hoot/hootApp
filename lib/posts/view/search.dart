@@ -7,6 +7,7 @@ import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:test/test.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -60,7 +61,7 @@ class _SearchState extends State<Search> {
             DropdownButtonFormField(
               isExpanded: true,
               decoration: rfInputDecoration(
-                lableText: 'Enter an address or city',
+                lableText: 'Select City',
                 showLableText: true,
                 showPreFixIcon: true,
                 prefixIcon: const Icon(Icons.location_on,
@@ -82,7 +83,7 @@ class _SearchState extends State<Search> {
             DropdownButtonFormField(
               isExpanded: true,
               decoration: rfInputDecoration(
-                lableText: 'Enter Pet Type',
+                lableText: 'Select Pet Type',
                 showLableText: true,
                 showPreFixIcon: true,
                 prefixIcon:
@@ -107,7 +108,7 @@ class _SearchState extends State<Search> {
               },
               textFieldType: TextFieldType.NUMBER,
               decoration: rfInputDecoration(
-                lableText: 'Enter Amount',
+                lableText: 'Enter Max Price',
                 showLableText: true,
                 showPreFixIcon: true,
                 prefixIcon: const Icon(Icons.attach_money,
@@ -139,17 +140,20 @@ class _SearchState extends State<Search> {
             if (snapshot.hasData) {
               children = <Widget>[
                 if (isSearched == true)
-                  ListView.builder(
-                    padding:
-                        const EdgeInsets.only(right: 16, left: 16, top: 16),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: searchedAdvert.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return AdvertListItem(advert: searchedAdvert[index]);
-                    },
-                  )
+                  if (searchedAdvert.length == 0)
+                    Text("No Advert Found Matching Criteria!")
+                  else
+                    ListView.builder(
+                      padding:
+                          const EdgeInsets.only(right: 8, left: 8, top: 16),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: searchedAdvert.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return AdvertListItem(advert: searchedAdvert[index]);
+                      },
+                    )
                 else
                   Container(),
               ];

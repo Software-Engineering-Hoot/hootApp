@@ -167,6 +167,7 @@ class _SettingsState extends State<Settings> {
                                   context,
                                   cancelable: false,
                                   title: "Are you sure you want to logout?",
+                                  primaryColor: colorPrimary,
                                   dialogType: DialogType.CONFIRMATION,
                                   onCancel: (v) {
                                     finish(context);
