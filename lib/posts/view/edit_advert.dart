@@ -2,20 +2,17 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
 import 'package:hoot/posts/view/dashboard.dart';
-import 'package:hoot/posts/view/home.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
+import 'package:nb_utils/nb_utils.dart';
 
 class EditAdvert extends StatefulWidget {
   EditAdvert({

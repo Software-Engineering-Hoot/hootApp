@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/utils/custom_methods.dart';
 import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
@@ -147,7 +147,7 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.startDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      advert.startDate = value.toString() as String;
+                      advert.startDate = value.toString();
                     },
                     readOnly: false,
                   ),
@@ -166,7 +166,7 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.endDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      advert.endDate = value.toString() as String;
+                      advert.endDate = value.toString();
                     },
                     readOnly: false,
                   ),
@@ -205,7 +205,7 @@ class AddAdvertState extends State<AddAdvert> {
                   ),
                   AppButton(
                     onTap: pickImage,
-                    child: const Text("Pick Image"),
+                    child: const Text('Pick Image'),
                   ),
                   16.height,
                   FutureBuilder<void>(
@@ -245,8 +245,10 @@ class AddAdvertState extends State<AddAdvert> {
                     width: context.width(),
                     elevation: 0,
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          _imageFileList!.isNotEmpty) {
                         const SnackBarPage();
+
                         await _advertService
                             .addAdvertWithBackEnd(advert, _imageFileList!)
                             .then((value) {
@@ -258,6 +260,16 @@ class AddAdvertState extends State<AddAdvert> {
                             );
                           }
                         });
+                      } else {
+                        await Fluttertoast.showToast(
+                          msg: "You Have To Add Image",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: redColor,
+                          textColor: Colors.white,
+                          fontSize: 16,
+                        );
                       }
                     },
                     child: Text('Add', style: boldTextStyle(color: white)),
