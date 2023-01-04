@@ -35,6 +35,9 @@ Future<void> editUserBottomSheet(
               const Divider().paddingOnly(top: 10, bottom: 10),
               AppTextField(
                 textFieldType: TextFieldType.NAME,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                ],
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(18))),
@@ -53,6 +56,9 @@ Future<void> editUserBottomSheet(
               16.height,
               AppTextField(
                 textFieldType: TextFieldType.NAME,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                ],
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(18))),

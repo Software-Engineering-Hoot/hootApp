@@ -56,6 +56,9 @@ class SignUpState extends State<SignUp> {
                 children: <Widget>[
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                    ],
                     decoration: rfInputDecoration(
                       lableText: 'Name',
                       showLableText: true,
@@ -65,7 +68,7 @@ class SignUpState extends State<SignUp> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some name';
+                        return 'Please enter a name';
                       }
                       return null;
                     },
@@ -73,6 +76,9 @@ class SignUpState extends State<SignUp> {
                   16.height,
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                    ],
                     decoration: rfInputDecoration(
                       lableText: 'Surname',
                       showLableText: true,
