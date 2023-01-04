@@ -5,7 +5,9 @@ import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
 import 'package:hoot/posts/utils/images.dart';
+import 'package:hoot/posts/view/Auth/sign_up.dart';
 import 'package:hoot/posts/view/auth/sign_in.dart';
+import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:hoot/posts/widgets/edit_user_bottom_sheet.dart';
@@ -173,9 +175,10 @@ class _SettingsState extends State<Settings> {
                                     finish(context);
                                   },
                                   onAccept: (v) {
-                                    SignIn().launch(v).then((value) {
-                                      finish(context);
-                                    });
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) => SignIn()),
+                                        (Route<dynamic> route) => false);
                                   },
                                 );
                               } else {
