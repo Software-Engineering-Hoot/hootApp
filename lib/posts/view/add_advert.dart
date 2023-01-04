@@ -79,7 +79,10 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.title = value;
                     },
                     validator: (value) {
-                      return value.isEmptyOrNull ? 'Please enter title' : null;
+                      if (value == null || value.isEmpty) {
+                        return 'Please type title';
+                      }
+                      return null;
                     },
                   ),
                   16.height,
