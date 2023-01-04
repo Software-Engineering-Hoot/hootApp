@@ -53,11 +53,18 @@ class ResetPasswordState extends State<ResetPassword> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
-                    controller: email,
-                    textFieldType: TextFieldType.NAME,
+                    textFieldType: TextFieldType.EMAIL,
                     decoration: rfInputDecoration(
                       lableText: 'Email Address',
                       showLableText: true,
+                      suffixIcon: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: boxDecorationWithRoundedCorners(
+                            boxShape: BoxShape.circle,
+                            backgroundColor: app_background),
+                        child: const Icon(Icons.done,
+                            color: Colors.white, size: 14),
+                      ),
                     ),
                     onChanged: (value) {
                       email.text = value;
