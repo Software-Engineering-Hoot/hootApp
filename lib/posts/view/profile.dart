@@ -131,7 +131,7 @@ class _ProfileState extends State<Profile> {
                                     _advertService.updateAccountWithBackEnd(
                                         currenctUser, _image!);
                                   },
-                                  child: Icon(Icons.add,
+                                  child: Icon(Icons.edit,
                                       color: colorPrimary, size: 16),
                                 ),
                               ))
