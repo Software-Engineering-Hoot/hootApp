@@ -169,9 +169,9 @@ class AddAdvertState extends State<AddAdvert> {
                   ),
                   16.height,
                   DatePickerWidget(
-                    dateInput: null,
+                    dateInput: DateTime.tryParse(advert.startDate!),
                     labelText: 'End Date',
-                    initialValue: null,
+                    initialValue: DateTime.tryParse(advert.startDate!),
                     decoration: rfInputDecoration(
                       lableText: 'End Date',
                       showLableText: true,
