@@ -29,47 +29,51 @@ class DashboardState extends State<Dashboard> {
   ];
 
   Widget _bottomTab() {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      selectedLabelStyle: boldTextStyle(size: 14),
-      selectedFontSize: 14,
-      unselectedFontSize: 14,
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined, size: 17),
-          label: 'Dashboard',
-          activeIcon: Icon(Icons.home_outlined, color: colorPrimary, size: 22),
-        ),
-        BottomNavigationBarItem(
-          icon: search.iconImage(),
-          label: 'Search',
-          activeIcon: search.iconImage(iconColor: colorPrimary, size: 22),
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.add,
-            size: 17,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedLabelStyle: boldTextStyle(size: 14),
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, size: 17),
+            label: 'Dashboard',
+            activeIcon:
+                Icon(Icons.home_outlined, color: colorPrimary, size: 22),
           ),
-          label: 'Add',
-          activeIcon: Icon(
-            Icons.add,
-            color: colorPrimary,
-            size: 22,
+          BottomNavigationBarItem(
+            icon: search.iconImage(),
+            label: 'Search',
+            activeIcon: search.iconImage(iconColor: colorPrimary, size: 22),
           ),
-        ),
-        BottomNavigationBarItem(
-          icon: setting.iconImage(),
-          label: 'Settings',
-          activeIcon: setting.iconImage(iconColor: colorPrimary, size: 22),
-        ),
-        BottomNavigationBarItem(
-          icon: person.iconImage(),
-          label: 'Account',
-          activeIcon: person.iconImage(iconColor: colorPrimary, size: 22),
-        ),
-      ],
+          const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              size: 17,
+            ),
+            label: 'Add',
+            activeIcon: Icon(
+              Icons.add,
+              color: colorPrimary,
+              size: 22,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: setting.iconImage(),
+            label: 'Settings',
+            activeIcon: setting.iconImage(iconColor: colorPrimary, size: 22),
+          ),
+          BottomNavigationBarItem(
+            icon: person.iconImage(),
+            label: 'Account',
+            activeIcon: person.iconImage(iconColor: colorPrimary, size: 22),
+          ),
+        ],
+      ),
     );
   }
 

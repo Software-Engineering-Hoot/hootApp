@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hoot/posts/bloc/advert_bloc.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/models/user_model.dart';
 import 'package:hoot/posts/service/advert.dart';
@@ -22,7 +20,7 @@ class _HomeState extends State<Home> {
   UserModel user = UserModel();
   List<AdvertModel> adverts = [];
   final _scrollController = ScrollController();
-  int selectedIndex = 0;
+  int selectedIndex = -1;
 
   @override
   void initState() {
@@ -31,9 +29,17 @@ class _HomeState extends State<Home> {
   }
 
   Future<bool> init() async {
+    adverts.clear();
     try {
       user = await _advertService.getUserDetails();
-      adverts = await _advertService.getAdvert();
+
+      if (selectedIndex == -1) {
+        adverts = await _advertService.getAdvert();
+      } else {
+        adverts =
+            await _advertService.filterByAll("", petTypes[selectedIndex], 0);
+        print(adverts);
+      }
 
       print(adverts);
     } catch (e) {
@@ -59,7 +65,7 @@ class _HomeState extends State<Home> {
         future: init(), // a previously-obtained Future<String> or null
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           List<Widget> children;
-          if (snapshot.hasData) {
+          if (snapshot.hasData && adverts.isNotEmpty) {
             children = <Widget>[
               Container(
                 width: context.width(),
@@ -93,8 +99,7 @@ class _HomeState extends State<Home> {
                           ),
                         ).onTap(() async {
                           selectedIndex = index;
-                          await refreshPage(petTypes[index])
-                              .then((value) => setState(() {}));
+                          setState(() {});
                         },
                             splashColor: Colors.transparent,
                             hoverColor: Colors.transparent,
@@ -161,10 +166,5 @@ class _HomeState extends State<Home> {
         },
       ),
     );
-  }
-
-  Future<bool> refreshPage(String petType) async {
-    adverts = await _advertService.filterByAll("", petType, 0);
-    return true;
   }
 }
