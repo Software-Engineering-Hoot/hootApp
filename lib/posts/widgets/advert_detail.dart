@@ -49,6 +49,14 @@ class _AdvertDetailState extends State<AdvertDetail> {
                         color: colorPrimary, size: 28),
                     onPressed: () {
                       _advertService.addAdvertFavorite(widget.advert);
+                      Fluttertoast.showToast(
+                        msg: "Added to your favorites!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        textColor: Colors.white,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.green,
+                      );
                     },
                   ),
                 ),
