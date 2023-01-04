@@ -25,6 +25,7 @@ class _SettingsState extends State<Settings> {
   final AdvertService _advertService = AdvertService();
   UserModel currentUser = UserModel();
   final _formKey = GlobalKey<FormState>();
+  String imageUrl = '';
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _SettingsState extends State<Settings> {
   Future<bool> init() async {
     try {
       currentUser = await _advertService.getUserDetails();
+      imageUrl = currentUser.profilPic ?? user;
     } catch (e) {
       return false;
     }
@@ -68,13 +70,14 @@ class _SettingsState extends State<Settings> {
                         width: 100,
                         height: 100,
                         decoration: boxDecorationWithRoundedCorners(
-                            boxShape: BoxShape.circle,
-                            border: Border.all(color: white, width: 4)),
-                        child: commonCachedNetworkImage(user,
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
-                            radius: 150),
+                          boxShape: BoxShape.circle,
+                          border: Border.all(color: white, width: 4),
+                        ),
+                        child: CircleAvatar(
+                          radius: 50.0,
+                          backgroundImage: NetworkImage(imageUrl),
+                          backgroundColor: Colors.transparent,
+                        ),
                       ),
                       Positioned(
                         bottom: 8,
