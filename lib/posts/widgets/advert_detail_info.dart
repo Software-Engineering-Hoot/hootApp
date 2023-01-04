@@ -7,6 +7,7 @@ import 'package:hoot/posts/utils/images.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class AdvertDetailIfo extends StatefulWidget {
   const AdvertDetailIfo({super.key, required this.advert});
@@ -67,11 +68,11 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                             onTap: () async {
                               // launchCall(user.phoneNumber ?? '');
                               String telephoneNumber = user.phoneNumber!;
-                              String telephoneUrl = "tel:$telephoneNumber";
+                              String telephoneUrl = 'tel:$telephoneNumber';
                               if (await canLaunch(telephoneUrl)) {
                                 await launch(telephoneUrl);
                               } else {
-                                throw "Error occured trying to call that number.";
+                                throw 'Error occured trying to call that number.';
                               }
                             },
                             color: colorPrimary,
@@ -107,12 +108,13 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                               Text(widget.advert.address ?? '',
                                   style: boldTextStyle()),
                               8.height,
-                              Text(widget.advert.title ?? '',
-                                  style: primaryTextStyle()),
+                              Text(
+                                '${DateFormat.yMMMd().format(DateTime.parse(widget.advert.startDate!))} - ${DateFormat.yMMMd().format(DateTime.parse(widget.advert.startDate!))}',
+                              ),
                               8.height,
                             ],
-                          ).expand(),
-                          16.width,
+                          ),
+                          const Spacer(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -143,6 +145,12 @@ class _AdvertDetailIfoState extends State<AdvertDetailIfo> {
                       ),
                     ],
                   ).paddingAll(24),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 24.0, right: 24, bottom: 12),
+                    child:
+                        Text(widget.advert.title ?? '', style: boldTextStyle()),
+                  ),
                   HorizontalList(
                     padding: EdgeInsets.only(right: 24, left: 24),
                     wrapAlignment: WrapAlignment.spaceEvenly,
