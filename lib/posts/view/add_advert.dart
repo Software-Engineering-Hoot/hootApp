@@ -153,6 +153,19 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.startDate = value.toString();
                     },
                     readOnly: false,
+                    validator: (DateTime? value) {
+                      if (value == null) {
+                        return "This Field Required";
+                      } else if (advert.endDate != null &&
+                          (DateTime.parse(advert.startDate!)
+                                  .isAfter(DateTime.parse(advert.endDate!)) ||
+                              DateTime.parse(advert.startDate!)
+                                  .isAtSameMomentAs(
+                                      DateTime.parse(advert.endDate!)))) {
+                        return "Start Date can not be after or equal the End Date";
+                      }
+                      return null;
+                    },
                   ),
                   16.height,
                   DatePickerWidget(
@@ -172,6 +185,19 @@ class AddAdvertState extends State<AddAdvert> {
                       advert.endDate = value.toString();
                     },
                     readOnly: false,
+                    validator: (DateTime? value) {
+                      if (value == null) {
+                        return "This Field Required";
+                      } else if (advert.startDate != null &&
+                          (DateTime.parse(advert.startDate!)
+                                  .isAfter(DateTime.parse(advert.endDate!)) ||
+                              DateTime.parse(advert.startDate!)
+                                  .isAtSameMomentAs(
+                                      DateTime.parse(advert.endDate!)))) {
+                        return "Start Date can not be after or equal the End Date";
+                      }
+                      return null;
+                    },
                   ),
                   16.height,
                   AppTextField(
@@ -265,7 +291,7 @@ class AddAdvertState extends State<AddAdvert> {
                         });
                       } else {
                         await Fluttertoast.showToast(
-                          msg: "You Have To Add Image",
+                          msg: "Images Can Not Be Empty",
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 2,

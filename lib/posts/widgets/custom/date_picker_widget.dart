@@ -14,6 +14,7 @@ class DatePickerWidget extends StatefulWidget {
   final String? validationText;
   final void Function(dynamic)? onSaved;
   final void Function(dynamic)? onChanged;
+  final String? Function(DateTime?)? validator;
 
   const DatePickerWidget({
     Key? key,
@@ -26,6 +27,7 @@ class DatePickerWidget extends StatefulWidget {
     required this.onSaved,
     required this.onChanged,
     required this.initialValue,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -52,7 +54,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
             initialDate: widget.dateInput ?? DateTime.now(),
             errorFormatText: 'Enter valid date',
             errorInvalidText: 'Enter date in valid range',
-            firstDate: DateTime(2000),
+            firstDate: DateTime.now(),
             lastDate: DateTime(2050),
           );
           return date;

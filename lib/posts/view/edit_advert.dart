@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -133,7 +135,7 @@ class EditAdvertState extends State<EditAdvert> {
                   DatePickerWidget(
                     dateInput: DateTime.parse(widget.advert.startDate!),
                     labelText: 'Start Date',
-                    initialValue: null,
+                    initialValue: DateTime.parse(widget.advert.startDate!),
                     decoration: rfInputDecoration(
                       lableText: DateFormat.yMMMd()
                           .format(DateTime.parse(widget.advert.startDate!)),
@@ -145,18 +147,18 @@ class EditAdvertState extends State<EditAdvert> {
                       widget.advert.startDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      widget.advert.startDate = value.toString() as String;
+                      widget.advert.startDate = value.toString();
                     },
                     readOnly: false,
                   ),
                   16.height,
                   DatePickerWidget(
-                    dateInput: null,
+                    dateInput: DateTime.parse(widget.advert.endDate!),
                     labelText: 'End Date',
-                    initialValue: null,
+                    initialValue: DateTime.parse(widget.advert.endDate!),
                     decoration: rfInputDecoration(
                       lableText: DateFormat.yMMMd()
-                          .format(DateTime.parse(widget.advert.startDate!)),
+                          .format(DateTime.parse(widget.advert.endDate!)),
                       showLableText: true,
                     ),
                     validationText: 'Please enter end date',
@@ -165,7 +167,7 @@ class EditAdvertState extends State<EditAdvert> {
                       widget.advert.endDate = value as String;
                     },
                     onChanged: (dynamic value) {
-                      widget.advert.endDate = value.toString() as String;
+                      widget.advert.endDate = value.toString();
                     },
                     readOnly: false,
                   ),
@@ -221,8 +223,8 @@ class EditAdvertState extends State<EditAdvert> {
                             textAlign: TextAlign.center,
                           );
                         case ConnectionState.done:
-                          return _imageFileList?.length != 0 ||
-                                  widget.advert.photos?.length != 0
+                          return _imageFileList!.isNotEmpty ||
+                                  widget.advert.photos!.isNotEmpty
                               ? _handlePreview()
                               : Container();
                         // ignore: no_default_cases
@@ -247,7 +249,9 @@ class EditAdvertState extends State<EditAdvert> {
                     width: context.width(),
                     elevation: 0,
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          (_imageFileList!.isNotEmpty ||
+                              widget.advert.photos!.isNotEmpty)) {
                         await _advertService
                             .editAdvert(widget.advert)
                             .then((value) {
@@ -259,6 +263,16 @@ class EditAdvertState extends State<EditAdvert> {
                             );
                           }
                         });
+                      } else {
+                        await Fluttertoast.showToast(
+                          msg: "Images Can Not Be Empty",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: redColor,
+                          textColor: Colors.white,
+                          fontSize: 16,
+                        );
                       }
                     },
                     child: Text('Edit', style: boldTextStyle(color: white)),
