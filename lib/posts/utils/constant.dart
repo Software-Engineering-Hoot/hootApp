@@ -107,9 +107,9 @@ List<SettingsModel> faqList() {
     ..add(
       SettingsModel(
         img: faq,
-        price: 'What do we get here in this app?',
+        price: 'How do I use Hootapp?',
         description:
-            "That which doesn't kill you makes you stronger, right? Unless it almost kills you, and renders you weaker. Being strong is pretty rad though, so go ahead.",
+            "Download Hootapp and sign up. Next, add your pet's information and start looking for a sitter. Choose from caregivers and schedule an appointment.",
       ),
     )
     ..add(
@@ -123,9 +123,76 @@ List<SettingsModel> faqList() {
     ..add(
       SettingsModel(
         img: faq,
-        price: 'How to get from location A to B?',
+        price: 'Is Hootapp free to use?',
         description:
-            "If you believe in yourself, go double or nothing. Well, depending on how long it takes you to calculate what double is. If you're terrible at maths, don't.",
+            "Yes, we do not charge any fees from Hootapp users. Your fees are only between you and the provider of your service.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price: 'Have I been scammed by someone?',
+        description:
+            "In such a case, go to the nearest police station or prosecutor's office without wasting any time and make your complaint. In order to prevent others from being victimized, report the relevant account to us as soon as possible. \n Our e-mail address: info.hootapp@gmail.com",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price:
+            'Can I search for sitters for different animal species on Hootapp?',
+        description:
+            "Yes, you can search for sitters for different types of animals on Hootapp. You can specify your animal type in your profile and choose your animal type by using the filters when you start looking for a sitter.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price: 'Are babysitting services only available locally on Hootapp?',
+        description:
+            "On Hootapp, babysitting services are offered locally. You can view the profiles of local carers and contact them to set up appointments.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price: "How are carers' wages determined on Hootapp?",
+        description:
+            "On Hootapp, caregivers' fees vary according to factors such as the type and duration of care services and the type of animal. You can view caregivers' fees in their profiles and negotiate their fees privately by contacting them.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price: 'How to pay on Hootapp?',
+        description:
+            "In Hootapp, the payment takes place between you and the person you receive service from, our application does not have such a service yet.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price:
+            'Does Hootapp offer customized services to meet the specific needs of caregivers?',
+        description:
+            "Yes, customized services are available on Hootapp to meet the specific needs of caregivers. To view special services, go to the profiles of caregivers and contact them about their services.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price:
+            "How can I view caregivers' health and insurance information on Hootapp?",
+        description:
+            "On Hootapp, you can view caregivers' health and insurance information on their carers' profiles if they have provided them. Go to carers' profiles and find this information.",
+      ),
+    )
+    ..add(
+      SettingsModel(
+        img: faq,
+        price: 'How do I rate caregivers on Hootapp?',
+        description:
+            "To rate caregivers on Hootapp, go to their profile and add them to favorites once you've finished getting their services.",
       ),
     );
 

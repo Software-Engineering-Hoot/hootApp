@@ -25,6 +25,7 @@ class _NotificationsState extends State<Notifications> {
   Future<bool> init() async {
     try {
       adverts = await _advertService.getUserNotificaitons();
+      print(adverts);
     } catch (e) {
       return false;
     }
@@ -39,34 +40,86 @@ class _NotificationsState extends State<Notifications> {
           title: 'Notifications',
           roundCornerShape: true,
           appBarHeight: 80),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: FutureBuilder<bool>(
+        future: init(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData && adverts.isNotEmpty) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Today', style: boldTextStyle(size: 18)),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text('', style: secondaryTextStyle())),
+                    ],
+                  ).paddingOnly(left: 16, right: 16, top: 16),
+                  ListView.builder(
+                    padding:
+                        const EdgeInsets.only(right: 16, left: 16, bottom: 4),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: adverts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return NotificationWidget(
+                        title: "Favoriye Eklendi \n",
+                        start: "Bir kullanıcı ",
+                        advert: "${adverts[index].title}",
+                        end: " ilanını favoriye ekledi ",
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          } else if (snapshot.hasError) {
+            Column(
               children: [
-                Text('Today', style: boldTextStyle(size: 18)),
-                TextButton(
-                    onPressed: () {},
-                    child: Text('', style: secondaryTextStyle())),
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                ),
               ],
-            ).paddingOnly(left: 16, right: 16, top: 16),
-            ListView.builder(
-              padding: const EdgeInsets.only(right: 16, left: 16, bottom: 4),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (BuildContext context, int index) {
-                return const NotificationWidget(
-                  title: "11.02.2022",
-                  subTitle: "Notfiiiss",
-                );
-              },
-            ),
-          ],
-        ),
+            );
+          } else {
+            Column(
+              children: const [
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                ),
+              ],
+            );
+          }
+          return Center(
+              child: Column(
+            children: const [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              ),
+            ],
+          ));
+        },
       ),
     );
   }

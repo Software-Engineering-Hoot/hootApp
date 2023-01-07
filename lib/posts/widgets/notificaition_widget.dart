@@ -5,9 +5,12 @@ import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class NotificationWidget extends StatelessWidget {
-  const NotificationWidget({super.key, this.title, this.subTitle});
+  const NotificationWidget(
+      {super.key, this.title, this.start, this.advert, this.end});
   final String? title;
-  final String? subTitle;
+  final String? start;
+  final String? advert;
+  final String? end;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +48,22 @@ class NotificationWidget extends StatelessWidget {
             ),
           ),
           16.width,
-          rfCommonRichText(
-            title: title.validate(),
-            subTitle: subTitle.validate(),
-            titleTextStyle: primaryTextStyle(),
-            subTitleTextStyle: boldTextStyle(),
-          ).flexible()
+          Container(
+            width: context.width() * 0.70,
+            child: RichText(
+              maxLines: 4,
+              overflow: TextOverflow.clip,
+              text: TextSpan(
+                text: title,
+                style: boldTextStyle(),
+                children: <TextSpan>[
+                  TextSpan(text: start, style: primaryTextStyle()),
+                  TextSpan(text: advert, style: TextStyle(color: colorPrimary)),
+                  TextSpan(text: end, style: primaryTextStyle()),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
