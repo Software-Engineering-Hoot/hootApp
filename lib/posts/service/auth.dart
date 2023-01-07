@@ -32,11 +32,9 @@ class AuthService {
           .createUserWithEmailAndPassword(
               email: userModel.email!, password: userModel.password!)
           .then((value) {
-        final user = FirebaseAuth.instance.currentUser;
-        user?.sendEmailVerification();
+        value.user?.sendEmailVerification();
       });
-
-      await addUserWithBackEnd(userModel);
+      addUserWithBackEnd(userModel);
     } on FirebaseAuthException catch (e) {
       flutterToast(e.code, Colors.red);
       return false;

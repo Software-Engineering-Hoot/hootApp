@@ -5,12 +5,11 @@ import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
 import 'package:hoot/posts/utils/images.dart';
-import 'package:hoot/posts/view/Auth/sign_up.dart';
 import 'package:hoot/posts/view/auth/sign_in.dart';
-import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:hoot/posts/widgets/edit_user_bottom_sheet.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class Settings extends StatefulWidget {
@@ -23,9 +22,12 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   final List<SettingsModel> settingData = settingList();
   final AdvertService _advertService = AdvertService();
+
   UserModel currentUser = UserModel();
   final _formKey = GlobalKey<FormState>();
   String imageUrl = '';
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
 
   @override
   void initState() {
@@ -46,6 +48,11 @@ class _SettingsState extends State<Settings> {
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
+  }
+
+  Future<void> pickImage() async {
+    _image = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {});
   }
 
   @override
@@ -80,26 +87,33 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       Positioned(
-                        bottom: 8,
-                        right: -4,
-                        child: Container(
-                          alignment: Alignment.bottomCenter,
-                          padding: const EdgeInsets.all(6),
-                          decoration: boxDecorationWithRoundedCorners(
-                            backgroundColor: context.cardColor,
-                            boxShape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
+                          bottom: 8,
+                          right: -4,
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            padding: const EdgeInsets.all(6),
+                            decoration: boxDecorationWithRoundedCorners(
+                              backgroundColor: context.cardColor,
+                              boxShape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
                                   spreadRadius: 0.4,
                                   blurRadius: 3,
                                   color: gray.withOpacity(0.1),
-                                  offset: const Offset(1, 6)),
-                            ],
-                          ),
-                          child: const Icon(Icons.add,
-                              color: colorPrimary, size: 16),
-                        ),
-                      ),
+                                  offset: const Offset(1, 6),
+                                ),
+                              ],
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                await pickImage();
+                                _advertService.updateAccountWithBackEnd(
+                                    currentUser, _image!);
+                              },
+                              child: Icon(Icons.edit,
+                                  color: colorPrimary, size: 16),
+                            ),
+                          ))
                     ],
                   ),
                 ),

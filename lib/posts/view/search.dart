@@ -3,6 +3,7 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
+import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:hoot/posts/widgets/advert_list_item.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
@@ -144,14 +145,24 @@ class _SearchState extends State<Search> {
                     Text("No Advert Found Matching Criteria!")
                   else
                     ListView.builder(
-                      padding:
-                          const EdgeInsets.only(right: 8, left: 8, top: 16),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       itemCount: searchedAdvert.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return AdvertListItem(advert: searchedAdvert[index]);
+                        return InkWell(
+                          child: AdvertListItem(advert: searchedAdvert[index]),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdvertDetail(
+                                        advert: searchedAdvert[index],
+                                        isEditable: false,
+                                      )),
+                            );
+                          },
+                        );
                       },
                     )
                 else

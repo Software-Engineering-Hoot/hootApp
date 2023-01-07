@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/user_model.dart';
@@ -57,6 +59,7 @@ class SignUpState extends State<SignUp> {
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
                     inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(25),
                       FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
                     ],
                     decoration: rfInputDecoration(
@@ -70,13 +73,16 @@ class SignUpState extends State<SignUp> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
                       }
-                      return null;
+                      return value.length < 3
+                          ? 'Name must be greater than three characters'
+                          : null;
                     },
                   ),
                   16.height,
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
                     inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(25),
                       FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
                     ],
                     decoration: rfInputDecoration(
@@ -90,14 +96,18 @@ class SignUpState extends State<SignUp> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter surname';
                       }
-                      return null;
+                      return value.length < 3
+                          ? 'Surname must be greater than three characters'
+                          : null;
                     },
                   ),
                   16.height,
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    maxLength: 14,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(11),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: rfInputDecoration(
                       lableText: 'Phone Number',
                       showLableText: true,
@@ -109,14 +119,19 @@ class SignUpState extends State<SignUp> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter phone number';
                       }
-                      return null;
+                      return value.length != 11
+                          ? 'Phone number must be eleven characters'
+                          : null;
                     },
                   ),
                   16.height,
                   AppTextField(
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(20),
+                    ],
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
-                      lableText: 'Location: ',
+                      lableText: 'Location',
                       showLableText: true,
                     ),
                     onChanged: (value) {
@@ -126,11 +141,16 @@ class SignUpState extends State<SignUp> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter location';
                       }
-                      return null;
+                      return value.length < 3
+                          ? 'Location must be greater than three characters'
+                          : null;
                     },
                   ),
                   16.height,
                   AppTextField(
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(30),
+                    ],
                     textFieldType: TextFieldType.EMAIL,
                     decoration: rfInputDecoration(
                       lableText: 'Email Address',

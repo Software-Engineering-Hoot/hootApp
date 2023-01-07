@@ -24,7 +24,7 @@ const textSizeXLarge = 30.0;
 
 const profileImage = 'assets/images/profile.png';
 
-const List<String> petTypes = ['Dog', 'Cat', 'Bird'];
+const List<String> petTypes = ['All', 'Dog', 'Cat', 'Bird'];
 List<String> cities = [
   'Erzincan',
   'Ordu',

@@ -2,17 +2,18 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/utils/constant.dart';
-import 'package:hoot/posts/utils/custom_methods.dart';
 import 'package:hoot/posts/view/dashboard.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
 import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
 import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:one_context/one_context.dart';
 
 class AddAdvert extends StatefulWidget {
   AddAdvert({super.key, this.showDialog = false});
@@ -69,7 +70,9 @@ class AddAdvertState extends State<AddAdvert> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
-                    maxLength: 20,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(30),
+                    ],
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
                       lableText: 'Title',
@@ -82,7 +85,9 @@ class AddAdvertState extends State<AddAdvert> {
                       if (value == null || value.isEmpty) {
                         return 'Please type title';
                       }
-                      return null;
+                      return value.length < 3
+                          ? 'Title must be greater than three characters'
+                          : null;
                     },
                   ),
                   16.height,
@@ -212,10 +217,14 @@ class AddAdvertState extends State<AddAdvert> {
                     validator: (value) {
                       return value.isEmptyOrNull ? 'Please enter price' : null;
                     },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                   ),
                   16.height,
                   AppTextField(
-                    maxLength: 60,
+                    maxLength: 100,
                     minLines: 4,
                     maxLines: 4,
                     textFieldType: TextFieldType.OTHER,
@@ -276,12 +285,13 @@ class AddAdvertState extends State<AddAdvert> {
                     onTap: () async {
                       if (_formKey.currentState!.validate() &&
                           _imageFileList!.isNotEmpty) {
-                        const SnackBarPage();
+                        OneContext().showProgressIndicator();
 
                         await _advertService
                             .addAdvertWithBackEnd(advert, _imageFileList!)
                             .then((value) {
                           if (value) {
+                            OneContext().hideProgressIndicator();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -289,7 +299,7 @@ class AddAdvertState extends State<AddAdvert> {
                             );
                           }
                         });
-                      } else {
+                      } else if (_imageFileList!.isEmpty) {
                         await Fluttertoast.showToast(
                           msg: "Images Can Not Be Empty",
                           toastLength: Toast.LENGTH_LONG,

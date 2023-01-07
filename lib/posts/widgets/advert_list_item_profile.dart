@@ -3,7 +3,9 @@ import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
 import 'package:hoot/posts/view/dashboard.dart';
+import 'package:hoot/posts/view/profile.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:one_context/one_context.dart';
 
 class AdvertListItemProfile extends StatefulWidget {
   const AdvertListItemProfile({
@@ -113,18 +115,17 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
                           title: 'Are you sure you want to delete?',
                           dialogType: DialogType.DELETE,
                           onCancel: (v) {
-                            finish(context);
+                            Navigator.of(context, rootNavigator: true).pop();
                           },
                           onAccept: (v) {
                             _advertService
                                 .deleteAdvert(widget.advert)
                                 .then((value) {
-                              finish(context);
+                              Navigator.of(context, rootNavigator: true).pop();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Dashboard(),
-                                ),
+                                    builder: (context) => Dashboard()),
                               );
                             });
                           },
@@ -144,14 +145,18 @@ class _AdvertListItemProfileState extends State<AdvertListItemProfile> {
                               'Are you sure you want to remove from favorite ?',
                           dialogType: DialogType.DELETE,
                           onCancel: (v) {
-                            finish(context);
+                            Navigator.of(context, rootNavigator: true).pop();
                           },
                           onAccept: (v) {
                             _advertService
                                 .deleteAdvertFavorite(widget.advert)
                                 .then((value) {
-                              finish(context);
-                              setState(() {});
+                              Navigator.of(context, rootNavigator: true).pop();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dashboard()),
+                              );
                             });
                           },
                         );

@@ -4,7 +4,7 @@ class Errors {
       case 'ERROR_EMAIL_ALREADY_IN_USE':
       case 'account-exists-with-different-credential':
       case 'email-already-in-use':
-        return 'Email already used. Go to login page.';
+        return 'Email already used.';
       case 'ERROR_WRONG_PASSWORD':
       case 'wrong-password':
         return 'Wrong email/password combination.';
@@ -31,7 +31,7 @@ class Errors {
       case 'Insert_Advert':
         return 'Advert is added.';
       default:
-        return 'Login failed. Please try again.';
+        return 'Error.';
     }
   }
 }

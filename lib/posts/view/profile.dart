@@ -8,20 +8,6 @@ import 'package:hoot/posts/utils/images.dart';
 import 'package:hoot/posts/widgets/advert_detail.dart';
 import 'package:hoot/posts/widgets/advert_list_item_profile.dart';
 import 'package:hoot/posts/widgets/common_app_component.dart';
-import 'package:hoot/posts/widgets/custom_widgets.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:hoot/posts/models/advert_model.dart';
-import 'package:hoot/posts/service/advert.dart';
-import 'package:hoot/posts/utils/colors.dart';
-import 'package:hoot/posts/utils/constant.dart';
-import 'package:hoot/posts/view/dashboard.dart';
-import 'package:hoot/posts/widgets/common_app_component.dart';
-import 'package:hoot/posts/widgets/custom/date_picker_widget.dart';
-import 'package:hoot/posts/widgets/custom_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -38,8 +24,6 @@ class _ProfileState extends State<Profile> {
   final AdvertService _advertService = AdvertService();
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
-  XFile? _image;
-  final ImagePicker _picker = ImagePicker();
   String imageUrl = '';
 
   int selectedIndex = 0;
@@ -65,11 +49,6 @@ class _ProfileState extends State<Profile> {
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
-  }
-
-  Future<void> pickImage() async {
-    _image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {});
   }
 
   @override
@@ -107,34 +86,6 @@ class _ProfileState extends State<Profile> {
                               backgroundColor: Colors.transparent,
                             ),
                           ),
-                          Positioned(
-                              bottom: 8,
-                              right: -4,
-                              child: Container(
-                                alignment: Alignment.bottomCenter,
-                                padding: const EdgeInsets.all(6),
-                                decoration: boxDecorationWithRoundedCorners(
-                                  backgroundColor: context.cardColor,
-                                  boxShape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 0.4,
-                                      blurRadius: 3,
-                                      color: gray.withOpacity(0.1),
-                                      offset: const Offset(1, 6),
-                                    ),
-                                  ],
-                                ),
-                                child: InkWell(
-                                  onTap: () async {
-                                    await pickImage();
-                                    _advertService.updateAccountWithBackEnd(
-                                        currenctUser, _image!);
-                                  },
-                                  child: Icon(Icons.edit,
-                                      color: colorPrimary, size: 16),
-                                ),
-                              ))
                         ],
                       ),
                     ),

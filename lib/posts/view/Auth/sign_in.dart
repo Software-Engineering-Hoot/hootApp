@@ -45,7 +45,7 @@ class SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RFCommonAppComponent(
-        title: 'Hoot App',
+        title: 'Hoot',
         mainWidgetHeight: 230,
         subWidgetHeight: 170,
         cardWidget: Form(

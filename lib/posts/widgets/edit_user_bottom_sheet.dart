@@ -79,6 +79,27 @@ Future<void> editUserBottomSheet(
                 ),
                 16.height,
                 AppTextField(
+                  textFieldType: TextFieldType.NAME,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                  ],
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(18))),
+                      labelText: 'Location'),
+                  initialValue: user.location,
+                  onChanged: (value) {
+                    user.location = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter location';
+                    }
+                    return null;
+                  },
+                ),
+                16.height,
+                AppTextField(
                   textFieldType: TextFieldType.EMAIL,
                   enabled: false,
                   decoration: const InputDecoration(

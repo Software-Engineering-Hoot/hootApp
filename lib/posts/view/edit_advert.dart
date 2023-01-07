@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hoot/posts/models/advert_model.dart';
 import 'package:hoot/posts/service/advert.dart';
 import 'package:hoot/posts/utils/colors.dart';
@@ -77,6 +78,9 @@ class EditAdvertState extends State<EditAdvert> {
               child: Column(
                 children: <Widget>[
                   AppTextField(
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(30),
+                    ],
                     initialValue: widget.advert.title ?? "",
                     textFieldType: TextFieldType.NAME,
                     decoration: rfInputDecoration(
@@ -185,11 +189,15 @@ class EditAdvertState extends State<EditAdvert> {
                     validator: (value) {
                       return value.isEmptyOrNull ? 'Please enter price' : null;
                     },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                   ),
                   16.height,
                   AppTextField(
                     initialValue: widget.advert.description,
-                    maxLength: 60,
+                    maxLength: 100,
                     minLines: 4,
                     maxLines: 4,
                     textFieldType: TextFieldType.OTHER,
@@ -263,7 +271,7 @@ class EditAdvertState extends State<EditAdvert> {
                             );
                           }
                         });
-                      } else {
+                      } else if (_imageFileList!.isEmpty) {
                         await Fluttertoast.showToast(
                           msg: "Images Can Not Be Empty",
                           toastLength: Toast.LENGTH_LONG,

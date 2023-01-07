@@ -122,7 +122,7 @@ class AdvertService {
   }
 
   Future<String> uploadFile(File _image) async {
-    Reference storageReference = FirebaseStorage.instance.ref().child("test/");
+    Reference storageReference = FirebaseStorage.instance.ref().child('test/');
 
     UploadTask uploadTask = storageReference.putFile(_image);
     await uploadTask;
@@ -167,7 +167,6 @@ class AdvertService {
           FirebaseStorage.instance.ref().child(file.hashCode.toString());
       final snapshot = await ref.putFile(file);
       final url = await snapshot.ref.getDownloadURL();
-      print(url);
 
       advert.photos ??= [];
       advert.photos?.add(url);
@@ -275,8 +274,9 @@ class AdvertService {
 
   Future<List<AdvertModel>> filterByAll(
       String city, String petType, double amount) async {
-    if (city.isEmpty) city = "all";
-    if (petType.isEmpty) petType = "all";
+    if (petType == "All") petType = 'all';
+    if (city.isEmpty) city = 'all';
+    if (petType.isEmpty) petType = 'all';
     print(petType);
     final response = await http.get(
       Uri.parse(

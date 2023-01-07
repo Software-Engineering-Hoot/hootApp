@@ -7,6 +7,7 @@ import 'package:hoot/simple_bloc_observer.dart';
 /*added libs @emircand*/
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hoot/firebase_options.dart';
+import 'package:one_context/one_context.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
