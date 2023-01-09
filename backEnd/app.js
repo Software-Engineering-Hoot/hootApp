@@ -276,7 +276,6 @@ app.post("/editadvert", (req, res) => {
 			console.error("Error getting documents: ", error);
 		});
 });
-
 app.post("/notifications", async (req, res) => {
 	// Get a reference to the UserDB collection
 	var userRef = db.collection("UserDB");
@@ -287,8 +286,8 @@ app.post("/notifications", async (req, res) => {
 	  .get()
 	  .then(function(userQuerySnapshot) {
 		userQuerySnapshot.forEach(function(userDoc) {
-		  // Check if the 'notifications' array is null
-		  if (userDoc.data().notifications === null) {
+		  // Check if the 'notifications' array has a length of 0
+		  if (userDoc.data().notifications.length === 0) {
 			// Return an empty array
 			res.status(200).send(JSON.stringify([], null, "  "));
 		  } else {
@@ -322,6 +321,7 @@ app.post("/notifications", async (req, res) => {
 		res.status(500).send("Error getting document: ", error);
 	  });
   });
+  
   
   
   
