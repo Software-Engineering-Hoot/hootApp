@@ -293,6 +293,8 @@ app.post("/notifications", async (req, res) => {
 		  } else {
 			// Get a reference to the AdvertDB collection
 			var advertRef = db.collection("AdvertDB");
+			// Build up an array of the notification documents
+			var notifications = [];
 			// Iterate over the notifications array
 			userDoc.data().notifications.forEach(async function(notificationID, index) {
 			  // Create a query to find the details of the notification
@@ -302,11 +304,10 @@ app.post("/notifications", async (req, res) => {
 				.get()
 				.then(function(advertQuerySnapshot) {
 				  advertQuerySnapshot.forEach(function(advertDoc) {
-					// Send the notification in the response
-					res.write(JSON.stringify(advertDoc.data(), null, "  "));
-					// If this is the last notification, end the response
+					notifications.push(advertDoc.data());
+					// If this is the last notification, send the array in the response
 					if (index === userDoc.data().notifications.length - 1) {
-					  res.end();
+					  res.status(200).send(JSON.stringify(notifications, null, "  "));
 					}
 				  });
 				})
@@ -321,6 +322,7 @@ app.post("/notifications", async (req, res) => {
 		res.status(500).send("Error getting document: ", error);
 	  });
   });
+  
   
   
   
