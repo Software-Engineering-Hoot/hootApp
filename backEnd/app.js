@@ -287,32 +287,43 @@ app.post("/notifications", async (req, res) => {
 	  .get()
 	  .then(function(userQuerySnapshot) {
 		userQuerySnapshot.forEach(function(userDoc) {
-		  // Get a reference to the AdvertDB collection
-		  var advertRef = db.collection("AdvertDB");
-		  // Iterate over the notifications array
-		  userDoc.data().notifications.forEach(async function(notificationID) {
-			// Create a query to find the details of the notification
-			var advertQuery = advertRef.where("id", "==", notificationID);
-			// Get the matching document
-			await advertQuery
-			  .get()
-			  .then(function(advertQuerySnapshot) {
-				var tempDoc = [];
-				advertQuerySnapshot.forEach(function(advertDoc) {
-					tempDoc.push(advertDoc.data());
+		  // Check if the 'notifications' array is null
+		  if (userDoc.data().notifications === null) {
+			// Return an empty array
+			res.status(200).send(JSON.stringify([], null, "  "));
+		  } else {
+			// Get a reference to the AdvertDB collection
+			var advertRef = db.collection("AdvertDB");
+			// Iterate over the notifications array
+			userDoc.data().notifications.forEach(async function(notificationID, index) {
+			  // Create a query to find the details of the notification
+			  var advertQuery = advertRef.where("id", "==", notificationID);
+			  // Get the matching document
+			  await advertQuery
+				.get()
+				.then(function(advertQuerySnapshot) {
+				  advertQuerySnapshot.forEach(function(advertDoc) {
+					// Send the notification in the response
+					res.write(JSON.stringify(advertDoc.data(), null, "  "));
+					// If this is the last notification, end the response
+					if (index === userDoc.data().notifications.length - 1) {
+					  res.end();
+					}
+				  });
+				})
+				.catch(function(error) {
+				  console.error("Error getting document: ", error);
 				});
-				res.status(200).send(JSON.stringify(tempDoc, null, "  "));
-			  })
-			  .catch(function(error) {
-				console.error("Error getting document: ", error);
-			  });
-		  });
+			});
+		  }
 		});
 	  })
 	  .catch(function(error) {
 		res.status(500).send("Error getting document: ", error);
 	  });
   });
+  
+  
   
 
 // Get a single advert with the specified ID
